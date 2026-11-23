@@ -1,0 +1,209 @@
+{
+  "/slike/galerija-01.webp": {
+    "w": 3840,
+    "h": 5760,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/galerija-02.webp": {
+    "w": 3840,
+    "h": 5760,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/galerija-03.webp": {
+    "w": 3840,
+    "h": 5760,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/galerija-04.webp": {
+    "w": 3840,
+    "h": 2666,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/galerija-05.webp": {
+    "w": 3840,
+    "h": 5782,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/galerija-06.webp": {
+    "w": 3840,
+    "h": 2560,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/galerija-07.webp": {
+    "w": 3840,
+    "h": 2563,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/galerija-08.webp": {
+    "w": 3840,
+    "h": 4800,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/galerija-09.webp": {
+    "w": 3840,
+    "h": 5759,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/hero-1.webp": {
+    "w": 3840,
+    "h": 2560,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/hero-2.webp": {
+    "w": 3840,
+    "h": 2563,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/hero-3.webp": {
+    "w": 3840,
+    "h": 2560,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/o-nama.webp": {
+    "w": 3840,
+    "h": 2563,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/poziv.webp": {
+    "w": 3840,
+    "h": 2561,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/tim-1.webp": {
+    "w": 3840,
+    "h": 5760,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/tim-2.webp": {
+    "w": 3840,
+    "h": 4917,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/tim-3.webp": {
+    "w": 3840,
+    "h": 5760,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/tim-4.webp": {
+    "w": 3840,
+    "h": 5760,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/usluga-berbernica.webp": {
+    "w": 3840,
+    "h": 5760,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/usluga-boja.webp": {
+    "w": 3840,
+    "h": 2560,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/usluga-deca.webp": {
+    "w": 3840,
+    "h": 5760,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/usluga-nega.webp": {
+    "w": 3840,
+    "h": 2560,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  },
+  "/slike/usluga-zensko.webp": {
+    "w": 3840,
+    "h": 2560,
+    "varijante": [
+      640,
+      1280,
+      1920
+    ]
+  }
+}
