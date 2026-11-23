@@ -1,8 +1,16 @@
+import { useSajt } from '../kontekst/Sajt.jsx';
+import { komponenteTeme } from '../teme/registar.js';
 import React from 'react';
 import { Foto, Kontejner, Nadnaslov, Naslov, Pojava, cx } from './primitivi.jsx';
 
 /** Naslov podstranice: nadnaslov, h1, jedna rečenica uvoda; opciono fotografija desno. */
-export default function ZaglavljeStranice({ nadnaslov, naslov, akcenat, uvod, slika, children, className }) {
+export default function ZaglavljeStranice(props) {
+    const { tema } = useSajt();
+    const Z = komponenteTeme(tema.id).ZaglavljeStranice;
+    return Z ? <Z {...props} /> : <OsnovnoZaglavlje {...props} />;
+}
+
+export function OsnovnoZaglavlje({ nadnaslov, naslov, akcenat, uvod, slika, children, className }) {
     return (
         <header className={cx('pt-[120px] md:pt-[150px]', className)}>
             <Kontejner className={cx('grid gap-10 pb-12 md:pb-16', slika && 'lg:grid-cols-12 lg:items-end')}>

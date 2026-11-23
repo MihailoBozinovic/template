@@ -1,0 +1,297 @@
+/* Stilovi samo za temu „volstrit”. Svaki selektor počinje sa [data-tema='volstrit']. */
+
+/* ── Opšte ───────────────────────────────────────────────────────────── */
+[data-tema='volstrit'] :focus-visible { outline-color: rgb(var(--c-ink)); }
+[data-tema='volstrit'] ::selection { background: rgb(var(--c-ink)); color: rgb(var(--c-paper)); }
+
+/*
+ * Statičan sajt (reference: tweak-global-animations-enabled: false): bez
+ * reveal-a, ulaznih animacija naslova, kaskade menija i prelaza stranica.
+ */
+[data-tema='volstrit'] .pojava,
+[data-tema='volstrit'] .reci-anim .rec > span { opacity: 1 !important; transform: none !important; transition: none !important; }
+[data-tema='volstrit'] .ulaz-odmah,
+[data-tema='volstrit'] .reci-odmah .rec > span,
+[data-tema='volstrit'] .animate-fade-up,
+[data-tema='volstrit'] .prelaz-stranice { animation: none !important; }
+[data-tema='volstrit'] .meni-stavka { opacity: 1; transform: none; transition: none; }
+[data-tema='volstrit'] .hover-zum:hover .foto,
+[data-tema='volstrit'] .hover-zum:focus-visible .foto { transform: none; filter: var(--filter-slike); }
+
+/*
+ * Prigušen tekst. Zajedničke strane prigušuju tekst providnošću (opacity-60…);
+ * sa grafitnim #3B3B3B to pada ispod 4.5:1 na #F5F5F5. Najmanje .78 daje ≥ 5:1
+ * (i na belim karticama), a i dalje se razlikuje od punog teksta.
+ */
+[data-tema='volstrit'] :is(.opacity-50, .opacity-55, .opacity-60, .opacity-65, .opacity-70):not(:hover):not(img):not(svg) { opacity: .78; }
+
+/* ── Dugmad: #C0BFAA / #000, bez okvira, hover = providnost (opacity .1s linear) ── */
+[data-tema='volstrit'] .dugme { padding: 17px 22.1px; min-height: 47px; transition: opacity .1s linear; }
+[data-tema='volstrit'] .dugme-primarno { border-width: 0; }
+[data-tema='volstrit'] .dugme-primarno:hover:not(:disabled) { background: rgb(var(--c-brand)); color: rgb(var(--c-na-brand)); opacity: .8; }
+[data-tema='volstrit'] .dugme-sekundarno { border-color: rgb(var(--c-ink)); }
+[data-tema='volstrit'] .dugme-sekundarno:hover:not(:disabled) { background: transparent; color: rgb(var(--c-ink)); border-color: rgb(var(--c-ink)); opacity: .8; }
+/* Neaktivno dugme: tekst ≥ 4.5:1 na sivoj podlozi (zajedničko pravilo daje 4.2:1 sa #3B3B3B). */
+[data-tema='volstrit'] .dugme:disabled { color: rgb(var(--c-ink) / .88) !important; }
+[data-tema='volstrit'] .dugme-foto:hover,
+[data-tema='volstrit'] .dugme-foto-obris:hover { opacity: .8; }
+@media (max-width: 767.98px) {
+    [data-tema='volstrit'] .dugme { padding: 16px 20.8px; }
+}
+
+/* Linkovi u tekstu: stalno podvučeni, boja nasleđena. */
+[data-tema='volstrit'] main p > a:not(.dugme):not(.cip) { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+
+/* Polja forme: hover/fokus menja providnost okvira (form-field-hover-focus-opacity). */
+[data-tema='volstrit'] .polje { border-color: rgb(var(--c-ink) / .35); }
+[data-tema='volstrit'] .polje:hover { border-color: rgb(var(--c-ink) / .6); }
+[data-tema='volstrit'] .polje:focus { border-color: rgb(var(--c-ink)); box-shadow: none; }
+
+/*
+ * Header ne prati skrol, pa lepljivi delovi podstranica (filter cenovnika,
+ * sažetak zakazivanja) ne treba da ostavljaju mesto za njega.
+ */
+[data-tema='volstrit'] .sticky.top-\[76px\] { top: 0; }
+[data-tema='volstrit'] .sticky.top-28 { top: 1.5rem; }
+@media (min-width: 1024px) {
+    [data-tema='volstrit'] .lg\:sticky.lg\:top-28,
+    [data-tema='volstrit'] .lg\:sticky.lg\:top-44 { top: 1.5rem; }
+}
+/* Zaglavlje zakazivanja računa sa headerom od 76px — ovde je 84px na telefonu. */
+[data-tema='volstrit'] .pt-\[92px\] { padding-top: calc(var(--header-h) + 1.75rem); }
+@media (min-width: 768px) {
+    [data-tema='volstrit'] .md\:pt-\[140px\] { padding-top: calc(var(--header-h) + 4.5rem); }
+}
+
+/* ── Header: statičan (absolute), 61px / 84px, pozadina papira, bez senke ── */
+[data-tema='volstrit'] .vs-header {
+    position: absolute; inset: 0 0 auto 0; z-index: 50;
+    background: rgb(var(--c-paper)); color: rgb(var(--c-ink));
+    transition: transform .14s ease-in-out;
+}
+/* Dok je meni otvoren, header (logo + X) ostaje iznad menija. */
+[data-tema='volstrit'] .vs-header--meni { position: fixed; }
+[data-tema='volstrit'] .vs-header-red {
+    display: grid; grid-template-columns: 1fr auto 1fr; grid-template-areas: '. logo desno';
+    align-items: center; height: var(--header-h); max-width: 110rem; margin-inline: auto; padding-inline: var(--gutter);
+}
+[data-tema='volstrit'] .vs-header-logo { grid-area: logo; justify-self: center; }
+[data-tema='volstrit'] .vs-nav { grid-area: nav; display: none; }
+[data-tema='volstrit'] .vs-header-desno { grid-area: desno; justify-self: end; display: flex; align-items: center; gap: 21px; }
+[data-tema='volstrit'] .vs-samo-desktop { display: none !important; }
+[data-tema='volstrit'] .vs-dugme-menija { color: rgb(var(--c-ink)); margin-right: -4px; }
+
+[data-tema='volstrit'] .vs-logo {
+    display: inline-flex; align-items: center; white-space: nowrap; text-decoration: none; color: rgb(var(--c-tamna));
+}
+[data-tema='volstrit'] .vs-logo-slika { height: 30px; width: auto; }
+
+@media (min-width: 1200px) {
+    [data-tema='volstrit'] .vs-header-red { grid-template-areas: 'logo nav desno'; column-gap: 1.5rem; }
+    [data-tema='volstrit'] .vs-header-logo { justify-self: start; }
+    [data-tema='volstrit'] .vs-nav { display: block; }
+    [data-tema='volstrit'] .vs-samo-desktop { display: flex !important; }
+    [data-tema='volstrit'] .vs-dugme-menija { display: none !important; }
+    [data-tema='volstrit'] .vs-logo-slika { height: 38px; }
+}
+
+/* Nav u sredini: Jost 600 / .06em / verzal, razmak ~19px; hover bez promene. */
+[data-tema='volstrit'] .vs-nav > ul { display: flex; align-items: center; gap: 19px; margin: 0; padding: 0; list-style: none; }
+[data-tema='volstrit'] .vs-nav-link {
+    display: inline-flex; align-items: center; min-height: 2.5rem; white-space: nowrap;
+    color: rgb(var(--c-ink)); text-decoration: none;
+}
+[data-tema='volstrit'] .vs-nav-link[aria-current='page'] { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
+
+/* Fascikla „usluge”: padajuća lista na hover / fokus. */
+[data-tema='volstrit'] .vs-fascikla { position: relative; }
+[data-tema='volstrit'] .vs-padajuci {
+    position: absolute; top: 100%; left: 50%; transform: translateX(-50%); z-index: 2;
+    min-width: 15rem; margin: 0; padding: .75rem 1.5rem 1rem; list-style: none; text-align: center;
+    background: rgb(var(--c-paper)); opacity: 0; visibility: hidden; transition: opacity .1s linear, visibility .1s linear;
+}
+[data-tema='volstrit'] .vs-fascikla:hover .vs-padajuci,
+[data-tema='volstrit'] .vs-fascikla:focus-within .vs-padajuci { opacity: 1; visibility: visible; }
+[data-tema='volstrit'] .vs-padajuci-link {
+    display: block; padding: .3rem 0; white-space: nowrap; text-decoration: none; color: rgb(var(--c-ink));
+    font-family: var(--nav-ff); font-size: var(--nav-fs); font-weight: var(--nav-fw);
+    letter-spacing: var(--nav-ls); text-transform: var(--nav-tt); line-height: var(--nav-lh);
+}
+
+/* Ikonice mreža: bez okvira, ~20px, korak ~41px. */
+[data-tema='volstrit'] .vs-mreze { display: flex; align-items: center; gap: 21px; margin: 0; padding: 0; list-style: none; }
+[data-tema='volstrit'] .vs-mreze a { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; min-height: 40px; color: rgb(var(--c-ink)); }
+[data-tema='volstrit'] .vs-jezici a { color: rgb(var(--c-ink)); }
+
+/* ── Mobilni meni: preko celog ekrana, pretapanje (opacity .4s + visibility .6s) ── */
+[data-tema='volstrit'] .vs-meni {
+    position: fixed; inset: 0; z-index: 40; display: flex; flex-direction: column; overflow-y: auto;
+    padding: var(--header-h) 6vw calc(64px + 1.25rem + env(safe-area-inset-bottom));
+    background: rgb(var(--c-paper)); color: rgb(var(--c-meni));
+    opacity: 0; visibility: hidden;
+    transition: opacity .4s cubic-bezier(.4, 0, .2, 1), visibility .6s cubic-bezier(.4, 0, .2, 1);
+}
+[data-tema='volstrit'] .vs-meni.otvoren { opacity: 1; visibility: visible; }
+@media (min-width: 1200px) { [data-tema='volstrit'] .vs-meni { display: none; } }
+[data-tema='volstrit'] .vs-meni-nav { flex: 1; display: flex; align-items: center; justify-content: center; padding-block: 1.5rem; }
+[data-tema='volstrit'] .vs-meni-lista { margin: 0; padding: 0; list-style: none; text-align: center; }
+[data-tema='volstrit'] .vs-meni-link {
+    display: inline-flex; align-items: center; gap: .45em; padding: 11.5px 0; border: 0; background: none; cursor: pointer;
+    font-family: var(--meni-ff); font-size: var(--meni-fs); line-height: var(--meni-lh); font-weight: var(--meni-fw);
+    letter-spacing: var(--meni-ls); text-transform: var(--meni-tt); color: rgb(var(--c-meni)); text-decoration: none;
+}
+[data-tema='volstrit'] .vs-meni-strelica { flex: none; margin-right: -.2em; }
+[data-tema='volstrit'] .vs-meni-link--manji { font-size: 1.3rem; line-height: 1.25; padding: 9px 0; }
+[data-tema='volstrit'] .vs-meni-nazad {
+    display: inline-flex; align-items: center; gap: .35rem; margin-bottom: 1.25rem; padding: 10px 0; border: 0; background: none; cursor: pointer;
+    font-family: var(--nav-ff); font-size: var(--nav-fs); font-weight: var(--nav-fw); letter-spacing: var(--nav-ls);
+    text-transform: var(--nav-tt); color: rgb(var(--c-meni));
+}
+[data-tema='volstrit'] .vs-meni-dno { display: flex; flex-direction: column; align-items: center; gap: .75rem; }
+[data-tema='volstrit'] .vs-meni-dno .vs-mreze a { min-width: 44px; min-height: 44px; color: rgb(var(--c-meni)); }
+
+/* ── Info-traka (telefon): fiksna na dnu, nestaje pri skrolu ─────────── */
+[data-tema='volstrit'] .vs-info {
+    position: fixed; inset: auto 0 0 0; z-index: 45; padding-bottom: env(safe-area-inset-bottom);
+    background: rgb(var(--c-info-traka)); color: #fff;
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1), visibility .3s;
+}
+[data-tema='volstrit'] .vs-info.sakrivena { transform: translateY(100%); visibility: hidden; }
+[data-tema='volstrit'] .vs-info ul { display: flex; justify-content: center; height: 64px; margin: 0; padding: 0; list-style: none; }
+[data-tema='volstrit'] .vs-info li { min-width: 88px; padding-inline: 6px; }
+[data-tema='volstrit'] .vs-info a {
+    display: flex; height: 100%; flex-direction: column; align-items: center; justify-content: center; gap: 9px;
+    color: #fff; text-decoration: none;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 10px; line-height: 10px; letter-spacing: .5px; text-transform: uppercase;
+}
+[data-tema='volstrit'] .vs-info a:focus-visible { outline-color: #fff; outline-offset: -4px; }
+@media (min-width: 768px) { [data-tema='volstrit'] .vs-info { display: none; } }
+
+/* ── Hero: ispod headera, crno-bela fotografija, kosa donja ivica + bela linija ── */
+[data-tema='volstrit'] .vs-hero {
+    --kosa-akt: var(--kosa, 5.8vw); --linija-akt: var(--linija-ivice, 3px);
+    position: relative; margin-top: var(--header-h); height: calc(100svh - var(--header-h)); min-height: 26rem;
+    background: #fff; clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--kosa-akt)), 0 100%);
+}
+@media (max-width: 767.98px) { [data-tema='volstrit'] .vs-hero { --kosa-akt: var(--kosa-tel, 5.4vw); } }
+[data-tema='volstrit'] .vs-hero-foto {
+    position: absolute; inset: 0; overflow: hidden; background: rgb(var(--c-tamna));
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--kosa-akt) - var(--linija-akt)), 0 calc(100% - var(--linija-akt)));
+}
+[data-tema='volstrit'] .vs-hero .foto { filter: var(--filter-hero); }
+/* Referenca nema veo (fotografija je već tamno siva); naša je svetlija — najmanji veo za ≥ 4.5:1. */
+[data-tema='volstrit'] .vs-hero-veo {
+    position: absolute; inset: 0; z-index: 2;
+    background: radial-gradient(ellipse 60% 46% at 50% 50%, rgb(0 0 0 / .28), rgb(0 0 0 / 0) 100%), rgb(0 0 0 / .32);
+}
+[data-tema='volstrit'] .vs-hero-tekst {
+    position: absolute; inset: 0; z-index: 3; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 0 6vw var(--kosa-akt); text-align: center; color: rgb(var(--c-na-foto)); text-shadow: none;
+}
+[data-tema='volstrit'] .vs-hero-tekst h1 { max-width: 75rem; overflow-wrap: break-word; }
+[data-tema='volstrit'] .vs-hero-podnaslov { margin: 2.75rem 0 0; max-width: 46rem; }
+@media (max-width: 767.98px) { [data-tema='volstrit'] .vs-hero-podnaslov { margin-top: 2.5rem; } }
+
+/* ── Pločice usluga: u boji, 11px razmak, odnos 333/312, bez zaglavlja i hovera ── */
+[data-tema='volstrit'] .vs-plocice-sekcija { padding-top: 28px; }
+[data-tema='volstrit'] .vs-plocice { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--plocica-razmak, 11px); margin: 0; padding: 0; list-style: none; }
+[data-tema='volstrit'] .vs-plocica {
+    position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden;
+    aspect-ratio: var(--plocica-odnos-tel, 343 / 374); background: rgb(var(--c-tamna));
+    color: rgb(var(--c-na-foto)); text-decoration: none;
+}
+[data-tema='volstrit'] .vs-plocica .foto-okvir { background: rgb(var(--c-tamna)); }
+/* Natpis mora imati ≥ 3:1 (veliki tekst) i preko svetlih delova fotografije: tanak pojas u visini natpisa. */
+[data-tema='volstrit'] .vs-plocica-veo {
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(to bottom, rgb(0 0 0 / .08), rgb(0 0 0 / .4) 32%, rgb(0 0 0 / .4) 68%, rgb(0 0 0 / .08));
+}
+[data-tema='volstrit'] .vs-plocica-natpis { position: relative; z-index: 2; padding: 1rem; text-align: center; overflow-wrap: break-word; }
+@media (min-width: 768px) {
+    [data-tema='volstrit'] .vs-plocice-sekcija { padding-top: 48px; }
+    [data-tema='volstrit'] .vs-plocice { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    [data-tema='volstrit'] .vs-plocica { aspect-ratio: var(--plocica-odnos, 333 / 312); }
+    [data-tema='volstrit'] .vs-plocice:is([data-broj='3'], [data-broj='5'], [data-broj='7']) > li:last-child { grid-column: span 2; }
+    [data-tema='volstrit'] .vs-plocice:is([data-broj='3'], [data-broj='5'], [data-broj='7']) > li:last-child .vs-plocica { aspect-ratio: 666 / 312; }
+}
+@media (min-width: 1024px) {
+    [data-tema='volstrit'] .vs-plocice { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    [data-tema='volstrit'] .vs-plocice[data-broj='5'] { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    [data-tema='volstrit'] .vs-plocice[data-broj='3'], [data-tema='volstrit'] .vs-plocice[data-broj='6'] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    [data-tema='volstrit'] .vs-plocice[data-broj='2'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    [data-tema='volstrit'] .vs-plocice[data-broj] > li:last-child { grid-column: auto; }
+    [data-tema='volstrit'] .vs-plocice[data-broj] > li:last-child .vs-plocica { aspect-ratio: var(--plocica-odnos, 333 / 312); }
+    /* Pet uskih pločica: natpis se smanjuje sa širinom (30.8px na 1440), da duge reči (ru) stanu. */
+    [data-tema='volstrit'] .vs-plocice[data-broj='5'] .vs-plocica-natpis { font-size: min(var(--h2-fs), 2.14vw); padding: .75rem; }
+}
+
+/* ── Izjava u dve kolone + brendovi ispod leve kolone ─────────────────── */
+[data-tema='volstrit'] .vs-izjava { padding: 87px 0 28px; }
+[data-tema='volstrit'] .vs-dve-kolone {
+    display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: 'veliki' 'tekst' 'brendovi';
+}
+[data-tema='volstrit'] .vs-veliki { grid-area: veliki; color: rgb(var(--c-ink)); overflow-wrap: break-word; text-wrap: wrap; }
+[data-tema='volstrit'] .vs-tekst { grid-area: tekst; margin-top: 11px; }
+[data-tema='volstrit'] .vs-lead { color: rgb(var(--c-telo)); text-wrap: wrap; }
+[data-tema='volstrit'] .vs-pasus { color: rgb(var(--c-telo)); }
+[data-tema='volstrit'] .vs-lead + .vs-pasus { margin-top: 45px; }
+[data-tema='volstrit'] .vs-pasus + .vs-pasus { margin-top: 1rem; }
+
+/* Brendovi: samo nazivi (bez logotipa), tipografski, statično (bez marquee-a). */
+[data-tema='volstrit'] .vs-brendovi {
+    grid-area: brendovi; display: flex; flex-direction: column; align-items: center; gap: 11px;
+    margin: 81px 0 0; padding: 0; list-style: none;
+}
+[data-tema='volstrit'] .vs-brendovi li {
+    padding: .45rem 0; text-align: center; color: rgb(var(--c-tamna));
+    font-family: var(--font-oznaka); font-weight: 500; font-size: 1.2rem; line-height: 1.2;
+    letter-spacing: .16em; text-transform: uppercase;
+}
+@media (min-width: 768px) {
+    [data-tema='volstrit'] .vs-izjava { padding: 180px 0 48px; }
+    [data-tema='volstrit'] .vs-dve-kolone {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 15px;
+        grid-template-areas: 'veliki tekst' 'brendovi tekst'; grid-template-rows: auto 1fr;
+    }
+    [data-tema='volstrit'] .vs-tekst { margin-top: 0; }
+    [data-tema='volstrit'] .vs-brendovi {
+        flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: flex-start; align-self: start;
+        gap: 4px 30px; margin-top: 20px;
+    }
+    [data-tema='volstrit'] .vs-brendovi li { font-size: 1.05rem; padding: .6rem 0; text-align: left; }
+}
+
+/* ── Footer: tamna minimalna traka, centrirani podvučeni linkovi ───────── */
+[data-tema='volstrit'] .vs-footer {
+    padding: 58px var(--gutter) 44px; text-align: center;
+    background: rgb(var(--c-tamna)); color: rgb(var(--c-footer-tekst));
+    font-family: var(--footer-ff); font-size: var(--footer-fs); line-height: var(--footer-lh); letter-spacing: var(--footer-ls);
+}
+[data-tema='volstrit'] .vs-footer a,
+[data-tema='volstrit'] .vs-footer button {
+    color: inherit; font: inherit; letter-spacing: inherit; background: none; border: 0; padding: 0; cursor: pointer;
+    text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px;
+}
+[data-tema='volstrit'] .vs-footer :focus-visible { outline-color: rgb(var(--c-paper)); }
+[data-tema='volstrit'] .vs-footer-linkovi { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 13px; margin: 0; padding: 0; list-style: none; }
+[data-tema='volstrit'] .vs-footer-prava { margin: 46px 0 0; }
+[data-tema='volstrit'] .vs-footer-pravno { margin-top: 1.5rem; font-size: .75rem; line-height: 1.6; letter-spacing: .02em; }
+[data-tema='volstrit'] .vs-footer-pravno p { margin: 0 auto; max-width: 60rem; }
+[data-tema='volstrit'] .vs-footer-pravno ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 16px; margin: .5rem 0 0; padding: 0; list-style: none; }
+
+/* ── Naslov podstranica: veliki verzal, bez nadnaslova ─────────────────── */
+[data-tema='volstrit'] .vs-zaglavlje { padding-top: calc(var(--header-h) + clamp(2.5rem, 1.4rem + 4.4vw, 6.5rem)); }
+[data-tema='volstrit'] .vs-zaglavlje-red { display: grid; gap: 2.5rem; padding-bottom: clamp(2.25rem, 1.8rem + 2vw, 4rem); }
+[data-tema='volstrit'] .vs-zaglavlje-tekst { max-width: 64rem; }
+[data-tema='volstrit'] .vs-zaglavlje-tekst h1 { overflow-wrap: break-word; }
+[data-tema='volstrit'] .vs-zaglavlje-uvod { margin-top: 1.5rem; max-width: 42rem; color: rgb(var(--c-telo)); }
+@media (min-width: 1024px) {
+    [data-tema='volstrit'] .vs-zaglavlje-red.sa-slikom { grid-template-columns: 7fr 5fr; align-items: end; }
+}
+
+/* Logotipi brendova (slike sa linkovima), statični */
+[data-tema='volstrit'] .vs-brendovi li { --logo-brenda-h: 52px; --logo-brenda-max: 150px; --logo-brenda-op: 1; }
+@media (max-width: 767.98px) { [data-tema='volstrit'] .vs-brendovi li { --logo-brenda-h: 46px; } }
+
+/* Kartice plaćanja u centriranom footeru */
+[data-tema='volstrit'] .placanje-footer { --placanje-poravnanje: center; display: flex; justify-content: center; }

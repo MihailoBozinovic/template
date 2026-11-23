@@ -32,7 +32,7 @@ export default function Cenovnik() {
                 <div className="skriven-skrol flex items-center gap-2 overflow-x-auto">
                     {nudiFilter && (
                         <>
-                            <span className="nadnaslov mr-2 shrink-0 opacity-60">{t.cenovnik.zaKoga}</span>
+                            <span className="nadnaslov mr-2 shrink-0 opacity-70">{t.cenovnik.zaKoga}</span>
                             {FILTERI.filter((f) => f === 'svi' || grupe.has(f)).map((f) => (
                                 <button key={f} type="button" className="cip" aria-pressed={filter === f} onClick={() => setFilter(f)}>{t.cenovnik[f]}</button>
                             ))}
@@ -64,11 +64,11 @@ export default function Cenovnik() {
                                             <div>
                                                 <h3 className="m-0 text-lg font-medium" style={{ fontFamily: 'var(--font-tekst)' }}>{tx(u.naziv)}</h3>
                                                 {u.opis && <p className="m-0 mt-1 text-sm leading-relaxed opacity-70">{tx(u.opis)}</p>}
-                                                <p className="nadnaslov m-0 mt-3 inline-flex items-center gap-1.5 opacity-60"><Clock size={13} aria-hidden="true" /> {trajanje(u.trajanje, jezik)}</p>
+                                                <p className="nadnaslov m-0 mt-3 inline-flex items-center gap-1.5 opacity-70"><Clock size={13} aria-hidden="true" /> {trajanje(u.trajanje, jezik)}</p>
                                             </div>
                                             <div className="flex flex-col items-end justify-between gap-3 text-right">
                                                 <p className="m-0 whitespace-nowrap text-lg tabular-nums">
-                                                    {u.cenaOd && <span className="mr-1 text-sm opacity-60">{t.opste.od}</span>}
+                                                    {u.cenaOd && <span className="mr-1 text-sm opacity-70">{t.opste.od}</span>}
                                                     {cena(u.cena, jezik)}
                                                 </p>
                                                 {l ? (
@@ -83,7 +83,7 @@ export default function Cenovnik() {
                             </ul>
                         </section>
                     ))}
-                    <p className="nadnaslov m-0 opacity-60">{salon.firma.pdvObveznik ? t.cenovnik.pdvDa : t.cenovnik.pdvNe}</p>
+                    <p className="nadnaslov m-0 opacity-70">{salon.firma.pdvObveznik ? t.cenovnik.pdvDa : t.cenovnik.pdvNe}</p>
                 </Kontejner>
             </Sekcija>
         </>

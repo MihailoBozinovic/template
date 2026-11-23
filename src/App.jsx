@@ -6,6 +6,7 @@ import { metaStranice, primeniMeta } from './lib/seo.js';
 import { biracUkljucen } from './lib/tema.js';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
+import { komponenteTeme } from './teme/registar.js';
 import Kolacici from './components/Kolacici.jsx';
 import BiracTema from './components/BiracTema.jsx';
 import Pocetna from './stranice/Pocetna.jsx';
@@ -51,6 +52,10 @@ const useGlatkiSkrol = (ukljucen) => {
     }, [ukljucen]);
 };
 
+/** Header i footer teme, ako ih tema ima (src/teme/<id>/komponente.jsx). */
+const TemaHeader = () => { const { tema } = useSajt(); const H = komponenteTeme(tema.id).Header ?? Header; return <H />; };
+const TemaFooter = () => { const { tema } = useSajt(); const F = komponenteTeme(tema.id).Footer ?? Footer; return <F />; };
+
 function Okvir() {
     const { pathname, hash } = useLocation();
     const { tema, jezik } = useSajt();
@@ -73,11 +78,11 @@ function Okvir() {
 
     return (
         <div className="flex min-h-screen flex-col">
-            <Header />
+            <TemaHeader />
             <main id="sadrzaj" key={pathname} className={tema.pokret.prelazStranice === 'fade' && !prvi.current ? 'prelaz-stranice flex-1' : 'flex-1'}>
                 <Stranica />
             </main>
-            <Footer />
+            <TemaFooter />
             <Kolacici />
             {biracUkljucen() && <BiracTema />}
         </div>

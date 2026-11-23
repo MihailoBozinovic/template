@@ -4,7 +4,7 @@ import { useSajt } from '../kontekst/Sajt.jsx';
 import { Kontejner, Pojava, Sekcija } from '../components/primitivi.jsx';
 import ZaglavljeStranice from '../components/ZaglavljeStranice.jsx';
 import Mapa from '../components/Mapa.jsx';
-import { KontaktDugmad, Mreze, NeradniDani, RadnoVremeTabela, StatusOtvoreno } from '../components/delovi.jsx';
+import { KontaktDugmad, Mreze, NeradniDani, RadnoVremeTabela, StatusOtvoreno, KarticePlacanja } from '../components/delovi.jsx';
 
 
 
@@ -45,7 +45,7 @@ export default function Kontakt() {
                         {salon.placanje?.length > 0 && (
                             <Pojava i={4}>
                                 <p className="nadnaslov m-0 mb-3 opacity-70">{t.kontakt.placanje}</p>
-                                <p className="m-0">{salon.placanje.join(' · ')}</p>
+                                <KarticePlacanja />
                             </Pojava>
                         )}
                         <Pojava i={5}>

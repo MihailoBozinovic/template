@@ -1,0 +1,565 @@
+/* Stilovi samo za temu „soho”. Svaki selektor počinje sa [data-tema='soho']. */
+
+/* ── Osnova ──────────────────────────────────────────────────────────── */
+[data-tema='soho'] {
+    --soho-traka: 32px;
+    --soho-red: 79px;
+    --soho-detalj: cubic-bezier(0.625, 0.05, 0, 1);
+    --soho-slika: 0.5s ease-in-out;
+}
+@media (max-width: 767.98px) {
+    [data-tema='soho'] { --soho-red: 63px; }
+}
+/* Bodoni Moda nema ćirilicu → ruska verzija ide na Playfair Display (ima kurziv). */
+[data-tema='soho'][lang^='ru'] {
+    --font-naslov: "Playfair Display", Georgia, serif;
+}
+[data-tema='soho'] body { font-size: 16px; line-height: 1.5; }
+[data-tema='soho'] .cip { border-radius: 0; }
+/* Prigušen tekst zajedničkih stranica (opacity-60 = 4.38:1 na krem) → .7 (≥ 6:1). */
+[data-tema='soho'] .opacity-60 { opacity: 0.7; }
+
+/* ── Naslovi: kurziv osnovno, {VERZAL} uspravno, ista veličina ─────────── */
+[data-tema='soho'] .naslov { letter-spacing: normal; }
+[data-tema='soho'] .naslov .akcenat { letter-spacing: normal; }
+[data-tema='soho'] .soho-naslov { text-wrap: wrap; }
+[data-tema='soho'] .soho-naslov-displej {
+    font-size: var(--displej-fs); line-height: var(--displej-lh); font-weight: var(--displej-fw, 400);
+}
+[data-tema='soho'] .soho-naslov-poziv { font-size: var(--poziv-fs); line-height: var(--poziv-lh); }
+
+/* Redovi izranjaju iz maske (svaka reč nosi --l = redni broj svog reda). */
+[data-tema='soho'] .soho-naslov .rec {
+    overflow: visible; padding-bottom: 0; margin-bottom: 0;
+    clip-path: inset(-0.6em -0.5em -0.26em -0.5em);
+}
+[data-tema='soho'].js .linije-anim .rec > span {
+    transform: translate3d(0, 118%, 0);
+    transition: transform var(--reveal-trajanje) var(--ease);
+    transition-delay: calc(var(--l, 0) * 0.1s + var(--kasnjenje, 0s));
+}
+[data-tema='soho'].js .linije-anim.vidljivo .rec > span { transform: none; }
+[data-tema='soho'].js .linije-anim.vidljivo .rec {
+    clip-path: inset(-1em);
+    transition: clip-path 0s linear calc(var(--reveal-trajanje) + var(--l, 0) * 0.1s + var(--kasnjenje, 0s));
+}
+
+/* Ostali blokovi koji se pojavljuju (podrazumevani Pojava) — blag pomak. */
+[data-tema='soho'].js .pojava:not(.vidljivo) { transform: translate3d(0, 24px, 0); }
+
+/* ── Nadnaslov sa crticom 24×1, otkriva se s leva na desno ─────────────── */
+[data-tema='soho'] .soho-oznaka { display: block; width: fit-content; line-height: 14px; }
+[data-tema='soho'] .soho-oznaka-tekst { display: block; }
+[data-tema='soho'] .soho-oznaka-tekst::after {
+    content: ''; display: block; width: 24px; height: 1px; margin-top: 10px; background: currentColor;
+}
+[data-tema='soho'] .soho-oznaka--centar { margin-inline: auto; text-align: center; }
+[data-tema='soho'] .soho-oznaka--centar .soho-oznaka-tekst::after { margin-inline: auto; }
+/* Maska je na unutrašnjem elementu: IntersectionObserver ne vidi element sa clip-path inset(0 100%…). */
+[data-tema='soho'].js .soho-oznaka:not(.soho-oznaka--odmah) .soho-oznaka-tekst {
+    clip-path: inset(0 100% -2px 0); transition: clip-path var(--reveal-trajanje) var(--ease);
+}
+[data-tema='soho'].js .soho-oznaka.vidljivo .soho-oznaka-tekst { clip-path: inset(0 0 -2px 0); }
+[data-tema='soho'].js .soho-oznaka--odmah .soho-oznaka-tekst { animation: soho-oznaka var(--reveal-trajanje) var(--ease) 0.05s both; }
+@keyframes soho-oznaka { from { clip-path: inset(0 100% -2px 0); } to { clip-path: inset(0 0 -2px 0); } }
+[data-tema='soho'] .soho-oznaka + .soho-naslov { margin-top: 28px; }
+
+/* ── Dugmad: krem, okvir tinte, puni se tintom (.3s ease) ──────────────── */
+[data-tema='soho'] .dugme {
+    padding: 11.2px 21px; min-height: 48px; gap: 0.5rem;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+[data-tema='soho'] .dugme.dugme-primarno,
+[data-tema='soho'] .dugme.dugme-sekundarno {
+    background: rgb(var(--c-paper)); color: rgb(var(--c-ink)); border: 1px solid rgb(var(--c-ink));
+}
+[data-tema='soho'] .dugme.dugme-primarno:hover:not(:disabled),
+[data-tema='soho'] .dugme.dugme-sekundarno:hover:not(:disabled) {
+    background: rgb(var(--c-ink)); color: rgb(var(--c-paper)); border-color: rgb(var(--c-ink));
+}
+[data-tema='soho'] .dugme.dugme-foto,
+[data-tema='soho'] .dugme.dugme-foto-obris {
+    background: transparent; color: rgb(var(--c-paper)); border: 1px solid rgb(var(--c-paper));
+}
+[data-tema='soho'] .dugme.dugme-foto:hover,
+[data-tema='soho'] .dugme.dugme-foto-obris:hover { background: rgb(var(--c-paper)); color: rgb(var(--c-ink)); }
+
+/* ── Linkovi ─────────────────────────────────────────────────────────── */
+[data-tema='soho'][data-link] .link-nav::after { bottom: -5px; transform-origin: left center; }
+[data-tema='soho'] .soho-tekst-link {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: var(--font-tekst); font-size: var(--heroLink-fs); line-height: var(--heroLink-lh);
+    text-transform: uppercase; letter-spacing: normal;
+}
+[data-tema='soho'] .soho-tekst-link svg,
+[data-tema='soho'] .soho-strelice svg { transition: transform 0.2s var(--soho-detalj); }
+[data-tema='soho'] .soho-tekst-link:hover svg { transform: translateX(4px); }
+[data-tema='soho'] .soho-linija { display: block; height: 1px; margin: 0; border: 0; background: rgb(var(--c-linija)); }
+
+/* ── Header ──────────────────────────────────────────────────────────── */
+[data-tema='soho'] .soho-header {
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    transition: transform var(--t-srednje) var(--ease), color var(--t-srednje) var(--ease);
+}
+[data-tema='soho'] .soho-traka {
+    display: flex; align-items: center; justify-content: center; gap: 22px;
+    height: var(--soho-traka); padding-inline: var(--gutter);
+    background: rgb(var(--c-akcenat)); color: rgb(var(--c-ink));
+    font-family: var(--font-tekst); font-size: var(--traka-fs); font-weight: var(--traka-fw); letter-spacing: var(--traka-ls);
+    line-height: 1; text-transform: uppercase; white-space: nowrap;
+}
+[data-tema='soho'] .soho-traka a { transition: opacity 0.3s ease; }
+[data-tema='soho'] .soho-traka a:hover { opacity: 0.55; }
+[data-tema='soho'] .soho-traka-crta { width: 1px; height: 14px; background: currentColor; }
+@media (max-width: 767.98px) {
+    [data-tema='soho'] .soho-traka { justify-content: space-between; gap: 8px; padding-inline: 16px; }
+    [data-tema='soho'] .soho-traka-crta { display: none; }
+}
+[data-tema='soho'] .soho-header-red {
+    display: flex; align-items: center; gap: 24px;
+    height: var(--soho-red); padding-inline: var(--gutter);
+    border-bottom: 1px solid;
+    transition: background-color var(--t-srednje) var(--ease), border-color var(--t-srednje) var(--ease);
+}
+[data-tema='soho'] .soho-header--providan { color: rgb(var(--c-paper)); }
+[data-tema='soho'] .soho-header--providan .soho-header-red { background: transparent; border-color: rgb(var(--c-paper)); }
+[data-tema='soho'] .soho-header--pun { color: rgb(var(--c-ink)); }
+[data-tema='soho'] .soho-header--pun .soho-header-red { background: rgb(var(--c-paper)); border-color: rgb(var(--c-ink)); }
+@media (min-width: 768px) {
+    [data-tema='soho'] .soho-header--skrol:not(.soho-header--meni) { transform: translate3d(0, calc(var(--soho-traka) * -1), 0); }
+}
+
+[data-tema='soho'] .soho-logo {
+    display: inline-flex; align-items: center; margin-right: auto; white-space: nowrap;
+    font-family: var(--logo-ff); font-size: var(--logo-fs); letter-spacing: var(--logo-ls); line-height: 1; text-transform: uppercase;
+}
+[data-tema='soho'] .soho-logo img { width: auto; height: 38px; }
+
+[data-tema='soho'] .soho-hamburger {
+    position: relative; order: 3; display: inline-flex; width: 44px; height: 44px; margin-right: -8px;
+}
+[data-tema='soho'] .soho-hamburger span {
+    position: absolute; left: 8px; top: 50%; width: 28px; height: 1px; background: currentColor;
+    transition: transform var(--t-srednje) var(--ease);
+}
+[data-tema='soho'] .soho-hamburger span:first-child { transform: translateY(-3px); }
+[data-tema='soho'] .soho-hamburger span:last-child { transform: translateY(3px); }
+[data-tema='soho'] .soho-hamburger.otvoren span:first-child { transform: rotate(45deg); }
+[data-tema='soho'] .soho-hamburger.otvoren span:last-child { transform: rotate(-45deg); }
+
+[data-tema='soho'] .soho-nav { display: none; }
+[data-tema='soho'] .soho-nav-lista { gap: 24px; }
+[data-tema='soho'] .soho-nav-link { display: inline-flex; align-items: center; white-space: nowrap; }
+[data-tema='soho'] .soho-nav-crta { width: 1px; height: 16px; margin-inline: 4px; background: currentColor; }
+[data-tema='soho'] .soho-jezici a,
+[data-tema='soho'] .soho-meni-dno a,
+[data-tema='soho'] .soho-footer-jezici a { opacity: 0.75; text-decoration: none; }
+[data-tema='soho'] .soho-jezici a[aria-current],
+[data-tema='soho'] .soho-meni-dno a[aria-current],
+[data-tema='soho'] .soho-footer-jezici a[aria-current] { opacity: 1; text-decoration: underline; text-underline-offset: 5px; }
+[data-tema='soho'] .soho-jezici a:hover,
+[data-tema='soho'] .soho-footer-jezici a:hover { opacity: 1; }
+@media (min-width: 1280px) {
+    [data-tema='soho'] .soho-nav { display: flex; align-items: center; gap: 24px; }
+    [data-tema='soho'] .soho-hamburger { display: none; }
+}
+
+/* „Zakaži” sa padajućim menijem */
+[data-tema='soho'] .soho-zakazi { position: relative; display: flex; align-items: center; gap: 2px; }
+[data-tema='soho'] .soho-zakazi-chevron { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 32px; }
+[data-tema='soho'] .soho-zakazi-chevron svg { transition: transform var(--t-srednje) var(--ease); }
+[data-tema='soho'] .soho-zakazi.otvoren .soho-zakazi-chevron svg { transform: rotate(180deg); }
+[data-tema='soho'] .soho-padajuci {
+    position: absolute; top: calc(100% + 23px); right: 0; min-width: 280px; margin: 0; padding: 8px 0; list-style: none;
+    background: rgb(var(--c-paper)); color: rgb(var(--c-ink)); border: 1px solid rgb(var(--c-ink));
+    opacity: 0; visibility: hidden;
+    transition: opacity var(--t-srednje) var(--ease), visibility 0s linear var(--t-srednje);
+}
+[data-tema='soho'] .soho-padajuci::before { content: ''; position: absolute; left: 0; right: 0; top: -25px; height: 25px; }
+[data-tema='soho'] .soho-zakazi.otvoren .soho-padajuci { opacity: 1; visibility: visible; transition: opacity var(--t-srednje) var(--ease), visibility 0s; }
+[data-tema='soho'] .soho-padajuci li { transform: translate3d(0, 10px, 0); transition: transform var(--t-srednje) var(--ease) calc(var(--i) * 45ms); }
+[data-tema='soho'] .soho-zakazi.otvoren .soho-padajuci li { transform: none; }
+[data-tema='soho'] .soho-padajuci-link {
+    display: block; padding: 12px 20px; font-size: 14px; line-height: 1.3; letter-spacing: 0.1em; text-transform: uppercase;
+    transition: background-color 0.3s ease;
+}
+[data-tema='soho'] .soho-padajuci-link:hover { background: rgb(var(--c-akcenat) / 0.5); }
+
+/* Mobilni meni: redovi 53px, linije od ivice do ivice rastu s leva */
+[data-tema='soho'] .soho-meni {
+    position: fixed; inset: calc(var(--soho-traka) + var(--soho-red)) 0 0 0; z-index: 45;
+    overflow-y: auto; padding-top: 64px; padding-bottom: 40px;
+    background: rgb(var(--c-paper)); color: rgb(var(--c-ink));
+    opacity: 0; visibility: hidden; clip-path: inset(0 0 100% 0);
+    transition: clip-path var(--t-srednje) var(--ease) 0.1s, opacity 0.2s var(--ease) 0.1s, visibility 0s linear 0.55s;
+}
+[data-tema='soho'] .soho-meni.otvoren {
+    opacity: 1; visibility: visible; clip-path: inset(0);
+    transition: clip-path var(--t-srednje) var(--ease) 0.1s, opacity 0.2s var(--ease) 0.1s, visibility 0s;
+}
+@media (min-width: 1280px) { [data-tema='soho'] .soho-meni { display: none; } }
+[data-tema='soho'] .soho-meni-lista { margin: 0; padding: 0; list-style: none; }
+[data-tema='soho'] .soho-meni-lista > li { position: relative; }
+[data-tema='soho'] .soho-meni-lista > li + li::before {
+    content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: rgb(var(--c-ink));
+    transform: scaleX(0); transform-origin: left center;
+    transition: transform var(--t-srednje) var(--ease) calc(var(--i) * 45ms + 0.25s);
+}
+[data-tema='soho'] .soho-meni.otvoren .soho-meni-lista > li + li::before { transform: scaleX(1); }
+[data-tema='soho'] .soho-meni-link {
+    display: flex; flex: 1; align-items: center; min-height: 53px; padding-inline: var(--gutter);
+    font-family: var(--font-tekst); font-size: var(--meni-fs); line-height: var(--meni-lh); letter-spacing: var(--meni-ls); text-transform: uppercase;
+}
+[data-tema='soho'] .soho-meni-lista > li > a,
+[data-tema='soho'] .soho-meni-red,
+[data-tema='soho'] .soho-meni-dno {
+    opacity: 0; transform: translate3d(0, 12px, 0);
+    transition: opacity var(--t-srednje) var(--ease), transform var(--t-srednje) var(--ease);
+    transition-delay: calc(var(--i) * 45ms + 0.1s);
+}
+[data-tema='soho'] .soho-meni.otvoren .soho-meni-lista > li > a,
+[data-tema='soho'] .soho-meni.otvoren .soho-meni-red,
+[data-tema='soho'] .soho-meni.otvoren .soho-meni-dno { opacity: 1; transform: none; }
+[data-tema='soho'] .soho-meni-link[aria-current='page'] { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
+[data-tema='soho'] .soho-meni-red { display: flex; align-items: center; }
+[data-tema='soho'] .soho-meni-chevron { display: inline-flex; align-items: center; justify-content: center; width: 53px; height: 53px; margin-right: calc(var(--gutter) - 16px); }
+[data-tema='soho'] .soho-meni-chevron svg { transition: transform var(--t-srednje) var(--ease); }
+[data-tema='soho'] .soho-meni-chevron.otvoren svg { transform: rotate(180deg); }
+[data-tema='soho'] .soho-meni-pod { max-height: 0; margin: 0; padding: 0; overflow: hidden; list-style: none; transition: max-height var(--t-srednje) var(--ease); }
+[data-tema='soho'] .soho-meni-pod.otvoren { max-height: 320px; }
+[data-tema='soho'] .soho-meni-pod-link {
+    display: block; padding: 12px var(--gutter) 12px calc(var(--gutter) + 16px);
+    font-size: 14px; line-height: 1.4; letter-spacing: 0.1em; text-transform: uppercase;
+}
+[data-tema='soho'] .soho-meni-dno { padding: 40px var(--gutter) 0; }
+
+/* Zavesa pri promeni stranice */
+[data-tema='soho'] .soho-zavesa {
+    position: fixed; inset: 0; z-index: 90; pointer-events: none; background: rgb(var(--c-ink));
+    animation: soho-zavesa var(--prelaz-trajanje, 0.5s) cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s both;
+}
+@keyframes soho-zavesa { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(100%, 0, 0); } }
+
+/* ── Hero ────────────────────────────────────────────────────────────── */
+[data-tema='soho'] .soho-hero {
+    position: relative; display: flex; align-items: flex-end; min-height: 100svh; overflow: hidden;
+    background: rgb(var(--c-tamna)); color: rgb(var(--c-paper));
+}
+[data-tema='soho'] .soho-hero-foto { position: absolute; inset: 0; border-radius: 0; }
+[data-tema='soho'] .soho-hero-veo {
+    position: absolute; inset: 0; z-index: 1;
+    background:
+        linear-gradient(to bottom, rgb(0 0 0 / 0.4), rgb(0 0 0 / 0) 240px),
+        linear-gradient(to top, rgb(0 0 0 / 0.45), rgb(0 0 0 / 0.2) 55%, rgb(0 0 0 / 0) 75%),
+        linear-gradient(to right, rgb(0 0 0 / 0.3), rgb(0 0 0 / 0) 70%),
+        rgb(0 0 0 / 0.35);
+}
+[data-tema='soho'] .soho-hero-sadrzaj { position: relative; z-index: 2; padding-top: 180px; padding-bottom: 56px; }
+[data-tema='soho'] .soho-hero .soho-oznaka + .soho-naslov { margin-top: 44px; }
+[data-tema='soho'] .soho-hero-linkovi { position: relative; z-index: 1; display: flex; flex-wrap: wrap; gap: 16px 56px; margin-top: -6px; }
+@media (max-width: 767.98px) {
+    [data-tema='soho'] .soho-hero-sadrzaj { padding-top: 140px; padding-bottom: 52px; }
+    [data-tema='soho'] .soho-hero .soho-oznaka + .soho-naslov { margin-top: 28px; }
+    [data-tema='soho'] .soho-hero-linkovi { flex-direction: column; gap: 16px; margin-top: 8px; }
+}
+
+/* ── Sekcije: ritam i linije ─────────────────────────────────────────── */
+[data-tema='soho'] .soho-sekcija { padding-top: var(--sekcija-py); padding-bottom: calc(var(--sekcija-py) * 0.4); }
+[data-tema='soho'] .soho-galerija,
+[data-tema='soho'] .soho-tim,
+[data-tema='soho'] .soho-recenzije { padding-bottom: 0; }
+[data-tema='soho'] .soho-linija--sekcija { margin-top: var(--sekcija-py); }
+
+/* Uvod */
+[data-tema='soho'] .soho-dve-kolone { display: grid; gap: 28px; }
+[data-tema='soho'] .soho-uvod-dugme { margin-top: 24px; }
+[data-tema='soho'] .soho-ploce { display: grid; gap: 16px; margin-top: 64px; }
+@media (min-width: 768px) {
+    [data-tema='soho'] .soho-dve-kolone { grid-template-columns: 1fr 1fr; gap: 16px; }
+    [data-tema='soho'] .soho-dve-kolone > div { padding-left: 4px; }
+    [data-tema='soho'] .soho-ploce { grid-template-columns: 1fr 1fr; }
+}
+
+/* Pločice: veo .35 → .7, slika 1.06, strelica prolazi kroz masku */
+[data-tema='soho'] .soho-ploca { position: relative; display: block; overflow: hidden; aspect-ratio: 664 / 531; color: rgb(var(--c-paper)); }
+@media (max-width: 767.98px) { [data-tema='soho'] .soho-ploca { aspect-ratio: 350 / 384; } }
+[data-tema='soho'] .soho-ploca-foto { position: absolute; inset: 0; }
+[data-tema='soho'] .soho-ploca .foto { transition: transform var(--soho-slika); }
+[data-tema='soho'] .soho-ploca:hover .foto,
+[data-tema='soho'] .soho-ploca:focus-visible .foto { transform: scale(var(--hover-slika)); }
+[data-tema='soho'] .soho-ploca-veo { position: absolute; inset: 0; background: rgb(0 0 0 / 0.38); transition: background-color var(--soho-slika); }
+[data-tema='soho'] .soho-ploca:hover .soho-ploca-veo,
+[data-tema='soho'] .soho-ploca:focus-visible .soho-ploca-veo { background: rgb(0 0 0 / 0.7); }
+[data-tema='soho'] .soho-ploca-sadrzaj {
+    position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px; padding: 24px; text-align: center;
+}
+[data-tema='soho'] .soho-ploca-strelica { position: relative; display: block; width: 60px; height: 14px; overflow: hidden; }
+[data-tema='soho'] .soho-ploca-strelica svg { position: absolute; left: 0; top: 0; transition: transform var(--soho-slika); }
+[data-tema='soho'] .soho-ploca-strelica svg:last-child { transform: translateX(-100%); }
+[data-tema='soho'] .soho-ploca:hover .soho-ploca-strelica svg:first-child { transform: translateX(100%); }
+[data-tema='soho'] .soho-ploca:hover .soho-ploca-strelica svg:last-child { transform: translateX(0); }
+
+/* Usluge: ogromni redovi */
+[data-tema='soho'] .soho-usluge-lista { margin: 0; padding: 0; list-style: none; }
+[data-tema='soho'] .soho-usluga-red { border-bottom: 1px solid rgb(var(--c-linija)); }
+[data-tema='soho'] .soho-usluga { position: relative; display: block; padding: 76px 0 28px; }
+[data-tema='soho'] .soho-usluga-red:first-child .soho-usluga { padding-top: 56px; }
+[data-tema='soho'] .soho-usluga-broj { position: absolute; left: 0; top: 76px; font-size: 16px; line-height: 1; }
+[data-tema='soho'] .soho-usluga-red:first-child .soho-usluga-broj { top: 56px; }
+[data-tema='soho'] .soho-usluga-naslov { position: relative; z-index: 2; padding-left: 36px; }
+[data-tema='soho'] .soho-usluga-slika {
+    position: absolute; z-index: 1; left: var(--mx, 70%); top: var(--my, 50%); width: 300px; pointer-events: none;
+    opacity: 0; transform: translate(-50%, -50%) scale(0.9);
+    transition: opacity var(--t-srednje) var(--ease), transform var(--t-srednje) var(--ease);
+}
+[data-tema='soho'] .soho-usluga-foto { aspect-ratio: 0.76; }
+[data-tema='soho'] .soho-usluga:hover .soho-usluga-slika { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+@media (max-width: 1023.98px) {
+    [data-tema='soho'] .soho-usluga, [data-tema='soho'] .soho-usluga-red:first-child .soho-usluga { padding: 40px 0 32px; }
+    [data-tema='soho'] .soho-usluga-broj, [data-tema='soho'] .soho-usluga-red:first-child .soho-usluga-broj { position: static; display: block; margin-bottom: 20px; }
+    [data-tema='soho'] .soho-usluga-naslov { padding-left: 0; }
+    [data-tema='soho'] .soho-usluga-slika,
+    [data-tema='soho'] .soho-usluga:hover .soho-usluga-slika { position: static; display: block; width: 100%; margin-top: 12px; opacity: 1; transform: none; }
+    [data-tema='soho'] .soho-usluga-foto { aspect-ratio: 350 / 416; }
+}
+
+/* Slajderi (galerija, tim) */
+[data-tema='soho'] .soho-red-strelica { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
+[data-tema='soho'] .soho-strelice { display: flex; gap: 32px; }
+[data-tema='soho'] .soho-strelice button { display: inline-flex; padding: 10px 0; color: inherit; transition: opacity 0.3s ease; }
+[data-tema='soho'] .soho-strelice button:disabled { opacity: 0.3; cursor: default; }
+[data-tema='soho'] .soho-strelice button:not(:disabled):hover svg { transform: translateX(4px); }
+[data-tema='soho'] .soho-strelice button:first-child:not(:disabled):hover svg { transform: scaleX(-1) translateX(4px); }
+[data-tema='soho'] .soho-strelice--levo { margin: 64px 0 32px; }
+[data-tema='soho'] .soho-slajder {
+    position: relative; display: flex; gap: 16px; overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory; padding-inline: var(--gutter); scroll-padding-inline: var(--gutter);
+}
+[data-tema='soho'] .soho-slajd { flex: none; display: block; height: 560px; aspect-ratio: 423 / 560; overflow: hidden; scroll-snap-align: start; }
+[data-tema='soho'] .soho-slajd--sirok { aspect-ratio: 763 / 560; }
+[data-tema='soho'] .soho-slajd-foto { width: 100%; height: 100%; }
+[data-tema='soho'] .soho-slajd .foto,
+[data-tema='soho'] .soho-instagram-slika .foto { transition: transform var(--soho-slika); }
+@media (max-width: 767.98px) {
+    [data-tema='soho'] .soho-slajd, [data-tema='soho'] .soho-slajd--sirok { width: calc(100vw - 72px); height: 463px; aspect-ratio: auto; }
+}
+
+/* Tim (kartice kao proizvodi na referenci) */
+[data-tema='soho'] .soho-tim-glava { display: grid; gap: 32px; }
+[data-tema='soho'] .soho-tim-tekst .dugme { margin-top: 24px; }
+@media (min-width: 1024px) {
+    [data-tema='soho'] .soho-tim-glava { grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
+    [data-tema='soho'] .soho-tim-glava > :first-child { grid-column: 1 / span 6; }
+    [data-tema='soho'] .soho-tim-tekst { grid-column: 9 / span 4; padding-top: 50px; }
+}
+[data-tema='soho'] .soho-kartica { flex: none; display: block; width: 400px; scroll-snap-align: start; }
+@media (max-width: 767.98px) { [data-tema='soho'] .soho-kartica { width: calc(100vw - 72px); } }
+[data-tema='soho'] .soho-kartica-foto { position: relative; display: block; aspect-ratio: 400 / 560; overflow: hidden; background: rgb(var(--c-mist)); }
+[data-tema='soho'] .soho-kartica-okvir { position: absolute; inset: 0; }
+[data-tema='soho'] .soho-kartica .foto { transition: transform var(--soho-slika); }
+[data-tema='soho'] .soho-kartica:hover .foto { transform: scale(var(--hover-slika)); }
+[data-tema='soho'] .soho-kartica-sloj {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: rgb(0 0 0 / 0.45); color: rgb(var(--c-paper));
+    font-family: var(--font-naslov); font-style: italic; font-size: 25px; line-height: 25px;
+    opacity: 0; transition: opacity var(--t-srednje) var(--ease);
+}
+[data-tema='soho'] .soho-kartica:hover .soho-kartica-sloj,
+[data-tema='soho'] .soho-kartica:focus-visible .soho-kartica-sloj { opacity: 1; }
+[data-tema='soho'] .soho-kartica-ime { display: block; margin-top: 18px; font-family: var(--font-naslov); font-size: var(--kartica-fs); line-height: var(--kartica-lh); }
+[data-tema='soho'] .soho-kartica-uloga { display: block; margin-top: 4px; font-size: 16px; line-height: 24px; }
+
+/* Split */
+[data-tema='soho'] .soho-split-mreza { display: grid; gap: 40px; }
+[data-tema='soho'] .soho-split-foto { aspect-ratio: 350 / 416; }
+[data-tema='soho'] .soho-split-tekst .dugme { margin-top: 48px; }
+@media (min-width: 768px) {
+    [data-tema='soho'] .soho-split-mreza { grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+    [data-tema='soho'] .soho-split-foto { aspect-ratio: 656 / 768; }
+    [data-tema='soho'] .soho-split-tekst { padding: 36px 0 0 56px; }
+    [data-tema='soho'] .soho-split--ogledalo .soho-split-slika { order: 2; }
+    [data-tema='soho'] .soho-split--ogledalo .soho-split-tekst { padding: 96px 96px 0 0; }
+    [data-tema='soho'] .soho-split-tekst .dugme { margin-top: 56px; }
+}
+[data-tema='soho'] .soho-lista { margin: 28px 0 0; padding: 0; list-style: none; border-top: 1px solid rgb(var(--c-linija)); }
+[data-tema='soho'] .soho-lista li { display: flex; align-items: center; gap: 22px; min-height: 57px; padding: 12px 0; font-size: 16px; line-height: 24px; }
+[data-tema='soho'] .soho-lista li + li { border-top: 1px solid rgb(var(--c-linija)); }
+[data-tema='soho'] .soho-lista-broj { min-width: 18px; font-family: var(--font-naslov); font-style: italic; font-size: 16px; }
+
+/* Recenzije: citati sa linijama */
+[data-tema='soho'] .soho-recenzije { padding-top: calc(var(--sekcija-py) * 1.6); }
+[data-tema='soho'] .soho-recenzije-mreza { display: grid; gap: 32px; }
+@media (min-width: 1024px) { [data-tema='soho'] .soho-recenzije-mreza { grid-template-columns: 7fr 5fr; gap: 16px; } }
+[data-tema='soho'] .soho-citat { margin: 0; padding: 24px 0; }
+[data-tema='soho'] .soho-citat:first-child { padding-top: 18px; }
+[data-tema='soho'] .soho-citat + .soho-citat { border-top: 1px solid rgb(var(--c-linija)); }
+[data-tema='soho'] .soho-citat blockquote { margin: 0; font-size: var(--citat-fs); line-height: var(--citat-lh); font-style: italic; }
+[data-tema='soho'] .soho-citat figcaption { margin-top: 12px; font-size: 14px; line-height: 1.4; }
+
+/* Profesionalne linije */
+[data-tema='soho'] .soho-brendovi { padding-bottom: var(--sekcija-py); }
+[data-tema='soho'] .soho-brendovi-mreza {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 16px; margin: 56px 0 0; padding: 0; list-style: none;
+}
+[data-tema='soho'] .soho-brendovi-mreza li {
+    display: flex; align-items: center; justify-content: center; min-height: 88px; text-align: center;
+    font-family: var(--font-naslov); font-size: 22px; line-height: 1.1;
+}
+[data-tema='soho'] .soho-brendovi-mreza .soho-brend--kurziv { font-style: italic; font-size: 26px; }
+[data-tema='soho'] .soho-brendovi-mreza .soho-brend--verzal { text-transform: uppercase; letter-spacing: 0.04em; }
+@media (max-width: 767.98px) {
+    [data-tema='soho'] .soho-brendovi-mreza li { min-height: 64px; font-size: 17px; }
+    [data-tema='soho'] .soho-brendovi-mreza .soho-brend--kurziv { font-size: 22px; }
+}
+@media (min-width: 768px) {
+    [data-tema='soho'] .soho-brendovi-mreza { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px 16px; }
+    [data-tema='soho'] .soho-brendovi-mreza li { font-size: 28px; }
+    [data-tema='soho'] .soho-brendovi-mreza .soho-brend--kurziv { font-size: 34px; }
+}
+
+/* Poziv preko fotografije */
+[data-tema='soho'] .soho-poziv {
+    position: relative; display: flex; align-items: center; min-height: 700px; overflow: hidden;
+    background: rgb(var(--c-tamna)); color: rgb(var(--c-paper)); text-align: center;
+}
+[data-tema='soho'] .soho-poziv-foto { position: absolute; inset: 0; }
+[data-tema='soho'] .soho-poziv-veo { position: absolute; inset: 0; background: rgb(0 0 0 / 0.48); }
+[data-tema='soho'] .soho-poziv-sadrzaj { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; padding-block: 120px; }
+[data-tema='soho'] .soho-poziv .soho-oznaka + .soho-naslov { margin-top: 24px; }
+[data-tema='soho'] .soho-poziv-tekst { max-width: 480px; margin: 28px auto 0; font-size: 16px; line-height: 23px; font-weight: 500; }
+[data-tema='soho'] .soho-poziv-kontakt { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; margin: 12px 0 0; font-weight: 500; }
+[data-tema='soho'] .soho-poziv-kontakt a:hover { opacity: 0.55; }
+[data-tema='soho'] .soho-poziv .dugme { margin-top: 40px; }
+@media (max-width: 767.98px) {
+    [data-tema='soho'] .soho-poziv { min-height: 0; }
+    [data-tema='soho'] .soho-poziv-sadrzaj { padding-block: 96px; }
+    [data-tema='soho'] .soho-poziv-kontakt { flex-direction: column; }
+}
+
+/* Instagram */
+[data-tema='soho'] .soho-instagram { padding-top: 72px; padding-bottom: 64px; }
+[data-tema='soho'] .soho-instagram-naslov { font-size: var(--instagram-fs); line-height: var(--instagram-lh); font-style: italic; }
+[data-tema='soho'] .soho-instagram-naslov a:hover { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+[data-tema='soho'] .soho-instagram-mreza { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; margin-top: 44px; padding-inline: var(--gutter); }
+[data-tema='soho'] .soho-instagram-slika { display: block; overflow: hidden; }
+[data-tema='soho'] .soho-instagram-okvir { aspect-ratio: 1; }
+@media (max-width: 767.98px) {
+    [data-tema='soho'] .soho-instagram-mreza { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); }
+    [data-tema='soho'] .soho-instagram-slika { flex: none; width: 222px; scroll-snap-align: start; }
+}
+
+/* Monogram + marquee */
+[data-tema='soho'] .soho-monogram {
+    margin: 0; padding: 56px 0 60px; text-align: center;
+    font-family: var(--font-logo); font-size: 96px; line-height: 1; letter-spacing: 0.12em; text-indent: 0.12em;
+}
+@media (max-width: 767.98px) { [data-tema='soho'] .soho-monogram { padding: 48px 0; font-size: 72px; } }
+[data-tema='soho'] .soho-marquee { display: flex; align-items: center; height: 68px; overflow: hidden; border-top: 1px solid rgb(var(--c-linija)); }
+[data-tema='soho'] .soho-marquee-lista {
+    display: flex; flex: none; align-items: center; gap: 96px; margin: 0; padding: 0 96px 0 0; list-style: none;
+    font-family: var(--font-naslov); font-size: 24px; line-height: 1; white-space: nowrap;
+    animation: soho-marquee var(--marquee) linear infinite;
+}
+[data-tema='soho'] .soho-marquee-lista li:nth-child(odd) { font-style: italic; font-size: 28px; }
+[data-tema='soho'] .soho-marquee-lista li:nth-child(even) { text-transform: uppercase; letter-spacing: 0.04em; }
+@keyframes soho-marquee { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-100%, 0, 0); } }
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+[data-tema='soho'] .soho-footer {
+    margin-top: auto; padding: 88px 0 32px;
+    background: rgb(var(--c-tamna)); color: rgb(var(--c-paper));
+    font-size: var(--footer-fs); line-height: var(--footer-lh); font-weight: 500;
+}
+@media (max-width: 767.98px) { [data-tema='soho'] .soho-footer { padding-top: 64px; } }
+[data-tema='soho'] .soho-footer-vrh { display: flex; flex-direction: column; align-items: center; text-align: center; }
+[data-tema='soho'] .soho-footer .soho-footer-naslov {
+    font-size: var(--footerNaslov-fs); line-height: var(--footerNaslov-lh); font-style: normal; text-transform: uppercase;
+}
+[data-tema='soho'] .soho-footer-uvod { max-width: 540px; margin: 16px auto 0; font-size: 15px; line-height: 21px; }
+[data-tema='soho'] .soho-footer-forma { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; max-width: 450px; margin-top: 24px; }
+[data-tema='soho'] .soho-footer-polje {
+    display: flex; align-items: center; min-height: 48px; padding: 8px 12px; overflow: hidden;
+    border: 1px solid rgb(var(--c-paper)); font-size: 14px; line-height: 1.3; text-align: left; white-space: nowrap; text-overflow: ellipsis;
+    transition: background-color 0.3s ease;
+}
+[data-tema='soho'] .soho-footer-polje:hover { background: rgb(var(--c-hover-forma)); }
+@media (max-width: 479.98px) { [data-tema='soho'] .soho-footer-forma { grid-template-columns: 1fr; } }
+[data-tema='soho'] .soho-footer-polje--puno,
+[data-tema='soho'] .soho-footer-posalji { grid-column: 1 / -1; }
+[data-tema='soho'] .soho-footer-posalji {
+    display: flex; align-items: center; justify-content: center; min-height: 48px;
+    background: rgb(var(--c-paper)); color: rgb(var(--c-ink)); border: 1px solid rgb(var(--c-paper));
+    font-size: 14px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+[data-tema='soho'] .soho-footer-posalji:hover { background: rgb(var(--c-tamna)); color: rgb(var(--c-paper)); }
+[data-tema='soho'] .soho-footer-mreze { display: flex; justify-content: center; gap: 14px; margin: 22px 0 0; padding: 0; list-style: none; }
+[data-tema='soho'] .soho-footer-mreze a { display: inline-flex; padding: 10px; transition: opacity 0.3s ease; }
+[data-tema='soho'] .soho-footer-mreze a:hover { opacity: 0.4; }
+[data-tema='soho'] .soho-footer-kolone {
+    display: grid; gap: 48px; margin-top: 72px; padding: 56px 0; text-align: center;
+    border-top: 1px solid rgb(var(--c-paper)); border-bottom: 1px solid rgb(var(--c-paper));
+}
+@media (min-width: 640px) { [data-tema='soho'] .soho-footer-kolone { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { [data-tema='soho'] .soho-footer-kolone { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; } }
+[data-tema='soho'] .soho-footer-kolona-naslov {
+    margin: 0 0 24px; font-size: 14px; line-height: 1.4; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+}
+[data-tema='soho'] .soho-footer-kolona-naslov::after { content: ''; display: block; width: 24px; height: 1px; margin: 10px auto 0; background: currentColor; }
+[data-tema='soho'] .soho-footer-kolona p,
+[data-tema='soho'] .soho-footer-kolona address { margin: 0 0 10px; font-style: normal; }
+[data-tema='soho'] .soho-footer-vreme,
+[data-tema='soho'] .soho-footer-linkovi { margin: 0; padding: 0; list-style: none; }
+[data-tema='soho'] .soho-footer-linkovi li + li { margin-top: 14px; }
+[data-tema='soho'] .soho-footer-link { position: relative; display: inline; }
+[data-tema='soho'] .soho-footer-link::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px; background: currentColor;
+    transform: scaleX(0); transform-origin: left bottom; transition: transform var(--t-srednje) var(--ease);
+}
+[data-tema='soho'] .soho-footer-link:hover::after { transform: scaleX(1); }
+[data-tema='soho'] .soho-footer-podvuceno { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+[data-tema='soho'] .soho-footer-dno { display: grid; gap: 20px; padding-top: 28px; text-align: center; }
+[data-tema='soho'] .soho-footer-dno p { margin: 0; }
+[data-tema='soho'] .soho-footer-dno ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 24px; margin: 0; padding: 0; list-style: none; }
+[data-tema='soho'] .soho-footer-jezici ul { justify-content: center; }
+[data-tema='soho'] .soho-footer-firma { font-size: 12px; line-height: 1.5; font-weight: 400; opacity: 0.8; }
+@media (min-width: 1024px) {
+    [data-tema='soho'] .soho-footer-dno { grid-template-columns: 1fr auto 1fr; align-items: center; text-align: left; }
+    [data-tema='soho'] .soho-footer-jezici ul { justify-content: flex-end; }
+    [data-tema='soho'] .soho-footer-firma { grid-column: 1 / -1; text-align: center; }
+}
+
+/* ── Podstranice ─────────────────────────────────────────────────────── */
+[data-tema='soho'] .soho-zaglavlje { padding-top: calc(var(--header-h) + 72px); padding-bottom: 56px; }
+[data-tema='soho'] .soho-zaglavlje-mreza { display: grid; gap: 40px; }
+[data-tema='soho'] .soho-zaglavlje-uvod { max-width: 36rem; margin: 24px 0 0; }
+[data-tema='soho'] .soho-zaglavlje-foto { aspect-ratio: 4 / 3; }
+@media (min-width: 1024px) { [data-tema='soho'] .soho-zaglavlje--slika { grid-template-columns: 7fr 5fr; align-items: end; gap: 16px; } }
+@media (max-width: 767.98px) { [data-tema='soho'] .soho-zaglavlje { padding-top: calc(var(--header-h) + 40px); padding-bottom: 40px; } }
+/* Lepljive trake podstranica (76px u zajedničkom kodu) ispod našeg headera */
+[data-tema='soho'] .sticky.top-\[76px\] { top: calc(var(--soho-traka) + var(--soho-red)); }
+@media (min-width: 768px) { [data-tema='soho'] .sticky.top-\[76px\] { top: var(--soho-red); } }
+[data-tema='soho'] main > .kontejner.pt-\[92px\] { padding-top: calc(var(--header-h) + 32px); }
+/* Zakazivanje: bez zaobljenja (segmentni izbor, kvadratići), krugovi avatara ostaju */
+[data-tema='soho'] main [role='group'].rounded-full,
+[data-tema='soho'] main [role='group'] > button.rounded-full,
+[data-tema='soho'] main .rounded-md { border-radius: 0; }
+
+/* ── Bez pokreta ─────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    [data-tema='soho'].js .linije-anim .rec > span { transform: none !important; transition: none !important; }
+    [data-tema='soho'] .soho-naslov .rec { clip-path: none !important; }
+    [data-tema='soho'].js .soho-oznaka .soho-oznaka-tekst { clip-path: none !important; animation: none !important; }
+    [data-tema='soho'] .soho-zavesa { display: none; }
+    [data-tema='soho'] .soho-marquee-lista { animation: none !important; }
+}
+
+/* Logotipi brendova (slike sa linkovima): mreža i traka */
+[data-tema='soho'] .soho-brend { --logo-brenda-h: 48px; --logo-brenda-max: 170px; display: flex; align-items: center; justify-content: center; }
+[data-tema='soho'] .soho-marquee-lista li { --logo-brenda-h: 32px; --logo-brenda-max: 150px; }
+@media (max-width: 767.98px) { [data-tema='soho'] .soho-brend { --logo-brenda-h: 36px; } [data-tema='soho'] .soho-marquee-lista li { --logo-brenda-h: 26px; } }
+
+/* Kartice plaćanja u centriranom footeru */
+[data-tema='soho'] .placanje-footer { --placanje-poravnanje: center; display: flex; justify-content: center; }
+[data-tema='soho'] .placanje-footer { flex-basis: 100%; width: 100%; }

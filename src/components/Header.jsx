@@ -7,7 +7,8 @@ import { javno } from '../lib/baza.js';
 import { Dugme, cx } from './primitivi.jsx';
 import { IzborJezika, KontaktDugmad, Mreze, StatusOtvoreno } from './delovi.jsx';
 
-const STAVKE = ['cenovnik', 'tim', 'galerija', 'oNama', 'kontakt'];
+export const STAVKE = ['cenovnik', 'tim', 'galerija', 'oNama', 'kontakt'];
+export const STAVKE_MENIJA = ['pocetna', ...STAVKE, 'pitanja'];
 export const HEROJ_ISPOD_HEADERA = ['puna-levo', 'puna-centar'];
 
 /** Link „Zakaži”: na stranicu zakazivanja, ili na spoljni sistem kad je nacin 'link'. */
@@ -44,15 +45,15 @@ export const Logo = ({ veliki = false, className }) => {
     );
 };
 
-const NavLinkovi = ({ className, onKlik }) => {
+export const NavLinkovi = ({ className, onKlik, stavke = STAVKE, klasaLinka = 'link-nav nadnaslov inline-flex min-h-[2.5rem] items-center whitespace-nowrap' }) => {
     const { t, p } = useSajt();
     const { pathname } = useLocation();
     const aktivna = kljucIzPutanje(pathname);
     return (
         <ul className={cx('grupa-linkova m-0 flex list-none items-center p-0', className)}>
-            {STAVKE.map((k) => (
+            {stavke.map((k) => (
                 <li key={k}>
-                    <Link to={p(k)} onClick={onKlik} aria-current={aktivna === k ? 'page' : undefined} className="link-nav nadnaslov inline-flex min-h-[2.5rem] items-center whitespace-nowrap">
+                    <Link to={p(k)} onClick={onKlik} aria-current={aktivna === k ? 'page' : undefined} className={klasaLinka}>
                         {t.nav[k]}
                     </Link>
                 </li>
@@ -61,31 +62,120 @@ const NavLinkovi = ({ className, onKlik }) => {
     );
 };
 
-export default function Header() {
-    const { t, tema, p } = useSajt();
-    const { pathname } = useLocation();
-    const [skrolovano, setSkrolovano] = useState(false);
-    const [otvoren, setOtvoren] = useState(false);
-    const dugmeRef = useRef(null);
-    const zakazi = useZakaziLink();
-    const kljuc = kljucIzPutanje(pathname);
-
+/**
+ * Stanje skrola za header: `skrolovano` (posle praga), `smer` ('gore'|'dole')
+ * i `sakrij` — true kad se skroluje nadole posle `pragSakrivanja` (za headere
+ * koji se sklanjaju pri skrolu nadole i vraćaju pri skrolu nagore).
+ */
+export const useSkrol = ({ prag = 30, pragSakrivanja = 400 } = {}) => {
+    const [stanje, setStanje] = useState({ skrolovano: false, smer: 'gore', sakrij: false, y: 0 });
     useEffect(() => {
-        const naSkrol = () => setSkrolovano(window.scrollY > 30);
-        naSkrol();
+        let pre = window.scrollY;
+        let ceka = false;
+        const izracunaj = () => {
+            ceka = false;
+            const y = window.scrollY;
+            const smer = y > pre + 2 ? 'dole' : y < pre - 2 ? 'gore' : null;
+            pre = y;
+            setStanje((s) => {
+                const nSmer = smer ?? s.smer;
+                const n = { skrolovano: y > prag, smer: nSmer, sakrij: nSmer === 'dole' && y > pragSakrivanja, y };
+                return n.skrolovano === s.skrolovano && n.smer === s.smer && n.sakrij === s.sakrij ? s : n;
+            });
+        };
+        const naSkrol = () => { if (!ceka) { ceka = true; requestAnimationFrame(izracunaj); } };
+        izracunaj();
         window.addEventListener('scroll', naSkrol, { passive: true });
         return () => window.removeEventListener('scroll', naSkrol);
-    }, []);
+    }, [prag, pragSakrivanja]);
+    return stanje;
+};
 
+/** Otvaranje menija: zatvara se pri promeni stranice i na Esc, zaključava skrol stranice. */
+export const useMeni = () => {
+    const { pathname } = useLocation();
+    const [otvoren, setOtvoren] = useState(false);
+    const dugmeRef = useRef(null);
     useEffect(() => { setOtvoren(false); }, [pathname]);
-
     useEffect(() => {
         document.documentElement.classList.toggle('bez-skrola', otvoren);
+        // Glatki skrol (Lenis) ne sme da pomera stranicu ispod otvorenog menija.
+        if (otvoren) window.__lenis?.stop(); else window.__lenis?.start();
         if (!otvoren) return undefined;
         const esc = (e) => { if (e.key === 'Escape') { setOtvoren(false); dugmeRef.current?.focus(); } };
         window.addEventListener('keydown', esc);
-        return () => window.removeEventListener('keydown', esc);
+        return () => { window.removeEventListener('keydown', esc); document.documentElement.classList.remove('bez-skrola'); };
     }, [otvoren]);
+    return { otvoren, setOtvoren, prebaci: () => setOtvoren((o) => !o), dugmeRef };
+};
+
+/** Dugme menija (hamburger / X) — vezano za useMeni(). */
+export const DugmeMenija = ({ meni, className, ikonaOtvori, ikonaZatvori, kontrolise = 'mobilni-meni' }) => {
+    const { t } = useSajt();
+    return (
+        <button
+            ref={meni.dugmeRef}
+            type="button"
+            className={cx('inline-flex h-11 w-11 items-center justify-center', className)}
+            aria-expanded={meni.otvoren}
+            aria-controls={kontrolise}
+            aria-label={meni.otvoren ? t.nav.zatvori : t.nav.meni}
+            onClick={meni.prebaci}
+        >
+            {meni.otvoren ? (ikonaZatvori ?? <X size={24} strokeWidth={1.5} />) : (ikonaOtvori ?? <Menu size={24} strokeWidth={1.5} />)}
+        </button>
+    );
+};
+
+/**
+ * Podrazumevani mobilni meni preko celog ekrana; stavke ulaze kaskadno.
+ * `className` menja izgled panela, `klasaLinka` izgled stavki.
+ */
+export const MobilniMeni = ({ meni, className, klasaLinka = 'naslov naslov-2 block py-1.5', dodatak = true, id = 'mobilni-meni' }) => {
+    const { t, p } = useSajt();
+    const zakazi = useZakaziLink();
+    return (
+        <div
+            id={id}
+            className={cx('fixed inset-0 z-40 flex flex-col bg-paper text-ink transition-opacity', meni.otvoren ? 'meni-otvoren opacity-100' : 'pointer-events-none opacity-0', className)}
+            style={{ transitionDuration: 'var(--t-srednje)' }}
+            aria-hidden={!meni.otvoren}
+            inert={!meni.otvoren ? '' : undefined}
+        >
+            <div className="flex flex-1 flex-col overflow-y-auto px-6 pb-10 pt-28">
+                <nav aria-label={t.nav.meni}>
+                    <ul className="m-0 list-none space-y-1 p-0">
+                        {STAVKE_MENIJA.map((k, i) => (
+                            <li key={k} className="meni-stavka" style={{ '--i': i }}>
+                                <Link to={p(k)} className={klasaLinka}>{t.nav[k]}</Link>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+                {dodatak && (
+                    <div className="meni-stavka mt-10 space-y-6" style={{ '--i': 8 }}>
+                        <Dugme {...zakazi} className="w-full">{t.nav.zakazi}</Dugme>
+                        <StatusOtvoreno className="nadnaslov" />
+                        <KontaktDugmad />
+                        <div className="flex items-center justify-between">
+                            <IzborJezika puno />
+                            <Mreze />
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+};
+
+export default function Header() {
+    const { t, tema, p } = useSajt();
+    const { pathname } = useLocation();
+    const { skrolovano } = useSkrol();
+    const meni = useMeni();
+    const { otvoren } = meni;
+    const zakazi = useZakaziLink();
+    const kljuc = kljucIzPutanje(pathname);
 
     const prekoHeroja = kljuc === 'pocetna' && HEROJ_ISPOD_HEADERA.includes(tema.hero);
     const providan = tema.header.tip === 'providan' && prekoHeroja && !skrolovano && !otvoren;
@@ -119,50 +209,12 @@ export default function Header() {
                         <Dugme {...zakazi} varijanta={fotoDugme ? 'foto' : 'primarno'} className="hidden !min-h-[2.6rem] !py-2.5 sm:inline-flex">
                             {t.nav.zakazi}
                         </Dugme>
-                        <button
-                            ref={dugmeRef}
-                            type="button"
-                            className={cx('inline-flex h-11 w-11 items-center justify-center', raspored === 'centar' ? 'xl:hidden' : 'lg:hidden')}
-                            aria-expanded={otvoren}
-                            aria-controls="mobilni-meni"
-                            aria-label={otvoren ? t.nav.zatvori : t.nav.meni}
-                            onClick={() => setOtvoren((o) => !o)}
-                        >
-                            {otvoren ? <X size={24} strokeWidth={1.5} /> : <Menu size={24} strokeWidth={1.5} />}
-                        </button>
+                        <DugmeMenija meni={meni} className={raspored === 'centar' ? 'xl:hidden' : 'lg:hidden'} />
                     </div>
                 </div>
             </header>
 
-            {/* Mobilni meni preko celog ekrana; stavke ulaze kaskadno. */}
-            <div
-                id="mobilni-meni"
-                className={cx('fixed inset-0 z-40 flex flex-col bg-paper text-ink transition-opacity', raspored === 'centar' ? 'xl:hidden' : 'lg:hidden', otvoren ? 'meni-otvoren opacity-100' : 'pointer-events-none opacity-0')}
-                style={{ transitionDuration: 'var(--t-srednje)' }}
-                aria-hidden={!otvoren}
-                inert={!otvoren ? '' : undefined}
-            >
-                <div className="flex flex-1 flex-col overflow-y-auto px-6 pb-10 pt-28">
-                    <nav aria-label={t.nav.meni}>
-                        <ul className="m-0 list-none space-y-1 p-0">
-                            {['pocetna', ...STAVKE, 'pitanja'].map((k, i) => (
-                                <li key={k} className="meni-stavka" style={{ '--i': i }}>
-                                    <Link to={p(k)} className="naslov naslov-2 block py-1.5">{t.nav[k]}</Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </nav>
-                    <div className="meni-stavka mt-10 space-y-6" style={{ '--i': 8 }}>
-                        <Dugme {...zakazi} className="w-full">{t.nav.zakazi}</Dugme>
-                        <StatusOtvoreno className="nadnaslov" />
-                        <KontaktDugmad />
-                        <div className="flex items-center justify-between">
-                            <IzborJezika puno />
-                            <Mreze />
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <MobilniMeni meni={meni} className={raspored === 'centar' ? 'xl:hidden' : 'lg:hidden'} />
         </>
     );
 }

@@ -67,7 +67,7 @@ const Napredak = ({ koraci, korak, idiNa }) => {
             <div className="md:hidden" aria-live="polite">
                 <div className="flex items-baseline justify-between gap-3">
                     <p className="m-0 text-sm font-medium">{t.zakazivanje.koraci[korak]}</p>
-                    <p className="nadnaslov m-0 opacity-60">{t.zakazivanje.korakOd(i + 1, koraci.length)}</p>
+                    <p className="nadnaslov m-0 opacity-70">{t.zakazivanje.korakOd(i + 1, koraci.length)}</p>
                 </div>
                 <div className="mt-2.5 flex gap-1" aria-hidden="true">
                     {koraci.map((k, n) => (
@@ -83,10 +83,10 @@ const Napredak = ({ koraci, korak, idiNa }) => {
                             disabled={n > i}
                             onClick={() => idiNa(k)}
                             aria-current={k === korak ? 'step' : undefined}
-                            className={cx('nadnaslov flex w-full flex-col items-start gap-2 border-t-2 pt-3 text-left transition-opacity', n > i && 'opacity-40', n < i && 'hover:opacity-70')}
+                            className={cx('nadnaslov flex w-full flex-col items-start gap-2 border-t-2 pt-3 text-left transition-opacity', n > i && 'opacity-70', n < i && 'hover:opacity-70')}
                             style={{ borderColor: n <= i ? 'rgb(var(--c-brand))' : 'rgb(var(--c-linija) / .2)' }}
                         >
-                            <span className="tabular-nums opacity-60">{n < i ? <Check size={13} className="inline" /> : String(n + 1).padStart(2, '0')}</span>
+                            <span className="tabular-nums">{n < i ? <Check size={13} className="inline" /> : String(n + 1).padStart(2, '0')}</span>
                             <span>{t.zakazivanje.koraci[k]}</span>
                         </button>
                     </li>
@@ -126,6 +126,12 @@ function Carobnjak({ salon, t, z, tx, jezik, p }) {
     const vrh = useRef(null);
     const ucitano = useRef(false);
     const tajmer = useRef(null);
+
+    // Fiksna traka sa sažetkom na dnu (telefon/tablet) ne sme da prekrije kraj footera.
+    useEffect(() => {
+        document.documentElement.classList.add('ima-donju-traku');
+        return () => document.documentElement.classList.remove('ima-donju-traku');
+    }, []);
 
     // Nacrt iz sesije + ?usluga= / ?stilista= iz adrese (samo u browseru, posle hidratacije).
     useEffect(() => {
@@ -366,10 +372,10 @@ function Carobnjak({ salon, t, z, tx, jezik, p }) {
                 )}
 
                 <div className="mt-4 space-y-8">
-                    {!prikazaneKategorije.length && <p className="m-0 py-8 text-center opacity-60">{t.cenovnik.prazno}</p>}
+                    {!prikazaneKategorije.length && <p className="m-0 py-8 text-center opacity-70">{t.cenovnik.prazno}</p>}
                     {prikazaneKategorije.map((k) => (
                         <section key={k.id} aria-label={tx(k.naziv)}>
-                            {(kategorija === 'sve' || upitMali) && <h3 className="nadnaslov m-0 mb-3 opacity-60">{tx(k.naziv)}</h3>}
+                            {(kategorija === 'sve' || upitMali) && <h3 className="nadnaslov m-0 mb-3 opacity-70">{tx(k.naziv)}</h3>}
                             <ul className="m-0 grid list-none gap-2 p-0 lg:grid-cols-2">
                                 {k.lista.map((u) => {
                                     const izabrana = s.usluge.includes(u.id);
@@ -447,7 +453,7 @@ function Carobnjak({ salon, t, z, tx, jezik, p }) {
 
                 {/* Dani — vodoravna traka; dan bez slobodnih termina je ugašen */}
                 <div className="mt-6">
-                    <p className="nadnaslov m-0 mb-3 opacity-60">{s.datum ? `${t.meseci[Number(s.datum.slice(5, 7)) - 1]} ${s.datum.slice(0, 4)}` : ' '}</p>
+                    <p className="nadnaslov m-0 mb-3 opacity-70">{s.datum ? `${t.meseci[Number(s.datum.slice(5, 7)) - 1]} ${s.datum.slice(0, 4)}` : ' '}</p>
                     <div className="skriven-skrol -mx-5 flex snap-x scroll-px-5 gap-2 overflow-x-auto px-5 pb-1 md:mx-0 md:scroll-px-0 md:px-0">
                         {!klijent && <div className="h-[76px]" />}
                         {dani.slice(0, brojDana).map((d) => {
@@ -487,7 +493,7 @@ function Carobnjak({ salon, t, z, tx, jezik, p }) {
                             if (!lista.length) return null;
                             return (
                                 <div key={ime} className="mb-6">
-                                    <p className="nadnaslov m-0 mb-2.5 opacity-60">{z[ime]}</p>
+                                    <p className="nadnaslov m-0 mb-2.5 opacity-70">{z[ime]}</p>
                                     <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 lg:grid-cols-8">
                                         {lista.map((v) => (
                                             <button
@@ -520,7 +526,7 @@ function Carobnjak({ salon, t, z, tx, jezik, p }) {
                         ['email', z.email, 'email', 'email', false, 'next'],
                     ].map(([k, oznaka, tip, ac, obavezno, enter]) => (
                         <label key={k} className={cx('block', k === 'email' && 'sm:col-span-2')}>
-                            <span className="mb-2 block text-sm font-medium">{oznaka}{!obavezno && <span className="font-normal opacity-60"> · {z.opciono}</span>}</span>
+                            <span className="mb-2 block text-sm font-medium">{oznaka}{!obavezno && <span className="font-normal opacity-70"> · {z.opciono}</span>}</span>
                             <input
                                 id={`polje-${k}`}
                                 type={tip}
@@ -539,7 +545,7 @@ function Carobnjak({ salon, t, z, tx, jezik, p }) {
                         </label>
                     ))}
                     <label className="block sm:col-span-2">
-                        <span className="mb-2 block text-sm font-medium">{z.napomena}<span className="font-normal opacity-60"> · {z.opciono}</span></span>
+                        <span className="mb-2 block text-sm font-medium">{z.napomena}<span className="font-normal opacity-70"> · {z.opciono}</span></span>
                         <textarea rows={3} maxLength={500} value={s.podaci.napomena} placeholder={z.napomenaPlaceholder} onChange={(e) => postavi({ podaci: { ...s.podaci, napomena: e.target.value } })} className="polje resize-y" />
                     </label>
                     <label className="flex cursor-pointer items-start gap-3 text-sm sm:col-span-2">
@@ -572,7 +578,7 @@ function Carobnjak({ salon, t, z, tx, jezik, p }) {
                     ].map(([k, oznaka, vrednost]) => (
                         <div key={k} className="flex items-start justify-between gap-4 p-4 md:p-5" style={{ borderColor: 'rgb(var(--c-linija) / .1)' }}>
                             <div className="min-w-0">
-                                <dt className="nadnaslov opacity-60">{oznaka}</dt>
+                                <dt className="nadnaslov opacity-70">{oznaka}</dt>
                                 <dd className="m-0 mt-1.5 break-words">{vrednost}</dd>
                             </div>
                             <button type="button" onClick={() => idiNa(k)} className="shrink-0 p-1 text-sm underline underline-offset-4 opacity-70 hover:opacity-100">{z.izmeni}</button>
@@ -610,11 +616,11 @@ function Carobnjak({ salon, t, z, tx, jezik, p }) {
 
     const sazetakStavke = (
         <>
-            {!izabrane.length && <p className="m-0 text-sm opacity-60">—</p>}
+            {!izabrane.length && <p className="m-0 text-sm opacity-70">—</p>}
             <ul className="m-0 list-none space-y-2.5 p-0 text-sm">
                 {izabrane.map((u) => (
                     <li key={u.id} className="flex items-start justify-between gap-3">
-                        <span className="min-w-0">{nazivUsluge(u)}<span className="block text-xs opacity-60">{trajanje(u.trajanje, jezik)}</span></span>
+                        <span className="min-w-0">{nazivUsluge(u)}<span className="block text-xs opacity-70">{trajanje(u.trajanje, jezik)}</span></span>
                         <span className="flex shrink-0 items-center gap-2">
                             <span className="whitespace-nowrap tabular-nums opacity-75">{cena(u.cena, jezik)}</span>
                             {korak === 'usluga' && (
@@ -652,11 +658,11 @@ function Carobnjak({ salon, t, z, tx, jezik, p }) {
                     {/* Desktop: sažetak sa strane */}
                     <aside className="hidden lg:col-span-4 lg:block">
                         <div className="kartica sticky top-28 p-6">
-                            <p className="nadnaslov m-0 mb-4 opacity-60">{z.izabrano}</p>
+                            <p className="nadnaslov m-0 mb-4 opacity-70">{z.izabrano}</p>
                             {sazetakStavke}
                             <div className="mt-5 border-t pt-5" style={{ borderColor: 'rgb(var(--c-linija) / .1)' }}>
                                 <div className="mb-4 flex items-baseline justify-between gap-3">
-                                    <span className="text-sm opacity-60">{z.ukupno}{minuta ? ` · ${trajanje(minuta, jezik)}` : ''}</span>
+                                    <span className="text-sm opacity-70">{z.ukupno}{minuta ? ` · ${trajanje(minuta, jezik)}` : ''}</span>
                                     <span className="text-lg tabular-nums">{izabrane.length ? cenaTekst : '—'}</span>
                                 </div>
                                 <div className="flex gap-2">
@@ -675,7 +681,7 @@ function Carobnjak({ salon, t, z, tx, jezik, p }) {
                     <>
                         <button type="button" className="fixed inset-0 -z-10 bg-black/30" aria-label={t.opste.zatvori} onClick={() => setPregled(false)} style={{ animation: 'ulaz-stranice .2s ease both' }} />
                         <div className="max-h-[50svh] overflow-y-auto border-t bg-povrsina px-5 pb-4 pt-5" style={{ borderColor: 'rgb(var(--c-linija) / .1)', animation: 'fade-up .3s cubic-bezier(.22,1,.36,1) both' }}>
-                            <p className="nadnaslov m-0 mb-4 opacity-60">{z.izabrano}</p>
+                            <p className="nadnaslov m-0 mb-4 opacity-70">{z.izabrano}</p>
                             {sazetakStavke}
                         </div>
                     </>
@@ -689,7 +695,7 @@ function Carobnjak({ salon, t, z, tx, jezik, p }) {
                     >
                         <span className="min-w-0 truncate text-sm">
                             <span className="font-medium">{izabrane.length === 1 ? nazivUsluge(izabrane[0]) : `${izabrane.length} × ${z.poruka.usluge.toLowerCase()}`}</span>
-                            <span className="opacity-60"> · {trajanje(minuta, jezik)}{s.vreme ? ` · ${t.dani.kratko[danUNedelji(s.datum)]} ${s.vreme}` : ''}</span>
+                            <span className="opacity-70"> · {trajanje(minuta, jezik)}{s.vreme ? ` · ${t.dani.kratko[danUNedelji(s.datum)]} ${s.vreme}` : ''}</span>
                         </span>
                         <span className="flex shrink-0 items-center gap-1.5 tabular-nums">
                             {cenaTekst}

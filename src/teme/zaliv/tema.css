@@ -1,0 +1,229 @@
+/*
+ * Stilovi samo za temu „zaliv” (po uzoru na Barrow Salon). Svaki selektor
+ * počinje sa [data-tema='zaliv']. Prelom telefona: 768px; nav u headeru od 1280px.
+ * Mere: docs/teme/zaliv.md.
+ */
+
+[data-tema='zaliv'] {
+    --zaliv-logo-h: 177px;       /* header-logo-height */
+    --zaliv-logo-fs: 235px;      /* verzal ≈ 154px (cap = 0.656 em) */
+    --zaliv-okvir: 3vw;          /* beli okvir oko fotografija */
+    --zaliv-gutter: 3vw;         /* bočna margina teksta */
+    --zaliv-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+@media (max-width: 767.98px) {
+    [data-tema='zaliv'] {
+        --zaliv-logo-h: 30px;
+        --zaliv-logo-fs: 39.6px;  /* verzal ≈ 26px */
+        --zaliv-gutter: 6vw;
+    }
+}
+
+/* ── Pokret: referenca nema nikakvu animaciju (ni reveal, ni ulaz, ni prelaz strane) ── */
+[data-tema='zaliv'] body { transition: none; }
+/* Naslovi se lome prirodno (bez balansiranja), kao u referenci. */
+[data-tema='zaliv'] .naslov { text-wrap: wrap; }
+[data-tema='zaliv'].js .pojava,
+[data-tema='zaliv'] .pojava { opacity: 1; transform: none; transition: none; will-change: auto; }
+[data-tema='zaliv'] .ulaz-odmah,
+[data-tema='zaliv'] .animate-fade-up,
+[data-tema='zaliv'] .prelaz-stranice { animation: none; }
+[data-tema='zaliv'] .reci-odmah .rec > span,
+[data-tema='zaliv'].js .reci-anim .rec > span { animation: none; transform: none; transition: none; }
+[data-tema='zaliv'] .marquee-traka { animation: none; }
+[data-tema='zaliv'] .foto { transition: none; }
+
+/* ── Dugmad: pravougaona, bez okvira; hover samo providnost 1 → 0.8 za 0.1s ── */
+[data-tema='zaliv'] .dugme {
+    padding: 1.4em 2.338em; min-height: 0; border-radius: 0; border-width: 0;
+    transition: opacity 0.1s linear;
+}
+[data-tema='zaliv'] .dugme:hover:not(:disabled) { opacity: 0.8; }
+[data-tema='zaliv'] .dugme-primarno:hover:not(:disabled) { background: rgb(var(--c-brand)); color: rgb(var(--c-na-brand)); }
+[data-tema='zaliv'] .dugme-sekundarno { border: 1px solid rgb(var(--c-ink)); }
+[data-tema='zaliv'] .dugme-sekundarno:hover:not(:disabled) { background: transparent; color: rgb(var(--c-ink)); border-color: rgb(var(--c-ink)); }
+[data-tema='zaliv'] .dugme-foto:hover { background: #fff; color: #111; }
+[data-tema='zaliv'] .dugme-foto-obris { border: 1px solid rgb(255 255 255 / .7); }
+[data-tema='zaliv'] .dugme-foto-obris:hover { background: transparent; color: #fff; }
+/* Header CTA = eyebrow: 12.544px / 500 / verzal / 0.19em (telefon 13.974px), visina 53px. */
+[data-tema='zaliv'] .dugme.zaliv-cta {
+    font-family: var(--oznaka-ff, var(--font-oznaka)); font-size: var(--oznaka-fs); font-weight: var(--oznaka-fw);
+    letter-spacing: var(--oznaka-ls); text-transform: uppercase; line-height: 1.43;
+}
+/* U meniju: 19.2px / ls 3.648px, ≈ 244×82. */
+[data-tema='zaliv'] .dugme.zaliv-cta-meni { font-size: 19.2px; letter-spacing: 3.648px; line-height: 1.45; }
+
+/* ── Linkovi: u tekstu i footeru stalno podvučeni 1px; nav samo aktivna stavka ── */
+[data-tema='zaliv'] .zaliv-link {
+    color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.22em;
+}
+[data-tema='zaliv'] button.zaliv-link { font: inherit; background: none; padding: 0; cursor: pointer; }
+
+/* ── Header: nije fiksiran — u toku strane, odlazi sa skrolom i ne vraća se ── */
+[data-tema='zaliv'] .zaliv-header { position: relative; z-index: 50; background: rgb(var(--c-paper)); color: rgb(var(--c-ink)); }
+[data-tema='zaliv'] .zaliv-header-red {
+    display: flex; align-items: center; gap: 3vw;
+    height: var(--header-h, calc(177px + 6vw)); padding-inline: 3vw;
+}
+@media (max-width: 767.98px) {
+    [data-tema='zaliv'] .zaliv-header-red { padding-inline: 6vw; gap: 16px; }
+}
+
+/* Wordmark: naziv salona u uzanom grotesku, skaliran na prostor koji mu ostaje. */
+[data-tema='zaliv'] .zaliv-logo-okvir {
+    flex: 1 1 0; min-width: 0; height: var(--zaliv-logo-h);
+    display: flex; align-items: center; container-type: inline-size;
+}
+[data-tema='zaliv'] .zaliv-logo { display: block; max-width: 100%; color: rgb(var(--c-logo)); text-decoration: none; }
+[data-tema='zaliv'] .zaliv-logo-tekst {
+    display: block; white-space: nowrap;
+    font-family: var(--font-logo); font-weight: 600; text-transform: uppercase; letter-spacing: 0; line-height: 1;
+    font-size: min(var(--zaliv-logo-fs), calc(99cqw / var(--logo-em, 6)));
+    text-box: trim-both cap alphabetic;
+}
+[data-tema='zaliv'] .zaliv-logo-slika { display: block; height: var(--zaliv-logo-h); width: auto; max-width: 100cqw; object-fit: contain; object-position: left center; }
+
+/* Desna strana headera: nav (17.728px / 300, razmak 19px) · Instagram · CTA (razmaci ≈ 30px). */
+[data-tema='zaliv'] .zaliv-header-desno { display: none; align-items: center; flex: none; }
+@media (min-width: 1280px) {
+    [data-tema='zaliv'] .zaliv-header-desno { display: flex; }
+}
+[data-tema='zaliv'] .zaliv-nav { gap: 19px; }
+[data-tema='zaliv'] .zaliv-nav-link {
+    position: relative; display: inline-block; white-space: nowrap; color: inherit; text-decoration: none;
+    font-family: var(--nav-ff); font-size: var(--nav-fs); font-weight: var(--nav-fw); line-height: var(--nav-lh);
+    letter-spacing: var(--nav-ls); text-transform: var(--nav-tt);
+}
+/* Aktivna: podvlaka 1px ≈ 15px ispod sredine teksta; hover bez promene (izmereno). */
+[data-tema='zaliv'] .zaliv-nav-link[aria-current='page']::after {
+    content: ''; position: absolute; left: 0; right: 0; top: calc(50% + 14.5px); height: 1px; background: currentColor;
+}
+[data-tema='zaliv'] .zaliv-mreza { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: inherit; }
+[data-tema='zaliv'] .zaliv-header-mreza { margin-inline: 17px; }
+
+/* Ikonica menija „dve linije” (35px, potez 1px, razmak 11px) i tanki X. */
+[data-tema='zaliv'] .zaliv-dugme-meni {
+    flex: none; display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; margin-right: 1px; color: rgb(var(--c-ink)); background: none; border: 0; cursor: pointer;
+}
+@media (min-width: 1280px) {
+    [data-tema='zaliv'] .zaliv-dugme-meni { display: none; }
+}
+[data-tema='zaliv'] .zaliv-ikona-meni { display: flex; flex-direction: column; justify-content: space-between; width: 35px; height: 12px; }
+[data-tema='zaliv'] .zaliv-ikona-meni > span { display: block; height: 1px; background: currentColor; }
+[data-tema='zaliv'] .zaliv-ikona-x { position: relative; display: block; width: 22px; height: 22px; }
+[data-tema='zaliv'] .zaliv-ikona-x > span {
+    position: absolute; left: 50%; top: 50%; width: 30px; height: 1px; background: currentColor;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+[data-tema='zaliv'] .zaliv-ikona-x > span + span { transform: translate(-50%, -50%) rotate(-45deg); }
+
+/* ── Mobilni meni: ceo ekran, bela, čist fade (bez klizanja i kaskade) ── */
+[data-tema='zaliv'] .zaliv-meni {
+    position: fixed; inset: 0; z-index: 65; display: flex; flex-direction: column; overflow-y: auto;
+    background: rgb(var(--c-paper)); color: rgb(var(--c-ink));
+    opacity: 0; visibility: hidden;
+    transition: opacity 0.4s var(--zaliv-ease), visibility 0.6s var(--zaliv-ease);
+}
+[data-tema='zaliv'] .zaliv-meni.otvoren { opacity: 1; visibility: visible; }
+[data-tema='zaliv'] .zaliv-meni > .zaliv-header-red { flex: none; }
+@media (min-width: 1280px) {
+    [data-tema='zaliv'] .zaliv-meni { display: none; }
+}
+[data-tema='zaliv'] .zaliv-meni-telo { flex: 1 0 auto; display: flex; flex-direction: column; align-items: center; padding: 0 6vw 23px; }
+[data-tema='zaliv'] .zaliv-meni-nav { flex: 1 0 auto; display: flex; align-items: center; justify-content: center; padding-block: 24px; }
+[data-tema='zaliv'] .zaliv-meni-lista { flex-direction: column; gap: 0; }
+[data-tema='zaliv'] .zaliv-meni-link {
+    display: block; padding: 11.9px 0; text-align: center; color: inherit; text-decoration: none;
+    font-family: var(--meni-ff); font-size: var(--meni-fs); font-weight: var(--meni-fw); line-height: var(--meni-lh);
+}
+[data-tema='zaliv'] .zaliv-meni-dno { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; }
+[data-tema='zaliv'] .zaliv-meni-dno .zaliv-cta-meni { margin-top: 26px; }
+[data-tema='zaliv'] .zaliv-meni-red { display: flex; align-items: center; justify-content: center; gap: 20px; }
+[data-tema='zaliv'] .zaliv-meni-jezik a,
+[data-tema='zaliv'] .zaliv-footer-jezik a { opacity: 1; }
+
+/* ── Početna: hero fotografija do dna ekrana, okvir 3vw ── */
+[data-tema='zaliv'] .zaliv-hero {
+    height: calc(100svh - var(--header-h, calc(177px + 6vw))); min-height: 18rem;
+    padding: 0 var(--zaliv-okvir) var(--zaliv-okvir);
+}
+[data-tema='zaliv'] .zaliv-hero-foto,
+[data-tema='zaliv'] .zaliv-ploca-foto { position: relative; height: 100%; }
+/* Fotografija visine ekrana, uvučena 3vw sa svih strana (1354×814 / 367×821). */
+[data-tema='zaliv'] .zaliv-ploca { height: 100svh; min-height: 22rem; padding: var(--zaliv-okvir); }
+
+/* Tekst-trake između fotografija */
+[data-tema='zaliv'] .zaliv-traka {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 3vw;
+    padding: 44px var(--zaliv-gutter) 100px;
+}
+[data-tema='zaliv'] .zaliv-traka-uska { padding-block: 14px; }
+[data-tema='zaliv'] .zaliv-traka-tekst { flex: 0 1 74%; min-width: 0; }
+[data-tema='zaliv'] .zaliv-traka-dugme { flex: none; }
+[data-tema='zaliv'] .zaliv-traka-h2 + .zaliv-redovi { margin-top: 20px; }
+[data-tema='zaliv'] .zaliv-redovi { margin: 0; padding: 0; list-style: none; }
+@media (max-width: 767.98px) {
+    [data-tema='zaliv'] .zaliv-traka { flex-direction: column; align-items: stretch; gap: 36px; padding: 28px var(--zaliv-gutter) 73px; }
+    [data-tema='zaliv'] .zaliv-traka-uska { padding-block: 21px 25px; }
+    [data-tema='zaliv'] .zaliv-traka-tekst { flex: none; }
+    [data-tema='zaliv'] .zaliv-traka-dugme { align-self: flex-end; }
+}
+
+/* ── Footer: #F1F1EF, tri kolone (x = 43 / 853 / 1084 na 1440), Bodoni naslovi ── */
+[data-tema='zaliv'] .zaliv-footer {
+    margin-top: auto; background: rgb(var(--c-footer)); color: rgb(var(--c-ink));
+    padding: 84px 3vw 36px;
+}
+[data-tema='zaliv'] .zaliv-footer-kolone { display: grid; grid-template-columns: 59.8% 17.1% minmax(0, 1fr); }
+[data-tema='zaliv'] .zaliv-footer-kolone > * { min-width: 0; padding-right: 1.5rem; }
+[data-tema='zaliv'] .zaliv-footer-tekst {
+    margin-top: 32px; font-size: var(--footer-fs); font-weight: var(--footer-fw); line-height: var(--footer-lh);
+}
+[data-tema='zaliv'] .zaliv-sati { display: flex; flex-wrap: wrap; column-gap: 0.6em; }
+[data-tema='zaliv'] .zaliv-footer-pravno {
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 1rem 3rem;
+    margin-top: 84px; font-size: 13px; line-height: 1.7; font-weight: 300;
+}
+[data-tema='zaliv'] .zaliv-footer-pravno > p { max-width: 46rem; }
+[data-tema='zaliv'] .zaliv-footer-pravno-desno { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.5rem; }
+[data-tema='zaliv'] .zaliv-footer-jezik .nadnaslov { min-height: 0; padding-block: 0; }
+@media (max-width: 1023.98px) {
+    [data-tema='zaliv'] .zaliv-footer-kolone { grid-template-columns: 1fr 1fr; row-gap: 34px; }
+}
+@media (max-width: 767.98px) {
+    [data-tema='zaliv'] .zaliv-footer { padding: 45px 6vw 32px; }
+    [data-tema='zaliv'] .zaliv-footer-kolone { grid-template-columns: 1fr; row-gap: 34px; }
+    [data-tema='zaliv'] .zaliv-footer-pravno { margin-top: 56px; flex-direction: column; }
+}
+
+/* ── Podstranice: naslov odmah ispod headera (koji nije fiksiran) ── */
+[data-tema='zaliv'] .zaliv-zaglavlje { padding: 8px 3vw 40px; }
+[data-tema='zaliv'] .zaliv-zaglavlje-tekst { max-width: 74%; }
+[data-tema='zaliv'] .zaliv-zaglavlje-foto { position: relative; height: 70svh; margin-top: 3vw; }
+@media (max-width: 767.98px) {
+    [data-tema='zaliv'] .zaliv-zaglavlje { padding: 16px 6vw 28px; }
+    [data-tema='zaliv'] .zaliv-zaglavlje-tekst { max-width: none; }
+    [data-tema='zaliv'] .zaliv-zaglavlje-foto { margin-inline: -3vw; }
+}
+/*
+ * Zajedničke stranice računaju sa fiksnim headerom od 76px (lepljive trake,
+ * gornji razmaci). Ovde header odlazi sa stranom — lepljivo ide do vrha, a
+ * gornji razmak preko visine headera otpada.
+ */
+[data-tema='zaliv'] #sadrzaj .sticky.top-\[76px\] { top: 0; }
+[data-tema='zaliv'] #sadrzaj .sticky.top-28 { top: 3vw; }
+@media (min-width: 1024px) {
+    [data-tema='zaliv'] #sadrzaj .lg\:sticky.lg\:top-28 { top: 3vw; }
+}
+[data-tema='zaliv'] #sadrzaj > .pt-\[92px\] { padding-top: 16px; }
+[data-tema='zaliv'] #sadrzaj > .pt-28 { padding-top: 2rem; }
+@media (min-width: 768px) {
+    [data-tema='zaliv'] #sadrzaj > .pt-\[92px\] { padding-top: 8px; }
+}
+
+/* ── Forme: obris 1px, radius 0; hover/fokus pojačava obris (bez prstena) ── */
+[data-tema='zaliv'] .polje { border-radius: 0; border-color: rgb(var(--c-ink) / .35); transition: border-color 0.1s linear; }
+[data-tema='zaliv'] .polje:hover { border-color: rgb(var(--c-ink) / .7); }
+[data-tema='zaliv'] .polje:focus { border-color: rgb(var(--c-ink)); box-shadow: none; }
+[data-tema='zaliv'] .polje:focus-visible { outline: 1px solid rgb(var(--c-ink)); outline-offset: 2px; }

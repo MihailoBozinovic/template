@@ -1,0 +1,241 @@
+/* Stilovi samo za temu „menhetn”. Svaki selektor počinje sa [data-tema='menhetn']. */
+/* Specifikacija: docs/teme/menhetn.md — vrednosti u px su izmerene na referenci. */
+
+[data-tema='menhetn'] {
+    --header-visina: var(--header-h, 80px);
+    --r-polje: 3px;
+    --hero-zum: 1.3;
+}
+
+/* ── Osnova: bez reveal animacija i ulaza naslova (referenca ih nema) ── */
+[data-tema='menhetn'].js .pojava,
+[data-tema='menhetn'] .pojava { opacity: 1 !important; transform: none !important; transition: none !important; }
+[data-tema='menhetn'] .ulaz-odmah,
+[data-tema='menhetn'] .animate-fade-up,
+[data-tema='menhetn'] .prelaz-stranice { animation: none !important; }
+[data-tema='menhetn'] .na-foto { text-shadow: none; }
+[data-tema='menhetn'] .na-foto .akcenat,
+[data-tema='menhetn'] .akcenat { color: inherit; font-style: normal; }
+[data-tema='menhetn'] strong, [data-tema='menhetn'] b { font-weight: 700; }
+
+[data-tema='menhetn'] .mh-blag { color: rgb(var(--c-tekst-blag)); }
+[data-tema='menhetn'] .mh-bledi { color: rgb(var(--c-tekst-bledi)); }
+[data-tema='menhetn'] .mh-blag strong { color: rgb(var(--c-tekst-blag)); }
+
+/* Lepljivi delovi podstranica (cenovnik, zakazivanje) ispod headera od 80 / 70 px */
+[data-tema='menhetn'] .sticky.top-\[76px\] { top: var(--header-h); }
+
+/* Fokus na tamnim površinama: beo okvir */
+[data-tema='menhetn'] .mh-header :focus-visible,
+[data-tema='menhetn'] .mh-meni :focus-visible,
+[data-tema='menhetn'] .mh-footer :focus-visible,
+[data-tema='menhetn'] .bg-tamna :focus-visible { outline-color: #fff; }
+
+/* ── Header ───────────────────────────────────────────────────────── */
+[data-tema='menhetn'] .mh-header { box-shadow: none; }
+[data-tema='menhetn'] .mh-pregrada { width: 1px; align-self: stretch; background: rgb(255 255 255 / .3); flex-shrink: 0; }
+
+[data-tema='menhetn'] .mh-logo { display: inline-flex; flex-direction: column; align-items: center; gap: 5px; color: inherit; line-height: 1; }
+[data-tema='menhetn'] .mh-logo-ime { white-space: nowrap; font-size: var(--logo-fs); }
+[data-tema='menhetn'] .mh-logo-grad {
+    font-family: var(--font-tekst); font-size: 9px; letter-spacing: .32em; text-transform: uppercase; white-space: nowrap;
+    margin-right: -.32em; line-height: 1;
+}
+[data-tema='menhetn'] .mh-logo-veliki .mh-logo-ime { font-size: 36px; }
+[data-tema='menhetn'] .mh-logo-veliki .mh-logo-grad { font-size: 11px; }
+@media (max-width: 767.98px) {
+    [data-tema='menhetn'] .mh-logo { gap: 4px; }
+    [data-tema='menhetn'] .mh-logo-grad { font-size: 8px; letter-spacing: .28em; margin-right: -.28em; }
+}
+
+[data-tema='menhetn'] .mh-nav-link {
+    position: relative; display: inline-flex; align-items: center; min-height: 2.5rem; white-space: nowrap; color: #fff;
+    font-family: var(--nav-ff); font-size: var(--nav-fs); line-height: var(--nav-lh); font-weight: var(--nav-fw); letter-spacing: normal;
+}
+/* `linkHover: 'podvuci-fade'` — podvlaka se pojavljuje kroz opacity, .3s */
+[data-tema='menhetn'] .mh-nav-link::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 6px; height: 2px; background: currentColor;
+    opacity: 0; transition: opacity var(--t-brzo) var(--ease);
+}
+[data-tema='menhetn'] .mh-nav-link:hover::after,
+[data-tema='menhetn'] .mh-nav-link:focus-visible::after { opacity: 1; }
+
+/* Belo pill dugme u headeru (34 px): tekst | crtica | ikonica */
+[data-tema='menhetn'] .mh-pill {
+    display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 12px 0 15px; border-radius: 30px;
+    background: #fff; color: rgb(var(--c-brand)); font-size: 16px; line-height: 20px; white-space: nowrap; text-decoration: none;
+    transition: background-color var(--t-brzo) var(--ease), color var(--t-brzo) var(--ease);
+}
+[data-tema='menhetn'] .mh-pill:hover { background: rgb(var(--c-akcenat)); }
+[data-tema='menhetn'] .mh-pill-crta { width: 1px; height: 20px; background: currentColor; }
+@media (max-width: 767.98px) {
+    [data-tema='menhetn'] .mh-pill { height: 30px; font-size: 15px; padding: 0 10px 0 13px; gap: 7px; }
+    [data-tema='menhetn'] .mh-pill-crta { height: 18px; }
+}
+[data-tema='menhetn'] .mh-dugme-menija { color: #fff; justify-content: flex-end; }
+
+/* Mobilni meni: padajući panel ispod headera, max-height + scaleY, .3s ease */
+[data-tema='menhetn'] .mh-meni {
+    top: var(--header-h); max-height: 0; overflow: hidden; visibility: hidden;
+    transform: scaleY(.95); transform-origin: top center;
+    transition: max-height var(--t-brzo) ease, transform var(--t-brzo) ease, visibility 0s linear var(--t-brzo);
+}
+[data-tema='menhetn'] .mh-meni.otvoren {
+    max-height: calc(100svh - var(--header-h)); overflow-y: auto; visibility: visible; transform: none;
+    transition: max-height var(--t-brzo) ease, transform var(--t-brzo) ease, visibility 0s;
+}
+[data-tema='menhetn'] .mh-meni-link {
+    display: flex; height: 64px; align-items: center; justify-content: center; color: #fff; text-decoration: none;
+    font-family: var(--meni-ff); font-size: var(--meni-fs); line-height: var(--meni-lh); font-weight: var(--meni-fw);
+    transition: background-color var(--t-brzo) var(--ease);
+}
+[data-tema='menhetn'] .mh-meni-link[aria-current='page'],
+[data-tema='menhetn'] .mh-meni-link:hover { background: rgb(255 255 255 / .1); }
+
+/* ── Dugmad (sva pill 30px, 16px 400, .3s) ─────────────────────────── */
+[data-tema='menhetn'][data-dugme] .dugme {
+    min-height: 38px; padding: 1px 1px 1px 30px; gap: 25px; border-radius: 30px; border-width: 1px;
+    font-size: var(--dugme-fs); line-height: var(--dugme-lh); font-weight: var(--dugme-fw); letter-spacing: normal; text-transform: none;
+    transition: background-color .3s ease, color .3s ease, border-color .3s ease;
+}
+[data-tema='menhetn'][data-dugme] .dugme:not(:has(.dugme-strelica)) { padding: 1px 30px; }
+[data-tema='menhetn'][data-dugme] .dugme .dugme-strelica { width: 34px; height: 34px; background: #fff; color: rgb(var(--c-brand)); transition: none; }
+[data-tema='menhetn'][data-dugme] .dugme .dugme-strelica svg { width: 16px; height: 16px; stroke-width: 1.5; }
+[data-tema='menhetn'][data-dugme] .dugme:hover .dugme-strelica { transform: none; }
+/* primarno-strelica: hover bez vidljive promene (izmereno) */
+[data-tema='menhetn'][data-dugme] .dugme-primarno,
+[data-tema='menhetn'][data-dugme] .dugme-primarno:hover:not(:disabled) { background: rgb(var(--c-brand)); border-color: rgb(var(--c-brand)); color: #fff; }
+/* krem-strelica */
+[data-tema='menhetn'][data-dugme] .dugme-krem,
+[data-tema='menhetn'][data-dugme] .dugme-krem:hover { background: rgb(var(--c-akcenat)); border-color: rgb(var(--c-akcenat)); color: #000; }
+/* sekundarno (podstranice): obris maslinast */
+[data-tema='menhetn'][data-dugme] .dugme-sekundarno { background: transparent; color: rgb(var(--c-brand)); border-color: rgb(var(--c-brand)); }
+[data-tema='menhetn'][data-dugme] .dugme-sekundarno:hover:not(:disabled) { background: rgb(var(--c-brand)); color: #fff; border-color: rgb(var(--c-brand)); }
+[data-tema='menhetn'][data-dugme] .dugme-sekundarno:hover .dugme-strelica { background: #fff; color: rgb(var(--c-brand)); }
+[data-tema='menhetn'][data-dugme] .dugme-foto { background: #fff; color: rgb(var(--c-brand)); border-color: #fff; }
+[data-tema='menhetn'][data-dugme] .dugme-foto .dugme-strelica { background: rgb(var(--c-brand)); color: #fff; }
+
+/* obris-beli (na fotografiji): providno, 1px beo, 5px 25px, 38 / 34 px; hover beli fill */
+[data-tema='menhetn'] .mh-obris,
+[data-tema='menhetn'][data-dugme] .dugme-foto-obris {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 38px; padding: 5px 25px; border-radius: 30px;
+    border: 1px solid #fff; background: transparent; color: #fff; font-size: 16px; line-height: 20px; white-space: nowrap;
+    transition: background-color .3s ease, color .3s ease;
+}
+[data-tema='menhetn'] .mh-plocica:hover .mh-obris,
+[data-tema='menhetn'] .mh-plocica:focus-visible .mh-obris,
+[data-tema='menhetn'][data-dugme] .dugme-foto-obris:hover { background: #fff; color: rgb(var(--c-brand)); }
+@media (max-width: 767.98px) {
+    [data-tema='menhetn'] .mh-obris { min-height: 34px; padding: 3px 25px; }
+}
+
+/* ── Polja (3px, 1px #505050, 8px 16px) ─────────────────────────────── */
+[data-tema='menhetn'] .polje {
+    border: 1px solid rgb(var(--c-linija)); border-radius: var(--r-polje); padding: 8px 16px; min-height: 42px;
+    font-size: 16px; line-height: 24px; background: #fff; color: #000;
+}
+[data-tema='menhetn'] .polje::placeholder { color: rgb(var(--c-tekst-bledi)); }
+[data-tema='menhetn'] .polje:focus { border-color: rgb(var(--c-brand)); box-shadow: 0 0 0 2px rgb(var(--c-brand) / .25); }
+[data-tema='menhetn'] .mh-lista { padding: 6px 16px; }
+[data-tema='menhetn'] .mh-lista option { padding: 1px 0; }
+[data-tema='menhetn'] .mh-labela { display: block; margin-bottom: 4px; font-size: 16px; line-height: 24px; font-weight: 600; color: #000; }
+[data-tema='menhetn'] .mh-polja textarea.polje { min-height: 108px; resize: vertical; }
+[data-tema='menhetn'] .kartica { border-color: rgb(var(--c-okvir)); }
+
+/* ── Hero: ispod headera, 100svh − header (telefon 90svh), veo ─────── */
+[data-tema='menhetn'] .mh-hero { margin-top: var(--header-h); min-height: 560px; height: calc(100svh - var(--header-h)); }
+@media (min-width: 768px) { [data-tema='menhetn'] .mh-hero { height: 100svh; max-height: 1100px; } }
+@media (max-width: 767.98px) { [data-tema='menhetn'] .mh-hero { height: 90svh; } }
+/* Ravan veo ~.45 (referenca) + blag levi pojas iza teksta, da beli tekst ima ≥ 4.5:1 i preko svetlih fotografija */
+[data-tema='menhetn'] .mh-hero-veo {
+    background:
+        linear-gradient(to right, rgb(0 0 0 / .22), rgb(0 0 0 / .12) 40%, rgb(0 0 0 / 0) 62%),
+        rgb(0 0 0 / .45);
+}
+@media (max-width: 767.98px) {
+    [data-tema='menhetn'] .mh-hero-veo { background: rgb(0 0 0 / .55); }
+}
+/* Ken Burns „in”: scale 1 → 1.3, 20s linear na aktivnom slajdu; pretapanje 2,5 s */
+[data-tema='menhetn'] .mh-slajd { transition: opacity var(--hero-prelaz) ease; }
+[data-tema='menhetn'][data-hero-efekat] .mh-slajd .foto { animation: none; transform: scale(1); transition: transform var(--hero-trajanje) linear; will-change: transform; }
+[data-tema='menhetn'][data-hero-efekat] .mh-slajd.zumira .foto { transform: scale(var(--hero-zum, 1.3)); }
+
+/* ── Pločice usluga ─────────────────────────────────────────────────── */
+[data-tema='menhetn'] .mh-plocica .foto { transition: none; }
+[data-tema='menhetn'] .mh-plocica:hover .foto { transform: none; }
+[data-tema='menhetn'] .mh-veo-plocica {
+    background: linear-gradient(to bottom, rgb(0 0 0 / .55), rgb(0 0 0 / .22) 34%, rgb(0 0 0 / .22) 62%, rgb(0 0 0 / .62));
+}
+
+/* ── Marquee „logotipa": 50px, bez maske i linija, 10s linear ───────── */
+[data-tema='menhetn'] .mh-marquee { mask-image: none; -webkit-mask-image: none; }
+[data-tema='menhetn'] .mh-marquee .marquee-traka { animation-duration: var(--marquee); }
+[data-tema='menhetn'] .mh-marka {
+    display: flex; align-items: center; height: 50px; padding-inline: 45px; font-size: 34px; line-height: 1; color: #000; white-space: nowrap;
+}
+@media (max-width: 767.98px) {
+    [data-tema='menhetn'] .mh-marka { font-size: 26px; padding-inline: 30px; height: 40px; }
+}
+
+/* ── Karusel kartica: 3 / 2 / 1 (prelomi 1024 / 767), razmak 10 ─────── */
+[data-tema='menhetn'] .mh-karusel { --pp: 1; }
+@media (min-width: 767px) { [data-tema='menhetn'] .mh-karusel { --pp: 2; } }
+@media (min-width: 1024px) { [data-tema='menhetn'] .mh-karusel { --pp: 3; } }
+[data-tema='menhetn'] .mh-karusel-traka {
+    gap: var(--razmak); transform: translate3d(calc(var(--i) * -1 * (100% + var(--razmak)) / var(--pp)), 0, 0);
+    transition-property: transform; transition-timing-function: ease;
+}
+[data-tema='menhetn'] .mh-karusel-stavka { flex: 0 0 calc((100% - (var(--pp) - 1) * var(--razmak)) / var(--pp)); min-width: 0; }
+[data-tema='menhetn'] .mh-kartica { border: 1px solid rgb(var(--c-okvir)); background: #fff; }
+[data-tema='menhetn'] .mh-strelica-karusela {
+    display: inline-flex; width: 26px; height: 26px; align-items: center; justify-content: center; border-radius: 999px;
+    background: rgb(var(--c-brand)); color: #fff; transition: opacity .3s ease;
+}
+[data-tema='menhetn'] .mh-strelica-karusela:hover { opacity: .85; }
+
+/* ── Podeljene sekcije 50/50 ──────────────────────────────────────── */
+[data-tema='menhetn'] .mh-tekst-panel { color: #fff; }
+[data-tema='menhetn'] .mh-tekst-panel strong { font-weight: 700; color: #fff; }
+@media (min-width: 768px) {
+    [data-tema='menhetn'] .mh-panel-desno { padding-left: 90px; padding-right: max(20px, calc(50vw - 570px)); }
+    [data-tema='menhetn'] .mh-panel-levo { padding-left: max(20px, calc(50vw - 570px)); padding-right: 75px; }
+}
+@media (min-width: 768px) and (max-width: 1100px) {
+    [data-tema='menhetn'] .mh-panel-desno { padding-left: 50px; }
+    [data-tema='menhetn'] .mh-panel-levo { padding-right: 50px; }
+}
+
+/* ── Utisci u redovima (obrazac „vesti") ─────────────────────────────── */
+[data-tema='menhetn'] .mh-redovi { border-top: 1px solid rgb(var(--c-crta)); }
+[data-tema='menhetn'] .mh-red { border-bottom: 1px solid rgb(var(--c-crta)); }
+[data-tema='menhetn'] .mh-vest {
+    font-family: var(--vest-ff); font-size: var(--vest-fs); line-height: var(--vest-lh); font-weight: var(--vest-fw); letter-spacing: normal;
+}
+
+/* ── Zaglavlje podstranica: ispod headera ─────────────────────────────── */
+[data-tema='menhetn'] .mh-zaglavlje { padding-top: calc(var(--header-h) + 50px); }
+@media (min-width: 768px) { [data-tema='menhetn'] .mh-zaglavlje { padding-top: calc(var(--header-h) + 100px); } }
+
+/* ── Footer ─────────────────────────────────────────────────────────── */
+[data-tema='menhetn'] .mh-footer { font-size: 16px; line-height: 24px; }
+[data-tema='menhetn'] .mh-footer-naslov { font-family: var(--footer-ff); font-size: var(--footer-fs); line-height: var(--footer-lh); font-weight: var(--footer-fw); }
+[data-tema='menhetn'] .mh-footer-link { color: #fff; text-decoration: none; transition: color .3s ease; }
+[data-tema='menhetn'] .mh-footer-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+[data-tema='menhetn'] .mh-footer-sitno { font-size: 13px; line-height: 20px; color: rgb(255 255 255 / .82); }
+[data-tema='menhetn'] .mh-footer a[hreflang] { opacity: .8; }
+[data-tema='menhetn'] .mh-footer a[hreflang][aria-current], [data-tema='menhetn'] .mh-footer a[hreflang]:hover { opacity: 1; }
+[data-tema='menhetn'] .mh-copyright { font-size: 16px; line-height: 24px; text-transform: uppercase; }
+@media (max-width: 767.98px) {
+    [data-tema='menhetn'] .mh-footer a[hreflang] { opacity: .8; }
+[data-tema='menhetn'] .mh-footer a[hreflang][aria-current], [data-tema='menhetn'] .mh-footer a[hreflang]:hover { opacity: 1; }
+[data-tema='menhetn'] .mh-copyright { font-size: 12px; line-height: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-tema='menhetn'][data-hero-efekat] .mh-slajd .foto { transition: none; transform: none; }
+    [data-tema='menhetn'] .mh-karusel-traka { transition: none !important; }
+}
+
+/* Logotipi brendova (slike sa linkovima) u traci */
+[data-tema='menhetn'] .mh-marka { --logo-brenda-h: 44px; --logo-brenda-max: 180px; padding-inline: 40px; }
+@media (max-width: 767.98px) { [data-tema='menhetn'] .mh-marka { --logo-brenda-h: 34px; padding-inline: 24px; } }

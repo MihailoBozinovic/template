@@ -376,8 +376,19 @@ export const salon = {
         ],
     },
 
-    // Profesionalne linije s kojima salon radi (tekst, bez logotipa). Prazno = nema trake.
-    brendovi: ['Kérastase', 'Olaplex', 'Wella Professionals', 'L’Oréal Professionnel', 'American Crew', 'Reuzel'],
+    /*
+     * Profesionalne linije s kojima salon radi — logotip (public/brendovi/,
+     * crn ili u boji na providnoj podlozi; tema ga oboji jednobojno) i link ka
+     * zvaničnom sajtu brenda. Bez logotipa prikazuje se naziv. Prazno = nema trake.
+     */
+    brendovi: [
+        { naziv: 'Kérastase', logo: '/brendovi/kerastase.svg', url: 'https://www.kerastase.com' },
+        { naziv: 'Olaplex', logo: '/brendovi/olaplex.svg', url: 'https://olaplex.com' },
+        { naziv: 'Wella Professionals', logo: '/brendovi/wella-professionals.svg', url: 'https://www.wella.com/professional' },
+        { naziv: 'L’Oréal Professionnel', logo: '/brendovi/loreal-professionnel.svg', url: 'https://www.lorealprofessionnel.com' },
+        { naziv: 'American Crew', logo: '/brendovi/american-crew.svg', url: 'https://www.americancrew.com' },
+        { naziv: 'Reuzel', logo: '/brendovi/reuzel.svg', url: 'https://www.reuzel.com' },
+    ],
 
     // POKLON VAUČER — prazan tekst = nema bloka.
     poklonVaucer: {
@@ -398,7 +409,11 @@ export const salon = {
         { pitanje: { sr: 'Da li šišate decu?', en: 'Do you cut children’s hair?', ru: 'Стрижёте ли вы детей?' }, odgovor: { sr: 'Da, decu do 12 godina, uz strpljenje i bez žurbe.', en: 'Yes, children up to 12, patiently and without rushing.', ru: 'Да, детей до 12 лет — терпеливо и без спешки.' } },
     ],
 
-    placanje: ['Gotovina', 'Visa', 'Mastercard', 'Dina'],
+    /*
+     * Načini plaćanja — ikonice u footeru i na kontaktu (zvanični logotipi u
+     * public/placanje/). Moguće: 'gotovina', 'visa', 'mastercard', 'maestro', 'dinacard'.
+     */
+    placanje: ['gotovina', 'visa', 'mastercard', 'maestro', 'dinacard'],
 
     // ANALITIKA — učitava se tek kad posetilac prihvati kolačiće. Prazno = nema.
     analitika: {

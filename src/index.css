@@ -41,21 +41,57 @@
 
 /* ── Tipografija ─────────────────────────────────────────────────────── */
 @layer components {
+    /*
+     * Tipografija: tema može da zada TAČNE veličine po nivou za desktop i
+     * telefon (`tipografija` u src/teme/<id>/tema.js → --hero-fs, --h2-lh…);
+     * bez njih važi stara formula (clamp × skala naslova).
+     */
     .nadnaslov {
-        font-family: var(--font-oznaka); text-transform: var(--oznaka-tt); letter-spacing: var(--oznaka-razmak);
-        font-size: var(--oznaka-velicina); font-weight: var(--oznaka-tezina); line-height: 1.4;
+        font-family: var(--oznaka-ff, var(--font-oznaka)); text-transform: var(--oznaka-tt, var(--oznaka-tt-osn, uppercase));
+        letter-spacing: var(--oznaka-ls, var(--oznaka-razmak)); font-size: var(--oznaka-fs, var(--oznaka-velicina));
+        font-weight: var(--oznaka-fw, var(--oznaka-tezina)); line-height: var(--oznaka-lh, 1.4); font-style: var(--oznaka-fst, normal);
     }
     .naslov {
         font-family: var(--font-naslov); font-weight: var(--naslov-tezina); text-transform: var(--naslov-tt);
         letter-spacing: var(--naslov-razmak); line-height: var(--naslov-visina); text-wrap: balance;
     }
-    .naslov-hero { font-size: calc(clamp(2.6rem, 6.4vw, 6.6rem) * var(--naslov-skala)); }
-    .naslov-1 { font-size: calc(clamp(2.3rem, 5vw, 4.6rem) * var(--naslov-skala)); }
-    .naslov-2 { font-size: calc(clamp(1.9rem, 3.6vw, 3.4rem) * var(--naslov-skala)); }
-    .naslov-3 { font-size: calc(clamp(1.3rem, 2vw, 1.75rem) * min(var(--naslov-skala), 1.05)); line-height: 1.2; }
-    .tekst-uvod { font-size: calc(var(--tekst-velicina) * 1.12); line-height: 1.7; }
-    .tekst-telo { font-size: var(--tekst-velicina); line-height: 1.75; text-transform: var(--tekst-tt); }
-    .logo-tekst { font-family: var(--font-logo); }
+    .naslov-hero {
+        font-size: var(--hero-fs, calc(clamp(2.6rem, 6.4vw, 6.6rem) * var(--naslov-skala))); line-height: var(--hero-lh, var(--naslov-visina));
+        letter-spacing: var(--hero-ls, var(--naslov-razmak)); font-weight: var(--hero-fw, var(--naslov-tezina)); text-transform: var(--hero-tt, var(--naslov-tt));
+        font-family: var(--hero-ff, var(--font-naslov));
+    }
+    .naslov-1 {
+        font-size: var(--h1-fs, calc(clamp(2.3rem, 5vw, 4.6rem) * var(--naslov-skala))); line-height: var(--h1-lh, var(--naslov-visina));
+        letter-spacing: var(--h1-ls, var(--naslov-razmak)); font-weight: var(--h1-fw, var(--naslov-tezina)); text-transform: var(--h1-tt, var(--naslov-tt));
+        font-family: var(--h1-ff, var(--font-naslov));
+    }
+    .naslov-2 {
+        font-size: var(--h2-fs, calc(clamp(1.9rem, 3.6vw, 3.4rem) * var(--naslov-skala))); line-height: var(--h2-lh, var(--naslov-visina));
+        letter-spacing: var(--h2-ls, var(--naslov-razmak)); font-weight: var(--h2-fw, var(--naslov-tezina)); text-transform: var(--h2-tt, var(--naslov-tt));
+        font-family: var(--h2-ff, var(--font-naslov));
+    }
+    .naslov-3 {
+        font-size: var(--h3-fs, calc(clamp(1.3rem, 2vw, 1.75rem) * min(var(--naslov-skala), 1.05))); line-height: var(--h3-lh, 1.2);
+        letter-spacing: var(--h3-ls, var(--naslov-razmak)); font-weight: var(--h3-fw, var(--naslov-tezina)); text-transform: var(--h3-tt, var(--naslov-tt));
+        font-family: var(--h3-ff, var(--font-naslov));
+    }
+    .tekst-uvod {
+        font-size: var(--uvod-fs, calc(var(--tekst-velicina) * 1.12)); line-height: var(--uvod-lh, 1.7); letter-spacing: var(--uvod-ls, normal);
+        font-weight: var(--uvod-fw, inherit); font-style: var(--uvod-fst, normal); text-transform: var(--uvod-tt, none); font-family: var(--uvod-ff, inherit);
+    }
+    .tekst-telo {
+        font-size: var(--telo-fs, var(--tekst-velicina)); line-height: var(--telo-lh, 1.75); letter-spacing: var(--telo-ls, normal);
+        text-transform: var(--telo-tt, var(--tekst-tt)); font-weight: var(--telo-fw, inherit);
+    }
+    .logo-tekst {
+        font-family: var(--logo-ff, var(--font-logo)); font-size: var(--logo-fs, inherit); font-weight: var(--logo-fw, inherit);
+        letter-spacing: var(--logo-ls, inherit); text-transform: var(--logo-tt, inherit); line-height: var(--logo-lh, 1);
+    }
+    /* Raspored: širina sadržaja, bočne margine i ritam sekcija po temi (`razmaci`). */
+    .kontejner { margin-inline: auto; width: 100%; max-width: var(--kontejner, 84rem); padding-inline: var(--gutter, 1.25rem); }
+    @media (min-width: 768px) { .kontejner { padding-inline: var(--gutter, 2.5rem); } }
+    .sekcija { padding-block: var(--sekcija-py, 5rem); }
+    @media (min-width: 768px) { .sekcija { padding-block: var(--sekcija-py, 7rem); } }
 
     /* Akcenat u naslovu — svaka tema na svoj način */
     .akcenat { color: inherit; }
@@ -67,19 +103,22 @@
     .na-foto .akcenat, .na-foto[data-akcenat] .akcenat { color: inherit; }
     [data-tema='menhetn'] .na-foto .akcenat { color: rgb(var(--c-akcenat)); }
     [data-tema='hjuston'] .na-foto .akcenat { color: #fff; }
-    [data-tema='noar'] .na-foto .akcenat { color: rgb(var(--c-brand)); }
+    /* Na fotografiji mesing mora biti svetliji (kontrast ≥ 3:1 i na srednjim tonovima). */
+    [data-tema='noar'] .na-foto .akcenat { color: #EED3A4; }
 
     /* ── Dugmad ─────────────────────────────────────────────────────── */
     .dugme {
         @apply inline-flex items-center justify-center gap-3 whitespace-nowrap;
-        font-family: var(--font-oznaka); font-size: max(0.72rem, calc(var(--oznaka-velicina) * 0.98));
-        text-transform: var(--oznaka-tt); letter-spacing: var(--oznaka-razmak); font-weight: var(--oznaka-tezina);
+        font-family: var(--dugme-ff, var(--font-oznaka)); font-size: var(--dugme-fs, max(0.72rem, calc(var(--oznaka-velicina) * 0.98)));
+        text-transform: var(--dugme-tt, var(--oznaka-tt)); letter-spacing: var(--dugme-ls, var(--oznaka-razmak)); font-weight: var(--dugme-fw, var(--oznaka-tezina));
+        line-height: var(--dugme-lh, 1.2);
         border-radius: var(--r-dugme); padding: 0.95rem 1.7rem; min-height: 3rem; border: 1px solid transparent;
         transition: background-color var(--t-brzo) var(--ease), color var(--t-brzo) var(--ease),
             border-color var(--t-brzo) var(--ease), transform var(--t-srednje) var(--ease), box-shadow var(--t-brzo) var(--ease);
         cursor: pointer; text-decoration: none;
     }
-    .dugme:disabled { opacity: .45; cursor: not-allowed; }
+    /* Neaktivno: čitljivo (bez providnosti teksta), ali jasno „ugašeno”. */
+    .dugme:disabled { cursor: not-allowed; background: rgb(var(--c-ink) / .1) !important; border-color: transparent !important; color: rgb(var(--c-ink) / .85) !important; }
     .dugme-primarno { background: rgb(var(--c-brand)); color: rgb(var(--c-na-brand)); border-color: rgb(var(--c-brand)); }
     .dugme-primarno:hover:not(:disabled) { background: rgb(var(--c-ink)); border-color: rgb(var(--c-ink)); color: rgb(var(--c-paper)); }
     [data-tema='noar'] .dugme-primarno:hover:not(:disabled), [data-tema='palma'] .dugme-primarno:hover:not(:disabled) { background: transparent; color: rgb(var(--c-ink)); }
@@ -110,6 +149,12 @@
 
     /* ── Linkovi ────────────────────────────────────────────────────── */
     .link-nav { position: relative; transition: opacity var(--t-brzo) var(--ease), color var(--t-brzo) var(--ease), background-color var(--t-brzo) var(--ease); }
+    /* Linkovi menija mogu imati sopstvenu tipografiju (`tipografija.nav`), inače kao nadnaslov. */
+    .link-nav.nadnaslov {
+        font-family: var(--nav-ff, var(--oznaka-ff, var(--font-oznaka))); font-size: var(--nav-fs, var(--oznaka-fs, var(--oznaka-velicina)));
+        font-weight: var(--nav-fw, var(--oznaka-fw, var(--oznaka-tezina))); letter-spacing: var(--nav-ls, var(--oznaka-ls, var(--oznaka-razmak)));
+        text-transform: var(--nav-tt, var(--oznaka-tt)); line-height: var(--nav-lh, 1.4);
+    }
     [data-link='podvuci'] .link-nav::after {
         content: ''; position: absolute; left: 0; right: 0; bottom: -4px; height: 1px; background: currentColor;
         transform: scaleX(0); transform-origin: right; transition: transform var(--t-srednje) var(--ease);
@@ -147,9 +192,20 @@
         color: rgb(var(--c-ink) / .35); filter: var(--filter-slike);
     }
 
-    .veo-dole { background: linear-gradient(to top, rgb(0 0 0 / .62), rgb(0 0 0 / .18) 45%, rgb(0 0 0 / .05) 70%, rgb(0 0 0 / .28)); }
-    .veo-ravan { background: rgb(0 0 0 / .42); }
-    .na-foto { color: #fff; }
+    /*
+     * Velovi preko fotografija. Mere ih alati/istrazivanje/proveri-kontrast.mjs:
+     * beli tekst mora imati ≥ 4.5:1 i na svetlim delovima fotografije, zato
+     * veo ima i gornji pojas (meni u headeru) i bočni pojas (kolona teksta).
+     */
+    .veo-dole {
+        background:
+            linear-gradient(to bottom, rgb(0 0 0 / .55), rgb(0 0 0 / 0) 160px),
+            linear-gradient(to right, rgb(0 0 0 / .5), rgb(0 0 0 / .12) 55%, rgb(0 0 0 / 0) 80%),
+            linear-gradient(to top, rgb(0 0 0 / .78), rgb(0 0 0 / .42) 45%, rgb(0 0 0 / .12) 75%);
+    }
+    .veo-ravan { background: linear-gradient(to bottom, rgb(0 0 0 / .58), rgb(0 0 0 / .5) 160px, rgb(0 0 0 / .5)); }
+    .veo-kartica { background: linear-gradient(to top, rgb(0 0 0 / .72), rgb(0 0 0 / .3) 50%, rgb(0 0 0 / .45)); }
+    .na-foto { color: #fff; text-shadow: 0 1px 18px rgb(0 0 0 / .25); }
 
     .polje {
         width: 100%; background: rgb(var(--c-povrsina)); color: rgb(var(--c-ink));
@@ -251,3 +307,29 @@
 .maplibregl-cooperative-gesture-screen { font-family: var(--font-tekst); }
 [data-tema='noar'] .maplibregl-ctrl-group { background: rgb(var(--c-povrsina)); }
 [data-tema='noar'] .maplibregl-ctrl-group button .maplibregl-ctrl-icon { filter: invert(1); }
+
+/* ── Logotipi brendova (sa linkovima) i kartice plaćanja ────────────────
+   Logotipi su jednobojni u boji teme (--logo-brenda-filter: crno na svetlim,
+   belo na tamnim temama); tema ili sekcija može da ga pregazi. */
+.brend { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; color: inherit; text-decoration: none; }
+.logo-brenda {
+    display: block; height: var(--logo-brenda-h, 40px); width: auto; max-width: var(--logo-brenda-max, 170px); object-fit: contain;
+    filter: var(--logo-brenda-filter, brightness(0)); opacity: var(--logo-brenda-op, .82);
+    transition: opacity var(--t-brzo) var(--ease), transform var(--t-srednje) var(--ease);
+}
+a.brend:hover .logo-brenda, a.brend:focus-visible .logo-brenda { opacity: 1; }
+.logo-brenda-tekst { font-family: var(--font-naslov); font-size: 1.4rem; white-space: nowrap; }
+.logotipi-stavka { padding-inline: clamp(1.25rem, 3vw, 2.75rem); }
+.logotipi-red { gap: clamp(1rem, 3vw, 2.5rem); }
+.logotipi-red .logotipi-stavka { padding-inline: 0; }
+.kartica-placanja {
+    display: inline-flex; align-items: center; justify-content: center; height: 30px; min-width: 46px; padding: 0 8px;
+    background: #fff; border-radius: 4px; box-shadow: 0 0 0 1px rgb(0 0 0 / .1);
+}
+.kartica-placanja img { display: block; height: 18px; width: auto; max-width: 64px; object-fit: contain; }
+.kartica-placanja-tekst { display: inline-flex; align-items: center; gap: 5px; font: 600 11px/1 var(--font-tekst); color: #1d1d1f; letter-spacing: .02em; text-transform: none; }
+.placanje-footer { margin-block: .25rem .75rem; }
+.placanje-footer ul { justify-content: var(--placanje-poravnanje, flex-start); }
+
+/* Stranica zakazivanja: fiksna traka sa sažetkom na dnu ekrana (do lg) — footer dobija prostor ispod. */
+@media (max-width: 1023.98px) { html.ima-donju-traku footer { padding-bottom: calc(var(--donja-traka-h, 104px) + env(safe-area-inset-bottom, 0px)) !important; } }

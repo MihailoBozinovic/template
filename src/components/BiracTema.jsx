@@ -45,7 +45,7 @@ export default function BiracTema() {
     };
 
     return (
-        <div className={cx('fixed z-[60] font-[Inter,system-ui,sans-serif] text-[#1d1d1f]', naZakazivanju ? 'bottom-4 left-4 hidden lg:block' : 'bottom-4 left-4')} style={{ letterSpacing: 0, textTransform: 'none' }}>
+        <div data-izuzmi-kontrast className={cx('fixed z-[60] font-[Inter,system-ui,sans-serif] text-[#1d1d1f]', naZakazivanju ? 'bottom-4 left-4 hidden lg:block' : 'bottom-4 left-4')} style={{ letterSpacing: 0, textTransform: 'none' }}>
             {otvoren && (
                 <div
                     role="dialog"

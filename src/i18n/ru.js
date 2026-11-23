@@ -5,6 +5,7 @@ export default {
         kontakt: 'Контакты', pitanja: 'Вопросы', zakazi: 'Записаться', meni: 'Меню', zatvori: 'Закрыть меню', jezik: 'Язык',
     },
     opste: {
+        noviProzor: 'откроется в новом окне',
         preskoci: 'Перейти к содержимому', od: 'от', min: 'мин', valuta: 'RSD', saznajVise: 'Подробнее', pogledajSve: 'Смотреть все',
         zatvori: 'Закрыть', nazad: 'Назад', dalje: 'Далее', pozovite: 'Позвонить', pisite: 'Написать нам', whatsapp: 'WhatsApp', viber: 'Viber',
         otvoreno: 'Открыто', zatvoreno: 'Закрыто', otvorenoDo: (v) => `Открыто до ${v}`, otvaraU: (dan, v) => `Откроемся ${dan} в ${v}`,

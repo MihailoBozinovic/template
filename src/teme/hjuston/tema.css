@@ -1,0 +1,238 @@
+/*
+ * Stilovi samo za temu „hjuston” (The Upper Hand). Svaki selektor počinje sa [data-tema='hjuston'].
+ * Pravila nisu u @layer, pa pobeđuju zajednička pravila iz src/index.css (@layer components)
+ * bez !important. Vrednosti: docs/teme/hjuston.md.
+ *
+ * Prelom telefon/desktop: 768px (isto kao tipografija u tema.js).
+ */
+
+/* ── Osnova ────────────────────────────────────────────────────────────── */
+[data-tema='hjuston'] body { font-size: 18px; line-height: 1.6; }
+/* Cormorant ima malu x-visinu: sitan tekst podstranica (text-sm/xs) za stepen veći. */
+[data-tema='hjuston'] #sadrzaj .text-sm { font-size: 1rem; }
+[data-tema='hjuston'] #sadrzaj .text-xs { font-size: .875rem; }
+[data-tema='hjuston'] ::selection { background: rgb(var(--c-brand)); color: #fff; }
+
+@keyframes hj-ulaz { from { opacity: 0; transform: translate3d(0, 20px, 0); } to { opacity: 1; transform: none; } }
+
+/* Uklanja stara pravila za hjuston iz src/index.css (vidi POTREBNO.md):
+   bez skidanja filtera i zuma na hover fotografija, bez senke teksta na fotografiji. */
+[data-tema='hjuston'] .hover-zum:hover .foto,
+[data-tema='hjuston'] .hover-zum:focus-visible .foto { filter: var(--filter-slike); transform: none; }
+[data-tema='hjuston'] .hj-na-foto { color: #fff; }
+
+/* ── Logo ──────────────────────────────────────────────────────────────── */
+[data-tema='hjuston'] .hj-logo {
+    display: inline-flex; align-items: center; color: inherit; text-decoration: none; white-space: nowrap;
+    font-family: var(--logo-ff); font-size: var(--logo-fs); line-height: var(--logo-lh);
+    letter-spacing: var(--logo-ls); font-weight: var(--logo-fw); text-transform: var(--logo-tt);
+}
+
+/* ── Header ────────────────────────────────────────────────────────────── */
+/* Telefon: u toku stranice (61px), beo, logo centriran; ikonica menija je fiksirana u belom kvadratu. */
+[data-tema='hjuston'] .hj-header { position: relative; background: #fff; color: #000; }
+[data-tema='hjuston'] .hj-header-red {
+    display: flex; justify-content: center; align-items: flex-start;
+    height: 61px; padding: 27px 72px 0;
+}
+[data-tema='hjuston'] .hj-dugme-menija {
+    position: fixed; top: 18px; right: 20px; z-index: 60;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 46px; height: 40px; background: #fff; color: #000; cursor: pointer;
+    transition: color var(--t-brzo) var(--ease), background-color var(--t-brzo) var(--ease);
+}
+[data-tema='hjuston'] .hj-dugme-menija:hover { color: rgb(var(--c-hover-nav)); }
+[data-tema='hjuston'] .hj-dugme-menija[aria-expanded='true'] { background: transparent; color: rgb(var(--c-brand)); }
+[data-tema='hjuston'] .hj-header--meni .hj-logo { visibility: hidden; }
+
+@media (min-width: 768px) {
+    /* Desktop: fiksiran 73px; na vrhu početne providan i beo tekst, posle skrola beo sa linijom #EEE. */
+    [data-tema='hjuston'] .hj-header {
+        position: fixed; inset: 0 0 auto 0; z-index: 50;
+        border-bottom: 1px solid rgb(var(--c-okvir-headera));
+        transition: background-color var(--t-brzo) var(--ease), border-color var(--t-brzo) var(--ease), color var(--t-brzo) var(--ease);
+    }
+    [data-tema='hjuston'] .hj-header-red { height: 72px; justify-content: space-between; align-items: center; padding: 0 20px 0 30px; }
+    [data-tema='hjuston'] .hj-dugme-menija { position: static; background: transparent; color: inherit; }
+    [data-tema='hjuston'] .hj-header--providan { background: transparent; color: #fff; border-color: transparent; }
+    /* Otvoren meni: header iznad panela (samo X), bez pozadine i linije. */
+    [data-tema='hjuston'] .hj-header--meni { z-index: 60; background: transparent; border-color: transparent; }
+}
+
+/* ── Meni preko celog ekrana (svi ekrani) — čist fade, bez kaskade ─────── */
+[data-tema='hjuston'] .hj-meni {
+    position: fixed; inset: 0; z-index: 55; background: #fff; color: #000;
+    display: flex; overflow-y: auto; overscroll-behavior: contain;
+    opacity: 0; visibility: hidden;
+    transition: opacity var(--t-srednje) var(--ease), visibility 0s linear var(--t-srednje);
+}
+[data-tema='hjuston'] .hj-meni--otvoren { opacity: 1; visibility: visible; transition: opacity var(--t-srednje) var(--ease), visibility 0s; }
+[data-tema='hjuston'] .hj-meni-sadrzaj { margin: auto; padding: 80px 24px; text-align: center; }
+[data-tema='hjuston'] .hj-meni-oznaka {
+    margin: 0 0 18px; font-family: var(--meniOznaka-ff); font-size: var(--meniOznaka-fs); line-height: var(--meniOznaka-lh);
+    letter-spacing: var(--meniOznaka-ls); font-weight: var(--meniOznaka-fw); text-transform: var(--meniOznaka-tt);
+}
+[data-tema='hjuston'] .hj-meni-lista { list-style: none; margin: 0; padding: 0; }
+[data-tema='hjuston'] .hj-meni-lista li + li { margin-top: 20px; }
+[data-tema='hjuston'] .hj-meni-link {
+    display: inline-block; color: rgb(var(--c-brand)); text-decoration: none;
+    font-family: var(--meni-ff); font-size: var(--meni-fs); line-height: var(--meni-lh); font-weight: var(--meni-fw);
+    transition: color var(--t-brzo) var(--ease);
+}
+[data-tema='hjuston'] .hj-meni-link:hover, [data-tema='hjuston'] .hj-meni-link[aria-current='page'] { color: #000; }
+[data-tema='hjuston'] .hj-meni-jezici { margin-top: 36px; display: flex; justify-content: center; }
+[data-tema='hjuston'] .hj-meni-jezici a { font-size: 10px; letter-spacing: 2px; }
+
+/* ── Dugmad: jedna vrsta — crveno, Raleway 10px/700/verzal, 12px 20px, 34px ── */
+[data-tema='hjuston'] .dugme {
+    padding: 12px 20px; min-height: 34px; gap: 8px; border-width: 0;
+    transition: background-color var(--t-brzo) var(--ease), color var(--t-brzo) var(--ease), border-color var(--t-brzo) var(--ease);
+}
+[data-tema='hjuston'] .dugme-primarno:hover:not(:disabled) { background: #000; border-color: #000; color: #fff; }
+[data-tema='hjuston'] .dugme-sekundarno { border-width: 1px; border-color: #000; padding: 11px 19px; }
+[data-tema='hjuston'] .dugme-sekundarno:hover:not(:disabled) { background: #000; color: #fff; }
+/* Na fotografiji dugme ostaje crveno; hover belo sa crnim tekstom. */
+[data-tema='hjuston'] .dugme-foto { background: rgb(var(--c-brand)); color: #fff; border-color: rgb(var(--c-brand)); }
+[data-tema='hjuston'] .dugme-foto:hover { background: #fff; border-color: #fff; color: #000; }
+[data-tema='hjuston'] .dugme-foto-obris { border-width: 1px; padding: 11px 19px; }
+
+/* ── Linkovi: crveni; hover na belom crno, na fotografiji #CCC sa linijom ── */
+[data-tema='hjuston'] .hj-link { color: rgb(var(--c-brand)); text-decoration: none; transition: color var(--t-brzo) var(--ease), border-color var(--t-brzo) var(--ease); }
+[data-tema='hjuston'] .hj-link:hover { color: #000; }
+[data-tema='hjuston'] .hj-na-foto .hj-link { color: #fff; }
+[data-tema='hjuston'] .hj-na-foto .hj-link:hover { color: rgb(var(--c-hover-na-foto)); border-bottom: 1px solid rgb(var(--c-hover-na-foto)); }
+
+/* ── Hero ──────────────────────────────────────────────────────────────── */
+[data-tema='hjuston'] .hj-hero {
+    position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden;
+    min-height: 80svh; padding: 60px 0 100px; background: rgb(var(--c-tamna)); color: #fff;
+}
+[data-tema='hjuston'] .hj-pozadina { position: absolute; inset: 0; border-radius: 0; background: rgb(var(--c-tamna)); }
+[data-tema='hjuston'] .hj-hero .foto { filter: var(--filter-hero); }
+/* Na desktopu je providan header preko heroja: gornji pojas vela drži beli logo čitljivim. */
+[data-tema='hjuston'] .hj-hero .hj-veo { background: linear-gradient(to bottom, rgb(0 0 0 / .62), rgb(0 0 0 / var(--hj-veo, .4)) 150px); }
+[data-tema='hjuston'] .hj-veo { position: absolute; inset: 0; z-index: 1; background: rgb(0 0 0 / var(--hj-veo, .4)); pointer-events: none; }
+[data-tema='hjuston'] .hj-hero-sadrzaj {
+    position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; text-align: center;
+    width: 100%; max-width: 1120px; padding: 0 24px;
+    animation: hj-ulaz var(--reveal-trajanje) var(--ease) both;
+}
+[data-tema='hjuston'] .hj-zvezdice { display: inline-flex; gap: 7px; color: #fff; }
+[data-tema='hjuston'] .hj-hero-zvezdice { margin-top: 10px; }
+[data-tema='hjuston'] .hj-podnaslov {
+    margin: 15px 0 0; font-family: var(--podnaslov-ff); font-size: var(--podnaslov-fs); line-height: var(--podnaslov-lh);
+    letter-spacing: var(--podnaslov-ls); text-transform: var(--podnaslov-tt); font-weight: var(--podnaslov-fw);
+}
+[data-tema='hjuston'] .hj-hero-dugme { margin-top: 45px; }
+[data-tema='hjuston'] .hj-mreze { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; list-style: none; margin: 0; padding: 0; }
+[data-tema='hjuston'] .hj-hero-mreze { margin-top: 40px; }
+[data-tema='hjuston'] .hj-mreza {
+    display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px;
+    border-radius: 3px; background: rgb(var(--c-plocica)); color: #000;
+    transition: background-color var(--t-brzo) var(--ease), color var(--t-brzo) var(--ease);
+}
+[data-tema='hjuston'] .hj-mreza:hover { background: #000; color: #fff; }
+@media (min-width: 768px) {
+    [data-tema='hjuston'] .hj-hero { min-height: 100svh; padding: 72px 0 73px; }
+}
+
+/* ── Sekcije početne: belo / fotografija naizmenično, sve centrirano ──── */
+[data-tema='hjuston'] .hj-sekcija { position: relative; padding: 100px 0; background: #fff; color: #000; }
+[data-tema='hjuston'] .hj-foto-sekcija { overflow: hidden; background: rgb(var(--c-tamna)); color: #fff; }
+@media (min-width: 768px) {
+    [data-tema='hjuston'] .hj-sekcija { padding: 170px 0 180px; }
+}
+[data-tema='hjuston'] .hj-blok { position: relative; z-index: 2; max-width: calc(900px + 48px); margin: 0 auto; padding: 0 24px; text-align: center; }
+[data-tema='hjuston'] .hj-blok--siroko { max-width: calc(1220px + 2 * var(--gutter)); padding: 0 var(--gutter); }
+[data-tema='hjuston'] .hj-uvod { margin: 20px 0 0; }
+[data-tema='hjuston'] .hj-dugmad { display: flex; flex-direction: column; align-items: center; gap: 48px; margin-top: 45px; }
+[data-tema='hjuston'] .hj-lokacija-tekst {
+    margin: 25px 0 0; text-wrap: balance; font-family: var(--lokacija-ff); font-size: var(--lokacija-fs); line-height: var(--lokacija-lh); font-weight: var(--lokacija-fw);
+}
+
+/* Usluge: sive pločice #F5F5F5, 3 kolone, razmak 20px, širina 1220px */
+[data-tema='hjuston'] .hj-plocice { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; list-style: none; margin: 50px 0 0; padding: 0; }
+[data-tema='hjuston'] .hj-plocica {
+    flex: 1 1 100%; display: flex; flex-direction: column; align-items: center; text-align: center;
+    padding: 64px 40px 70px; background: rgb(var(--c-plocica));
+}
+@media (min-width: 768px) { [data-tema='hjuston'] .hj-plocica { flex: 0 1 calc((100% - 20px) / 2); } }
+@media (min-width: 1024px) { [data-tema='hjuston'] .hj-plocica { flex-basis: calc((100% - 40px) / 3); } }
+[data-tema='hjuston'] .hj-plocica-ikona { color: #000; }
+[data-tema='hjuston'] .hj-plocica-naslov {
+    margin: 18px 0 0; color: rgb(var(--c-brand));
+    font-family: var(--plocicaNaslov-ff); font-size: var(--plocicaNaslov-fs); line-height: var(--plocicaNaslov-lh);
+    letter-spacing: var(--plocicaNaslov-ls); font-weight: var(--plocicaNaslov-fw); text-transform: var(--plocicaNaslov-tt);
+}
+[data-tema='hjuston'] .hj-plocica-tekst {
+    margin: 24px 0 0; max-width: 300px;
+    font-family: var(--plocicaTekst-ff); font-size: var(--plocicaTekst-fs); line-height: var(--plocicaTekst-lh);
+}
+[data-tema='hjuston'] .hj-plocica-link { margin-top: 4px; font-size: var(--telo-fs); line-height: var(--telo-lh); }
+
+/* Recenzije: slajder bez kartica */
+[data-tema='hjuston'] .hj-slajder { --hj-po: 1; max-width: 880px; margin: 50px auto 0; overflow: hidden; }
+@media (min-width: 768px) { [data-tema='hjuston'] .hj-slajder { --hj-po: 2; } }
+[data-tema='hjuston'] .hj-slajder-traka {
+    display: flex; align-items: flex-start; list-style: none; margin: 0; padding: 0;
+    transform: translate3d(calc(var(--hj-i, 0) * -100% / var(--hj-po)), 0, 0);
+    transition: transform 400ms var(--ease);
+}
+[data-tema='hjuston'] .hj-slajd { flex: 0 0 calc(100% / var(--hj-po)); padding: 0 24px; text-align: center; }
+@media (min-width: 768px) { [data-tema='hjuston'] .hj-slajd { padding: 0 40px; } }
+[data-tema='hjuston'] .hj-slajd-zvezdice { display: inline-flex; gap: 2px; color: rgb(var(--c-zvezdice)); }
+[data-tema='hjuston'] .hj-citat {
+    margin: 50px 0 0; font-family: var(--citat-ff); font-size: var(--citat-fs); line-height: var(--citat-lh); font-style: var(--citat-fst);
+}
+[data-tema='hjuston'] .hj-citat b, [data-tema='hjuston'] .hj-citat strong { font-weight: 700; }
+[data-tema='hjuston'] .hj-autor { margin-top: 40px; font-size: var(--telo-fs); line-height: var(--telo-lh); }
+[data-tema='hjuston'] .hj-tacke { display: flex; justify-content: center; margin-top: 40px; }
+[data-tema='hjuston'] .hj-tacka { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; cursor: pointer; }
+[data-tema='hjuston'] .hj-tacka::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: rgb(var(--c-tacka)); transition: background-color var(--t-brzo) var(--ease); }
+[data-tema='hjuston'] .hj-tacka[aria-current='true']::before, [data-tema='hjuston'] .hj-tacka:hover::before { background: rgb(var(--c-tacka-aktivna)); }
+
+/* ── Footer: beo, centriran, jedan red linkova + potpis ───────────────── */
+[data-tema='hjuston'] .hj-footer { margin-top: auto; padding: 40px 20px; background: #fff; color: #000; text-align: center; }
+@media (min-width: 768px) { [data-tema='hjuston'] .hj-footer { padding: 60px 40px; } }
+[data-tema='hjuston'] .hj-footer-linkovi { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 46px; list-style: none; margin: 0; padding: 0; }
+@media (max-width: 767.98px) { [data-tema='hjuston'] .hj-footer-linkovi { gap: 2px 26px; } }
+[data-tema='hjuston'] .hj-footer-link {
+    display: inline-block; padding: 8px 0; color: #000; text-decoration: none;
+    font-family: var(--footer-ff); font-size: var(--footer-fs); line-height: var(--footer-lh);
+    letter-spacing: var(--footer-ls); font-weight: var(--footer-fw); text-transform: var(--footer-tt);
+    transition: color var(--t-brzo) var(--ease);
+}
+[data-tema='hjuston'] .hj-footer-link:hover, [data-tema='hjuston'] .hj-potpis-link:hover, [data-tema='hjuston'] .hj-footer-mali:hover { color: rgb(var(--c-hover-nav)); }
+[data-tema='hjuston'] .hj-potpis { margin: 26px 0 0; font-family: var(--potpis-ff); font-size: var(--potpis-fs); line-height: var(--potpis-lh); }
+[data-tema='hjuston'] .hj-potpis-link { color: inherit; text-decoration: none; transition: color var(--t-brzo) var(--ease); }
+[data-tema='hjuston'] .hj-pravno { max-width: 900px; margin: 14px auto 0; font-size: 15px; line-height: 1.6; color: rgb(var(--c-tamna)); }
+[data-tema='hjuston'] .hj-footer-dno { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 28px; margin-top: 10px; }
+[data-tema='hjuston'] .hj-footer-pravno { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 22px; list-style: none; margin: 0; padding: 0; }
+[data-tema='hjuston'] .hj-footer-mali {
+    display: inline-flex; min-height: 32px; align-items: center; color: rgb(var(--c-tamna)); font-size: 15px; text-decoration: none;
+    transition: color var(--t-brzo) var(--ease);
+}
+[data-tema='hjuston'] .hj-footer-jezici a { font-size: 10px; letter-spacing: 2px; color: #000; }
+
+/* ── Podstranice ───────────────────────────────────────────────────────── */
+[data-tema='hjuston'] .hj-zaglavlje { padding: 56px 0 40px; text-align: center; }
+@media (min-width: 768px) { [data-tema='hjuston'] .hj-zaglavlje { padding: 190px 0 64px; } }
+[data-tema='hjuston'] .hj-zaglavlje-blok { max-width: calc(900px + 48px); margin: 0 auto; padding: 0 24px; }
+[data-tema='hjuston'] .hj-zaglavlje-blok > .nadnaslov, [data-tema='hjuston'] .hj-zaglavlje-blok > span { margin-left: auto; margin-right: auto; }
+[data-tema='hjuston'] .hj-zaglavlje-slika { max-width: var(--kontejner); margin: 48px auto 0; padding: 0 var(--gutter); }
+
+/*
+ * Lepljive trake podstranica (Cenovnik, Zakazivanje) su u zajedničkom kodu
+ * podešene na header od 76px (`top-[76px]`). Ovde: desktop 73px; telefon —
+ * header nije fiksiran, pa traka staje uz vrh, sa mestom za kvadrat menija.
+ * Kompaktno zaglavlje zakazivanja (`pt-[92px]`) računa sa fiksiranim headerom
+ * na telefonu — ovde je header u toku stranice, pa je razmak manji.
+ */
+[data-tema='hjuston'] .sticky.top-\[76px\] { top: 73px; }
+@media (max-width: 767.98px) {
+    [data-tema='hjuston'] .sticky.top-\[76px\] { top: 0; padding-right: 76px; }
+    [data-tema='hjuston'] #sadrzaj > .pt-\[92px\] { padding-top: 36px; }
+}
+
+/* Kartice plaćanja u centriranom footeru */
+[data-tema='hjuston'] .placanje-footer { --placanje-poravnanje: center; display: flex; justify-content: center; }

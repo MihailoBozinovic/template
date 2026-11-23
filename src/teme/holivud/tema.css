@@ -1,0 +1,312 @@
+/*
+ * Stilovi samo za temu „holivud” (Nine Zero One). Svaki selektor počinje sa
+ * [data-tema='holivud']. Ovaj fajl nije u @layer-u, pa pobeđuje pravila iz
+ * `@layer components` / `utilities` u src/index.css.
+ */
+
+/* ── Promenljive ────────────────────────────────────────────────────── */
+:root[data-tema='holivud'] { --hv-najava: 45px; --hv-crna: 0 0 0; }
+@media (max-width: 767.98px) { :root[data-tema='holivud'] { --hv-najava: 37px; } }
+/* Tablet: raspored telefona (hamburger), niži header */
+@media (min-width: 768px) and (max-width: 1199.98px) { :root[data-tema='holivud'] { --header-h: 64px; } }
+
+[data-tema='holivud'] :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+
+/* Ulaz bez pomaka i bez kaskade: samo opacity (fade-in 800 ms) */
+@keyframes hv-fade { from { opacity: 0; } to { opacity: 1; } }
+[data-tema='holivud'] .ulaz-odmah,
+[data-tema='holivud'] .animate-fade-up { animation-name: hv-fade; animation-timing-function: ease; }
+
+/* ── Najava ─────────────────────────────────────────────────────────── */
+[data-tema='holivud'] .hv-najava {
+    display: flex; align-items: center; justify-content: center; height: var(--hv-najava); padding-inline: 16px;
+    background: rgb(var(--c-najava)); color: #fff; text-align: center;
+    font-family: var(--font-tekst); font-size: 12px; line-height: 21px; letter-spacing: 1px; text-transform: uppercase;
+}
+[data-tema='holivud'] .hv-najava-link { font-weight: 700; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+[data-tema='holivud'] .hv-najava-link:hover { text-decoration-color: transparent; }
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+[data-tema='holivud'] .hv-header { transition: background-color .3s ease, color .3s ease; }
+[data-tema='holivud'] .hv-preko { margin-bottom: calc(-1 * var(--header-h)); }
+[data-tema='holivud'] .hv-providan { background: transparent; color: #fff; }
+[data-tema='holivud'] .hv-pun { background: rgb(var(--c-paper)); color: rgb(var(--c-ink)); }
+[data-tema='holivud'] .hv-header::after {
+    content: ''; position: absolute; left: var(--gutter); right: var(--gutter); bottom: 0; height: 1px;
+    background: rgb(var(--c-ink)); transition: background-color .3s ease; pointer-events: none;
+}
+[data-tema='holivud'] .hv-providan::after { background: rgb(255 255 255 / .35); }
+[data-tema='holivud'] .hv-header-red { height: var(--header-h); padding-inline: var(--gutter); }
+
+[data-tema='holivud'] .hv-nav { display: flex; flex-wrap: wrap; align-items: center; column-gap: 26px; row-gap: 30px; max-width: 470px; }
+[data-tema='holivud'] .hv-nav-link {
+    position: relative; display: inline-block; white-space: nowrap;
+    font-family: var(--nav-ff); font-size: var(--nav-fs); line-height: var(--nav-lh); letter-spacing: var(--nav-ls);
+    font-weight: var(--nav-fw); text-transform: var(--nav-tt);
+}
+/* Linija širine teksta: scaleX(0) → 1 sleva, opacity 0 → 1, .3s */
+[data-tema='holivud'] .hv-nav-link::before {
+    content: ''; position: absolute; left: 0; right: var(--nav-ls); bottom: -6px; height: 1px; background: currentColor;
+    transform: scaleX(0); transform-origin: left; opacity: 0; transition: transform .3s ease, opacity .3s ease;
+}
+[data-tema='holivud'] .hv-nav-link:hover::before,
+[data-tema='holivud'] .hv-nav-link[aria-current]::before { transform: scaleX(1); opacity: 1; }
+
+[data-tema='holivud'] .hv-logo { transition: opacity .3s ease; }
+[data-tema='holivud'] .hv-logo:hover { opacity: .7; }
+[data-tema='holivud'] .hv-ikona {
+    display: inline-flex; width: 40px; height: 40px; align-items: center; justify-content: center;
+    transition: transform .3s ease;
+}
+[data-tema='holivud'] .hv-ikona:hover { transform: scale(1.2); }
+
+/* Mobilni meni: papir preko celog ekrana, stavke u ručno crtanom fontu */
+[data-tema='holivud'] .hv-meni-link {
+    font-family: var(--meni-ff); font-size: var(--meni-fs); line-height: var(--meni-lh); letter-spacing: var(--meni-ls); font-weight: 400;
+}
+[data-tema='holivud'] .hv-meni > div { padding-top: calc(var(--hv-najava) + var(--header-h) + 24px); }
+
+/* ── Dugmad ─────────────────────────────────────────────────────────── */
+[data-tema='holivud'] .dugme {
+    min-height: 50px; padding: 16px 40px; border-width: 1px; border-style: solid; border-radius: 0; gap: .6rem;
+    transition: color .4s ease, background-color .4s ease, border-color .4s ease, opacity .3s ease;
+}
+[data-tema='holivud'] .dugme-foto { background: #fff; color: #000; border-color: #fff; }
+[data-tema='holivud'] .dugme-foto:hover,
+[data-tema='holivud'] .hv-slika-link:hover .dugme-foto { background: #000; color: #fff; border-color: #fff; }
+[data-tema='holivud'] .dugme-primarno { background: transparent; color: #000; border-color: #000; border-width: 1px; padding-inline: 25.5px; }
+[data-tema='holivud'] .dugme-primarno:hover:not(:disabled) { background: #000; color: #fff; border-color: #000; }
+[data-tema='holivud'] .dugme-sekundarno { background: transparent; color: rgb(var(--c-ink)); border-color: rgb(var(--c-linija)); }
+[data-tema='holivud'] .dugme-sekundarno:hover:not(:disabled) { background: #000; color: #fff; border-color: #000; }
+[data-tema='holivud'] .dugme-foto-obris { background: transparent; color: #fff; border-color: #fff; }
+[data-tema='holivud'] .dugme-foto-obris:hover { background: #fff; color: #000; }
+[data-tema='holivud'] .hv-dugme-uze { padding-inline: 25.5px; }
+
+/* Tekst-linkovi: podvučeni, na hover podvlaka nestaje */
+[data-tema='holivud'] .hv-tekst-link {
+    font-family: var(--font-tekst); font-size: 12px; line-height: 15.6px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+    text-decoration: underline; text-underline-offset: .4rem; text-decoration-thickness: 1px; transition: text-decoration-color .3s ease;
+}
+[data-tema='holivud'] .hv-tekst-link:hover { text-decoration-color: transparent; }
+[data-tema='holivud'] .podvucen { transition: text-decoration-color .3s ease; }
+[data-tema='holivud'] .podvucen:hover { text-decoration-color: transparent; }
+
+/* ── Tipografske klase teme ─────────────────────────────────────────── */
+[data-tema='holivud'] .hv-tekst-1 { font-size: 12px; line-height: 21px; text-transform: uppercase; }
+[data-tema='holivud'] .hv-tekst-panel { font-size: 14px; line-height: 21.7px; text-transform: uppercase; }
+[data-tema='holivud'] .hv-oznaka-bela { font-size: 11px; line-height: 15.4px; letter-spacing: 1.76px; text-transform: uppercase; }
+[data-tema='holivud'] .hv-oznaka-naslov { font-family: var(--font-naslov); font-size: 15px; line-height: 18px; letter-spacing: 3px; font-weight: 700; }
+[data-tema='holivud'] .hv-h2-foto { font-family: var(--font-tekst); font-size: 28.8px; line-height: 31.1px; letter-spacing: .576px; font-weight: 400; }
+[data-tema='holivud'] .hv-grotesk { font-family: var(--font-tekst); font-size: 40px; line-height: 44px; letter-spacing: -1.5px; font-weight: 700; text-transform: uppercase; }
+@media (max-width: 767.98px) {
+    [data-tema='holivud'] .hv-h2-foto { font-size: 24px; line-height: 25.92px; letter-spacing: .48px; }
+    [data-tema='holivud'] .hv-grotesk { font-size: 35px; line-height: 42px; }
+}
+
+/* ── Fotografije: bez zuma, hover = opacity .7 ──────────────────────── */
+[data-tema='holivud'] .foto { transition: opacity .3s ease; }
+[data-tema='holivud'] .hv-slika-link:hover .foto,
+[data-tema='holivud'] .hover-zum:hover .foto,
+[data-tema='holivud'] .hover-zum:focus-visible .foto { opacity: .7; transform: none; }
+
+/* ── Hero ───────────────────────────────────────────────────────────── */
+[data-tema='holivud'] .hv-hero { height: calc(100svh - var(--hv-najava)); min-height: 600px; }
+[data-tema='holivud'] .hv-hero-veo {
+    /* referenca: samo 0 → .25 odozdo; gornji pojas i ugao dole desno su za kontrast menija i teksta */
+    background:
+        linear-gradient(180deg, rgb(0 0 0 / .62) 0, rgb(0 0 0 / .55) 120px, rgb(0 0 0 / .2) 190px, rgb(0 0 0 / 0) 280px),
+        radial-gradient(70% 62% at 100% 100%, rgb(0 0 0 / .5) 0%, rgb(0 0 0 / .36) 50%, rgb(0 0 0 / 0) 100%),
+        linear-gradient(180deg, rgb(0 0 0 / 0) 35%, rgb(0 0 0 / .3) 100%);
+}
+[data-tema='holivud'] .hv-hero-tekst { padding: 0 var(--gutter) 76px; }
+[data-tema='holivud'] .hv-hero-naslov { margin-top: 12px; max-width: 64rem; }
+[data-tema='holivud'] .hv-hero-podnaslov {
+    font-family: var(--font-naslov); font-size: 17px; line-height: 28px; letter-spacing: 3px; text-transform: uppercase;
+    margin-top: 14px; max-width: 58rem; text-wrap: balance;
+}
+[data-tema='holivud'] .hv-hero-dugme { margin-top: 48px; }
+@media (max-width: 767.98px) {
+    [data-tema='holivud'] .hv-hero { height: 624px; min-height: 0; }
+    [data-tema='holivud'] .hv-hero-veo {
+        background:
+            linear-gradient(180deg, rgb(0 0 0 / .62) 0, rgb(0 0 0 / .5) 64px, rgb(0 0 0 / .15) 130px, rgb(0 0 0 / 0) 190px),
+            linear-gradient(180deg, rgb(0 0 0 / 0) 20%, rgb(0 0 0 / .42) 52%, rgb(0 0 0 / .5) 100%);
+    }
+    [data-tema='holivud'] .hv-hero-tekst { padding-bottom: 70px; }
+    [data-tema='holivud'] .hv-hero-naslov { margin-top: 14px; }
+    [data-tema='holivud'] .hv-hero-podnaslov { margin-top: 16px; max-width: 21rem; }
+    [data-tema='holivud'] .hv-hero-dugme { margin-top: 40px; }
+}
+
+/* ── Marquee brendova: bez naslova, razdvajača i maske; pauza na hover ── */
+[data-tema='holivud'] .hv-brendovi { background: rgb(var(--c-paper)); }
+[data-tema='holivud'] .hv-marquee { --gap: 80px; display: flex; gap: var(--gap); height: 109px; align-items: center; overflow: hidden; }
+[data-tema='holivud'] .hv-marquee-traka {
+    display: flex; flex-shrink: 0; min-width: 100%; align-items: center; justify-content: space-around; gap: var(--gap);
+    margin: 0; padding: 0; list-style: none; animation: hv-marquee var(--hv-marquee-t, 60s) linear infinite;
+}
+[data-tema='holivud'] .hv-marquee-traka li {
+    font-family: var(--font-tekst); font-size: 20px; line-height: 1; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; white-space: nowrap; color: rgb(var(--c-ink));
+}
+[data-tema='holivud'] .hv-marquee:hover .hv-marquee-traka { animation-play-state: paused; }
+@keyframes hv-marquee { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(calc(-100% - var(--gap)), 0, 0); } }
+@media (max-width: 767.98px) {
+    [data-tema='holivud'] .hv-marquee { --gap: 48px; height: 84px; }
+    [data-tema='holivud'] .hv-marquee-traka li { font-size: 16px; letter-spacing: 2px; }
+}
+@media (prefers-reduced-motion: reduce) { [data-tema='holivud'] .hv-marquee-traka { animation: none !important; } }
+
+/* ── Paneli od ivice do ivice ───────────────────────────────────────── */
+[data-tema='holivud'] .hv-red-panela,
+[data-tema='holivud'] .hv-sav-16,
+[data-tema='holivud'] .hv-sav-32 { gap: 1px; background: rgb(var(--c-paper)); }
+[data-tema='holivud'] .hv-sav-16 { margin-top: 16px; }
+[data-tema='holivud'] .hv-sav-32 { margin-top: 32px; }
+[data-tema='holivud'] .hv-panel-pun { aspect-ratio: 390 / 454; }
+@media (min-width: 768px) { [data-tema='holivud'] .hv-panel-pun { aspect-ratio: auto; height: max(600px, 100svh); } }
+
+[data-tema='holivud'] .hv-urednicki-levo { aspect-ratio: 390 / 501; }
+[data-tema='holivud'] .hv-urednicki-desno { aspect-ratio: 390 / 496; }
+[data-tema='holivud'] .hv-pojas { padding: 32px 24px; }
+@media (min-width: 768px) {
+    [data-tema='holivud'] .hv-urednicki-levo { aspect-ratio: 720 / 765; }
+    [data-tema='holivud'] .hv-urednicki-desno { aspect-ratio: auto; min-height: 280px; }
+    [data-tema='holivud'] .hv-pojas { min-height: 146px; padding: 28px var(--gutter) 48px; }
+}
+
+/* Usluge: parovi 1:1 (telefon 4:5), natpis pri dnu na 32 px */
+[data-tema='holivud'] .hv-usluge { gap: 16px 1px; }
+[data-tema='holivud'] .hv-usluga { aspect-ratio: 4 / 5; padding-bottom: 32px; }
+@media (min-width: 768px) {
+    [data-tema='holivud'] .hv-usluga { aspect-ratio: 1 / 1; }
+    [data-tema='holivud'] .hv-usluga-sama { aspect-ratio: 2 / 1; }
+}
+[data-tema='holivud'] .hv-usluga-veo {
+    background: linear-gradient(to top, rgb(0 0 0 / .66) 0, rgb(0 0 0 / .52) 210px, rgb(0 0 0 / .2) 330px, rgb(0 0 0 / 0) 440px);
+}
+
+/* Fotografija + crni panel */
+[data-tema='holivud'] .hv-tim-slika { aspect-ratio: 390 / 460; }
+[data-tema='holivud'] .hv-crni-panel { padding: 96px 24px; }
+@media (min-width: 768px) {
+    [data-tema='holivud'] .hv-tim-slika { aspect-ratio: 4 / 5; }
+    [data-tema='holivud'] .hv-crni-panel { padding: 96px var(--gutter); }
+}
+
+/* ── Izdvojene sekcije (kontejner 1216, slika 544×650) ──────────────── */
+[data-tema='holivud'] .hv-izdvojeno { padding-block: 40px; }
+[data-tema='holivud'] .hv-izdvojeno-red { padding-inline: 32px; row-gap: 40px; }
+[data-tema='holivud'] .hv-izdvojeno-slika { width: 100%; }
+@media (min-width: 768px) {
+    [data-tema='holivud'] .hv-izdvojeno { padding-block: 96px; }
+    [data-tema='holivud'] .hv-izdvojeno-red { padding-inline: var(--gutter); }
+    [data-tema='holivud'] .hv-izdvojeno-slika { width: min(544px, 100%); }
+    [data-tema='holivud'] .hv-izdvojeno-tekst { padding-inline: 48px; }
+}
+@media (min-width: 1216px) { [data-tema='holivud'] .hv-izdvojeno-red { padding-inline: 0; } }
+
+/* ── Pločice poverenja ──────────────────────────────────────────────── */
+[data-tema='holivud'] .hv-plocice-niz {
+    display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 1px;
+    border-block: 1px solid rgb(var(--c-ink)); background: rgb(var(--c-ink));
+}
+[data-tema='holivud'] .hv-plocica {
+    flex: 0 0 calc(100% / 1.1); scroll-snap-align: start; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 372px; padding: 48px 24px; text-align: center; background: rgb(var(--c-paper)); color: rgb(var(--c-ink));
+}
+[data-tema='holivud'] .hv-plocica-akcenat { background: rgb(var(--c-akcenat)); }
+@media (min-width: 750px) {
+    [data-tema='holivud'] .hv-plocice-niz { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow: visible; }
+}
+[data-tema='holivud'] .hv-krug {
+    display: inline-flex; width: 64px; height: 64px; align-items: center; justify-content: center; border-radius: 999px;
+    background: #000; color: #fff;
+}
+[data-tema='holivud'] .hv-plocica-link {
+    margin-top: 16px; font-family: var(--font-naslov); font-size: 15px; line-height: 19px; letter-spacing: 3px; font-weight: 700;
+    text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; transition: text-decoration-color .3s ease;
+}
+[data-tema='holivud'] .hv-plocica-link:hover { text-decoration-color: transparent; }
+
+/* ── Footer ─────────────────────────────────────────────────────────── */
+[data-tema='holivud'] .hv-footer-gore { padding-top: 40px; padding-bottom: 40px; }
+[data-tema='holivud'] .hv-footer-mreza { row-gap: 40px; column-gap: 24px; }
+@media (min-width: 768px) {
+    [data-tema='holivud'] .hv-footer-gore { padding-top: 96px; padding-bottom: 48px; }
+    [data-tema='holivud'] .hv-footer-mreza { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) { [data-tema='holivud'] .hv-footer-mreza { grid-template-columns: 28fr 28fr 44fr; } }
+[data-tema='holivud'] .hv-footer-naslov {
+    margin: 0 0 26px; font-family: var(--font-naslov); font-size: 22px; line-height: 33px; letter-spacing: 3px; font-weight: 400;
+}
+[data-tema='holivud'] .hv-footer-lista { font-size: var(--footer-fs); line-height: var(--footer-lh); }
+[data-tema='holivud'] .hv-footer-lista li + li { margin-top: 8px; }
+[data-tema='holivud'] .hv-footer-link { color: rgb(var(--c-ink)); text-decoration: none; text-underline-offset: 4px; }
+[data-tema='holivud'] .hv-footer-link:hover { text-decoration: underline; }
+[data-tema='holivud'] .hv-mreza { display: inline-flex; width: 24px; height: 24px; color: rgb(var(--c-ink)); transition: opacity .3s ease; }
+[data-tema='holivud'] .hv-mreza:hover { opacity: .7; }
+
+[data-tema='holivud'] .hv-poruka-polje {
+    width: 100%; height: 60px; padding: 0 134px 0 24px; background: #fff; color: rgb(var(--c-ink));
+    border: 1px solid rgb(var(--c-linija)); border-radius: 0; font-size: 14px; transition: border-color .3s ease;
+}
+[data-tema='holivud'] .hv-poruka-polje::placeholder { color: rgb(17 17 17 / .62); }
+[data-tema='holivud'] .hv-poruka-polje:hover { border-color: currentColor; }
+[data-tema='holivud'] .hv-poruka-polje:focus { outline: 2px solid currentColor; outline-offset: 3px; }
+[data-tema='holivud'] .hv-poruka-dugme {
+    position: absolute; top: 0; right: 0; height: 60px; padding: 0 26px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    color: rgb(var(--c-ink)); text-underline-offset: .4rem;
+}
+[data-tema='holivud'] .hv-poruka-dugme:hover { text-decoration: underline; }
+[data-tema='holivud'] .hv-footer-jezik {
+    display: inline-flex; align-items: center; gap: 10px; padding-bottom: 6px; border-bottom: 1px solid rgb(var(--c-ink));
+    font-size: 12px; line-height: 15.6px; letter-spacing: .5px; text-transform: uppercase;
+}
+[data-tema='holivud'] .hv-jezik-link { text-decoration: none; }
+[data-tema='holivud'] .hv-jezik-link[aria-current] { font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+
+[data-tema='holivud'] .hv-harmonika { border-top: 1px solid rgb(var(--c-ink) / .15); }
+[data-tema='holivud'] .hv-harmonika summary {
+    display: flex; align-items: center; justify-content: space-between; padding: 14px 0; cursor: pointer; list-style: none;
+    font-size: 14.4px; line-height: 23.04px;
+}
+[data-tema='holivud'] .hv-harmonika summary::-webkit-details-marker { display: none; }
+[data-tema='holivud'] .hv-znak { position: relative; width: 18px; height: 18px; }
+[data-tema='holivud'] .hv-znak::before,
+[data-tema='holivud'] .hv-znak::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: currentColor; }
+[data-tema='holivud'] .hv-znak::after { transform: rotate(90deg); transition: transform .3s ease; }
+[data-tema='holivud'] .hv-harmonika[open] .hv-znak::after { transform: rotate(0deg); }
+[data-tema='holivud'] .hv-footer-mreze-telefon { margin-top: 8px; padding-top: 28px; border-top: 1px solid rgb(var(--c-ink)); }
+
+[data-tema='holivud'] .hv-footer-dno {
+    display: flex; flex-direction: column; gap: 16px; padding-top: 24px; padding-bottom: 40px;
+    font-size: 12px; line-height: 19px; color: rgb(var(--c-ink));
+}
+@media (min-width: 1024px) {
+    [data-tema='holivud'] .hv-footer-dno { flex-direction: row; align-items: flex-start; justify-content: space-between; padding-bottom: 48px; }
+}
+
+/* ── Podstranice ────────────────────────────────────────────────────── */
+[data-tema='holivud'] .hv-zaglavlje { padding-top: 40px; padding-bottom: 32px; }
+@media (min-width: 768px) { [data-tema='holivud'] .hv-zaglavlje { padding-top: 80px; padding-bottom: 56px; } }
+
+/* Header je u toku stranice (lepljiv), pa zajedničke stranice ne treba da
+   ostavljaju mesto za fiksni header od 76 px (vidi POTREBNO.md). */
+[data-tema='holivud'] #sadrzaj > .kontejner:first-child { padding-top: 32px; }
+@media (min-width: 768px) { [data-tema='holivud'] #sadrzaj > .kontejner:first-child { padding-top: 72px; } }
+[data-tema='holivud'] .top-\[76px\] { top: var(--header-h); }
+@media (min-width: 1024px) {
+    [data-tema='holivud'] .lg\:top-28 { top: calc(var(--header-h) + 24px); }
+    [data-tema='holivud'] .lg\:top-44 { top: calc(var(--header-h) + 96px); }
+}
+[data-tema='holivud'] .scroll-mt-40 { scroll-margin-top: calc(var(--header-h) + 88px); }
+
+/* Polja (zakazivanje, kontakt): okvir 1px #222, bez zaobljenja, fokus currentColor */
+[data-tema='holivud'] .polje { border: 1px solid rgb(var(--c-linija)); border-radius: 0; font-size: 14px; padding: .95rem 1.5rem; }
+[data-tema='holivud'] .polje:hover { border-color: currentColor; }
+[data-tema='holivud'] .polje:focus { outline: 2px solid currentColor; outline-offset: 3px; box-shadow: none; border-color: rgb(var(--c-ink)); }
+
+/* Logotipi brendova (slike sa linkovima) u traci */
+[data-tema='holivud'] .hv-marquee-traka li { --logo-brenda-h: 34px; --logo-brenda-max: 170px; }
+@media (max-width: 767.98px) { [data-tema='holivud'] .hv-marquee-traka li { --logo-brenda-h: 26px; } }

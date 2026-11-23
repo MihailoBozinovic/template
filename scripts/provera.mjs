@@ -84,6 +84,14 @@ for (const j of salon.jezici ?? []) {
     if (typeof salon.opis === 'string') fale.push('opis (običan tekst — isti na svim jezicima)');
     if (fale.length) u(`Jezik „${j}”: nema prevoda za ${fale.slice(0, 5).join(', ')}${fale.length > 5 ? ` i još ${fale.length - 5}` : ''} — prikazuje se srpski.`);
 }
+// Brendovi i plaćanje
+for (const b of salon.brendovi ?? []) {
+    if (typeof b === 'string') continue;
+    if (b.logo && b.logo.startsWith('/') && !fs.existsSync(path.join(koren, 'public', b.logo))) g(`Brend „${b.naziv}”: nema fajla public${b.logo}.`);
+    if (b.url && !/^https:\/\//.test(b.url)) u(`Brend „${b.naziv}”: link nije https (${b.url}).`);
+}
+const POZNATA_PLACANJA = ['gotovina', 'visa', 'mastercard', 'maestro', 'dinacard', 'dina', 'cash'];
+for (const p of salon.placanje ?? []) if (!POZNATA_PLACANJA.includes(String(p).toLowerCase().replace(/\s/g, ''))) u(`Način plaćanja „${p}” nije poznat — ikonica se neće prikazati (moguće: gotovina, visa, mastercard, maestro, dinacard).`);
 if ((salon.recenzije?.lista ?? []).some((r) => /Milica R\.|Stefan P\.|Ivana K\./.test(r.autor))) g('Recenzije su demo — zameni ih pravim (sa Google profila, uz dozvolu) ili isprazni listu.');
 
 console.log('\nProvera salon.js\n');

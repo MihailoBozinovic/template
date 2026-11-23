@@ -5,7 +5,8 @@ import { useSajt } from '../kontekst/Sajt.jsx';
 import { cena } from '../lib/format.js';
 import { Dugme, Foto, Kontejner, LinkStrelica, Nadnaslov, Naslov, Pojava, Sekcija, cx } from '../components/primitivi.jsx';
 import { useZakaziLink } from '../components/Header.jsx';
-import { Marquee } from '../components/delovi.jsx';
+import { LogotipiBrendova } from '../components/delovi.jsx';
+import { brendoviSalona } from '../lib/brendovi.js';
 
 /** Najniža cena u kategoriji („od 1.600 RSD”). */
 const najnizaCena = (k) => Math.min(...k.usluge.map((u) => u.cena));
@@ -80,7 +81,7 @@ export const Usluge = () => {
                             <Pojava key={k.id} i={i} className="w-[78vw] shrink-0 snap-start md:w-auto">
                                 <Link to={za(k)} className="hover-zum group relative block aspect-[3/4] overflow-hidden text-white" style={{ borderRadius: 'var(--r-kartica)' }}>
                                     <Foto src={k.slika} alt={tx(k.naziv)} okvirKlasa="!absolute inset-0" sizes="(min-width: 768px) 33vw, 78vw" />
-                                    <span className="veo-dole absolute inset-0" aria-hidden="true" />
+                                    <span className="veo-kartica absolute inset-0" aria-hidden="true" />
                                     <span className="absolute inset-x-6 top-6 naslov naslov-2">{tx(k.naziv)}</span>
                                     <span className="absolute bottom-6 left-6 inline-flex items-center gap-3 rounded-full bg-white/15 py-1.5 pl-4 pr-1.5 text-sm backdrop-blur-md">
                                         {od(k)}
@@ -111,7 +112,7 @@ export const Usluge = () => {
                             <Pojava key={k.id} i={i} className={n % 2 === 1 && i === n - 1 ? 'col-span-2 lg:col-span-1' : undefined}>
                                 <Link to={za(k)} className={cx('hover-zum group relative block overflow-hidden text-white', n % 2 === 1 && i === n - 1 ? 'aspect-[2/1] lg:aspect-square' : 'aspect-square')}>
                                     <Foto src={k.slika} alt={tx(k.naziv)} okvirKlasa="!absolute inset-0" sizes="(min-width: 1024px) 25vw, 50vw" />
-                                    <span className="absolute inset-0 bg-black/40 transition-colors group-hover:bg-black/55" style={{ transitionDuration: 'var(--t-srednje)' }} aria-hidden="true" />
+                                    <span className="absolute inset-0 bg-black/55 transition-colors group-hover:bg-black/65" style={{ transitionDuration: 'var(--t-srednje)' }} aria-hidden="true" />
                                     <span className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-4 text-center">
                                         <span className="naslov naslov-3">{tx(k.naziv)}</span>
                                         <span className="nadnaslov opacity-0 transition-opacity group-hover:opacity-90" style={{ transitionDuration: 'var(--t-srednje)' }}>{od(k)}</span>
@@ -301,11 +302,11 @@ export const Recenzije = () => {
 /* ── Brendovi (marquee, kao „As seen in” traka) ───────────────────────── */
 export const Brendovi = () => {
     const { salon, t } = useSajt();
-    if (!salon.brendovi?.length) return null;
+    if (!brendoviSalona(salon).length) return null;
     return (
         <section className="border-y py-10 md:py-14" style={{ borderColor: 'rgb(var(--c-linija) / .12)' }}>
             <p className="nadnaslov m-0 mb-6 text-center opacity-60">{t.pocetna.brendoviNaslov}</p>
-            <Marquee stavke={salon.brendovi} className="naslov text-2xl md:text-4xl" />
+            <LogotipiBrendova raspored="traka" />
         </section>
     );
 };

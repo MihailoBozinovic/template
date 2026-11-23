@@ -4,7 +4,7 @@ import { useSajt } from '../kontekst/Sajt.jsx';
 import { kljucIzPutanje } from '../i18n/jezici.js';
 import { zaboraviPristanak } from '../lib/pristanak.js';
 import { Dugme, Kontejner, Naslov, cx } from './primitivi.jsx';
-import { Mreze, RadnoVremeTabela, StatusOtvoreno } from './delovi.jsx';
+import { Mreze, RadnoVremeTabela, StatusOtvoreno, KarticePlacanja } from './delovi.jsx';
 import { Logo, useZakaziLink } from './Header.jsx';
 
 export default function Footer() {
@@ -59,6 +59,7 @@ export default function Footer() {
 
             <div className="border-t" style={{ borderColor: 'color-mix(in srgb, currentColor 12%, transparent)' }}>
                 <Kontejner className="flex flex-col gap-4 py-6 text-xs leading-relaxed opacity-75 lg:flex-row lg:items-start lg:justify-between">
+                    <KarticePlacanja className="placanje-footer" />
                     <p className="m-0 max-w-3xl">
                         {f.naziv} · {f.adresa} · {t.footer.pib} {f.pib} · {t.footer.mb} {f.maticniBroj}
                         {f.sifraDelatnosti && <> · {t.footer.delatnost} {f.sifraDelatnosti}</>}

@@ -120,11 +120,11 @@ export const LinkStrelica = ({ to, href, className, children, ...o }) => {
 
 /* ── Raspored ──────────────────────────────────────────────────────────── */
 export const Kontejner = ({ className, children, as: Tag = 'div', ...o }) => (
-    <Tag className={cx('mx-auto w-full max-w-sajt px-5 md:px-10', className)} {...o}>{children}</Tag>
+    <Tag className={cx('kontejner', className)} {...o}>{children}</Tag>
 );
 
 export const Sekcija = ({ className, children, id, ...o }) => (
-    <section id={id} className={cx('py-20 md:py-28', className)} {...o}>{children}</section>
+    <section id={id} className={cx('sekcija', className)} {...o}>{children}</section>
 );
 
 /* ── Fotografija ───────────────────────────────────────────────────────── */

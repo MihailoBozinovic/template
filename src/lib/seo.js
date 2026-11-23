@@ -9,6 +9,7 @@ import { recnik } from '../i18n/index.js';
 import { DANI_PO_INDEKSU } from './vreme.js';
 import { sveUsluge } from './zakazivanje.js';
 import { DOMEN, apsolutno } from './baza.js';
+import { naciniPlacanja } from './brendovi.js';
 
 export const aktivniJezici = () => (salon.jezici?.length ? salon.jezici : ['sr']).filter((j) => SVI_JEZICI[j]);
 
@@ -64,7 +65,7 @@ const schemaPreduzeca = (jezik) => {
         logo: apsolutno('/ikona-512.png'),
         priceRange: cene.length ? `${Math.min(...cene)}–${Math.max(...cene)} RSD` : undefined,
         currenciesAccepted: 'RSD',
-        paymentAccepted: (salon.placanje ?? []).join(', ') || undefined,
+        paymentAccepted: naciniPlacanja(salon).map((n) => tx(n.naziv, 'sr')).join(', ') || undefined,
         foundingDate: salon.osnovan ? String(salon.osnovan) : undefined,
         address: {
             '@type': 'PostalAddress',

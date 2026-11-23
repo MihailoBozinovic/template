@@ -5,6 +5,7 @@ export default {
         kontakt: 'Kontakt', pitanja: 'Pitanja', zakazi: 'Zakaži termin', meni: 'Meni', zatvori: 'Zatvori meni', jezik: 'Jezik',
     },
     opste: {
+        noviProzor: 'otvara se u novom prozoru',
         preskoci: 'Preskoči na sadržaj', od: 'od', min: 'min', valuta: 'RSD', saznajVise: 'Saznajte više', pogledajSve: 'Pogledajte sve',
         zatvori: 'Zatvori', nazad: 'Nazad', dalje: 'Dalje', pozovite: 'Pozovite', pisite: 'Pišite nam', whatsapp: 'WhatsApp', viber: 'Viber',
         otvoreno: 'Otvoreno', zatvoreno: 'Zatvoreno', otvorenoDo: (v) => `Otvoreno do ${v}`, otvaraU: (dan, v) => `Otvaramo ${dan} u ${v}`,
