@@ -27,7 +27,8 @@ import { javno } from '../../lib/baza.js';
 import { zaboraviPristanak } from '../../lib/pristanak.js';
 import { Dugme, Foto, IkonaFacebook, IkonaInstagram, IkonaTikTok, IkonaViber, IkonaWhatsApp, Naslov, Pojava, cx } from '../../components/primitivi.jsx';
 import { STAVKE_MENIJA, useMeni, useSkrol, useZakaziLink } from '../../components/Header.jsx';
-import { IzborJezika, KarticePlacanja } from '../../components/delovi.jsx';
+import { IzborJezika, KarticePlacanja, LogotipiBrendova } from '../../components/delovi.jsx';
+import { brendoviSalona } from '../../lib/brendovi.js';
 import { tekstovi } from './tekstovi.js';
 
 const useTekstovi = () => tekstovi(useSajt().jezik);
@@ -377,6 +378,18 @@ const Recenzije = () => {
 };
 
 /** 6. Poziv: naslov, kurzivni red, tri dugmeta u koloni (zakazivanje, poziv, poruka). */
+/** Brendovi: centriran naslov i red logotipa (linkovi ka brendovima). */
+const Brendovi = () => {
+    const { salon, t } = useSajt();
+    if (!brendoviSalona(salon).length) return null;
+    return (
+        <BelaSekcija aria-labelledby="hj-brendovi">
+            <h2 id="hj-brendovi" className="naslov naslov-2 m-0">{t.pocetna.brendoviNaslov}</h2>
+            <LogotipiBrendova className="hj-brendovi" />
+        </BelaSekcija>
+    );
+};
+
 const Poziv = () => {
     const { salon, t, tx } = useSajt();
     const zakazi = useZakaziLink();
@@ -464,6 +477,6 @@ export default {
     Header,
     Footer,
     Hero,
-    pocetna: [Misija, FotoTraka, Usluge, Lokacija, Recenzije, Poziv],
+    pocetna: [Misija, FotoTraka, Usluge, Lokacija, Recenzije, Brendovi, Poziv],
     ZaglavljeStranice,
 };

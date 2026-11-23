@@ -227,3 +227,8 @@
 [data-tema='zaliv'] .polje:hover { border-color: rgb(var(--c-ink) / .7); }
 [data-tema='zaliv'] .polje:focus { border-color: rgb(var(--c-ink)); box-shadow: none; }
 [data-tema='zaliv'] .polje:focus-visible { outline: 1px solid rgb(var(--c-ink)); outline-offset: 2px; }
+
+/* Traka brendova: statičan red logotipa, bez animacije */
+[data-tema='zaliv'] .zaliv-brendovi { --logo-brenda-h: 46px; --logo-brenda-max: 170px; --logo-brenda-op: 1; margin-top: 2.5rem; gap: 2rem 3.5rem; }
+[data-tema='zaliv'] .zaliv-brendovi a.brend:hover .logo-brenda { opacity: .8; transition: opacity .1s linear; }
+@media (max-width: 767.98px) { [data-tema='zaliv'] .zaliv-brendovi { --logo-brenda-h: 34px; gap: 1.5rem 2.25rem; margin-top: 1.75rem; } }

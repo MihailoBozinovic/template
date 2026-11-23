@@ -310,3 +310,7 @@
     [data-tema='istsajd'] main .-mx-5 { margin-inline: calc(var(--gutter) * -1); }
     [data-tema='istsajd'] main .-mx-5.px-5 { padding-inline: var(--gutter); }
 }
+
+/* Brendovi: centriran red logotipa */
+[data-tema='istsajd'] .ist-brendovi { --logo-brenda-h: 44px; --logo-brenda-max: 160px; justify-content: center; gap: 1.75rem 3rem; margin-top: 2.5rem; }
+@media (max-width: 767.98px) { [data-tema='istsajd'] .ist-brendovi { --logo-brenda-h: 32px; gap: 1.25rem 2rem; margin-top: 1.75rem; } }

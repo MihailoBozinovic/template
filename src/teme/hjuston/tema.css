@@ -236,3 +236,7 @@
 
 /* Kartice plaćanja u centriranom footeru */
 [data-tema='hjuston'] .placanje-footer { --placanje-poravnanje: center; display: flex; justify-content: center; }
+
+/* Brendovi: centriran red logotipa */
+[data-tema='hjuston'] .hj-brendovi { --logo-brenda-h: 44px; --logo-brenda-max: 160px; justify-content: center; gap: 1.75rem 3rem; margin-top: 2.5rem; }
+@media (max-width: 767.98px) { [data-tema='hjuston'] .hj-brendovi { --logo-brenda-h: 34px; gap: 1.5rem 2rem; } }

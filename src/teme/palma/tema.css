@@ -383,3 +383,9 @@
     [data-tema='palma'] .p-tim-traka { animation: none !important; }
     [data-tema='palma'] .dugme > span:first-child { transform: none !important; }
 }
+
+/* Brendovi: traka logotipa između tankih linija (pauza na hover) */
+[data-tema='palma'] .p-brendovi { padding-block: 3rem 0; }
+[data-tema='palma'] .p-brendovi-traka { margin-top: 1.75rem; border-block: 1px solid rgb(var(--c-ink) / .9); padding-block: 2.25rem; mask-image: none; --logo-brenda-h: 40px; --logo-brenda-max: 170px; }
+[data-tema='palma'] .p-brendovi-traka:hover .marquee-traka { animation-play-state: paused; }
+@media (max-width: 767.98px) { [data-tema='palma'] .p-brendovi { padding-top: 2rem; } [data-tema='palma'] .p-brendovi-traka { padding-block: 1.5rem; --logo-brenda-h: 30px; } }

@@ -380,13 +380,14 @@ export const salon = {
      * Profesionalne linije s kojima salon radi — logotip (public/brendovi/,
      * crn ili u boji na providnoj podlozi; tema ga oboji jednobojno) i link ka
      * zvaničnom sajtu brenda. Bez logotipa prikazuje se naziv. Prazno = nema trake.
+     * `skala` (nije obavezno) optički izjednačava logotipe različitih proporcija.
      */
     brendovi: [
-        { naziv: 'Kérastase', logo: '/brendovi/kerastase.svg', url: 'https://www.kerastase.com' },
-        { naziv: 'Olaplex', logo: '/brendovi/olaplex.svg', url: 'https://olaplex.com' },
+        { naziv: 'Kérastase', logo: '/brendovi/kerastase.svg', url: 'https://www.kerastase.com', skala: 1.5 },
+        { naziv: 'Olaplex', logo: '/brendovi/olaplex.svg', url: 'https://olaplex.com', skala: 0.62 },
         { naziv: 'Wella Professionals', logo: '/brendovi/wella-professionals.svg', url: 'https://www.wella.com/professional' },
         { naziv: 'L’Oréal Professionnel', logo: '/brendovi/loreal-professionnel.svg', url: 'https://www.lorealprofessionnel.com' },
-        { naziv: 'American Crew', logo: '/brendovi/american-crew.svg', url: 'https://www.americancrew.com' },
+        { naziv: 'American Crew', logo: '/brendovi/american-crew.svg', url: 'https://www.americancrew.com', skala: 1.35 },
         { naziv: 'Reuzel', logo: '/brendovi/reuzel.svg', url: 'https://www.reuzel.com' },
     ],
 

@@ -313,7 +313,7 @@
    belo na tamnim temama); tema ili sekcija može da ga pregazi. */
 .brend { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; color: inherit; text-decoration: none; }
 .logo-brenda {
-    display: block; height: var(--logo-brenda-h, 40px); width: auto; max-width: var(--logo-brenda-max, 170px); object-fit: contain;
+    display: block; height: calc(var(--logo-brenda-h, 40px) * var(--logo-skala, 1)); width: auto; max-width: calc(var(--logo-brenda-max, 170px) * var(--logo-skala, 1)); object-fit: contain;
     filter: var(--logo-brenda-filter, brightness(0)); opacity: var(--logo-brenda-op, .82);
     transition: opacity var(--t-brzo) var(--ease), transform var(--t-srednje) var(--ease);
 }
@@ -332,4 +332,4 @@ a.brend:hover .logo-brenda, a.brend:focus-visible .logo-brenda { opacity: 1; }
 .placanje-footer ul { justify-content: var(--placanje-poravnanje, flex-start); }
 
 /* Stranica zakazivanja: fiksna traka sa sažetkom na dnu ekrana (do lg) — footer dobija prostor ispod. */
-@media (max-width: 1023.98px) { html.ima-donju-traku footer { padding-bottom: calc(var(--donja-traka-h, 104px) + env(safe-area-inset-bottom, 0px)) !important; } }
+@media (max-width: 1023.98px) { html.ima-donju-traku[data-tema] footer, html.ima-donju-traku[data-tema] footer[class] { padding-bottom: calc(var(--donja-traka-h, 104px) + env(safe-area-inset-bottom, 0px)) !important; } }

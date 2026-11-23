@@ -185,7 +185,7 @@ export const Marquee = ({ stavke, className, razdvajac = '✦' }) => {
 export const LogoBrenda = ({ brend, className, ...o }) => {
     const { t } = useSajt();
     const sadrzaj = brend.logo
-        ? <img src={javno(brend.logo)} alt={brend.naziv} className="logo-brenda" loading="lazy" decoding="async" />
+        ? <img src={javno(brend.logo)} alt={brend.naziv} className="logo-brenda" loading="lazy" decoding="async" style={brend.skala ? { '--logo-skala': brend.skala } : undefined} />
         : <span className="logo-brenda-tekst">{brend.naziv}</span>;
     if (!brend.url) return <span className={cx('brend', className)}>{sadrzaj}</span>;
     // eslint-disable-next-line react/jsx-props-no-spreading

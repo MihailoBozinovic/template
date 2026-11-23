@@ -11,6 +11,8 @@ import { Star } from 'lucide-react';
 import { useSajt } from '../../kontekst/Sajt.jsx';
 import { cena } from '../../lib/format.js';
 import { Dugme, Foto, Kontejner, cx } from '../../components/primitivi.jsx';
+import { LogotipiBrendova } from '../../components/delovi.jsx';
+import { brendoviSalona } from '../../lib/brendovi.js';
 import { useZakaziLink } from '../../components/Header.jsx';
 import { tekstovi } from './tekstovi.js';
 
@@ -365,4 +367,16 @@ export const IzjavaSkrol = () => {
     );
 };
 
-export const SEKCIJE = [Istaknuto, VelikiLinkovi, GalerijaRasuta, TimSplit, RecenzijeUrednicke, IzjavaSkrol];
+/* ── Brendovi: oznaka sa kvadratom, traka logotipa između tankih linija ── */
+export const BrendoviTraka = () => {
+    const { salon, t } = useSajt();
+    if (!brendoviSalona(salon).length) return null;
+    return (
+        <section className="p-brendovi" aria-labelledby="p-brendovi-naslov">
+            <h2 id="p-brendovi-naslov" className="nadnaslov p-kvadrat m-0 text-center">{t.pocetna.brendoviNaslov}</h2>
+            <LogotipiBrendova raspored="traka" className="p-brendovi-traka" />
+        </section>
+    );
+};
+
+export const SEKCIJE = [Istaknuto, VelikiLinkovi, BrendoviTraka, GalerijaRasuta, TimSplit, RecenzijeUrednicke, IzjavaSkrol];

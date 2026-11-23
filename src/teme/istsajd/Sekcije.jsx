@@ -10,7 +10,8 @@ import { ArrowLeft, ArrowRight, ChevronDown, Star } from 'lucide-react';
 import { useSajt } from '../../kontekst/Sajt.jsx';
 import { Dugme, Foto, IkonaFacebook, IkonaInstagram, IkonaTikTok, Kontejner, Nadnaslov, Naslov, Pojava, Sekcija, cx } from '../../components/primitivi.jsx';
 import { useZakaziLink } from '../../components/Header.jsx';
-import { useNaKlijentu } from '../../components/delovi.jsx';
+import { LogotipiBrendova, useNaKlijentu } from '../../components/delovi.jsx';
+import { brendoviSalona } from '../../lib/brendovi.js';
 import { grupisanoRadnoVreme, sadaUSalonu } from '../../lib/vreme.js';
 import { useTekst } from './tekstovi.js';
 import { Strelica, Traka, linkMape, useKarusel, useVidljivo } from './pomocno.jsx';
@@ -326,7 +327,21 @@ export const LokacijaIst = () => {
     );
 };
 
-export const POCETNA_IST = [UslugeIst, ONamaIst, RecenzijeIst, TimIst, InstagramIst, LokacijaIst];
+/* ── Brendovi: centriran naslov i red logotipa (linkovi ka brendovima) ── */
+export const BrendoviIst = () => {
+    const { salon, t } = useSajt();
+    if (!brendoviSalona(salon).length) return null;
+    return (
+        <Sekcija className="ist-brendovi-sekcija">
+            <Kontejner className="text-center">
+                <Naslov nivo={2} tekst={t.pocetna.brendoviNaslov} className="ist-centar-naslov" />
+                <Pojava><LogotipiBrendova className="ist-brendovi" /></Pojava>
+            </Kontejner>
+        </Sekcija>
+    );
+};
+
+export const POCETNA_IST = [UslugeIst, ONamaIst, RecenzijeIst, TimIst, InstagramIst, BrendoviIst, LokacijaIst];
 
 /** Za podstranice: kratko zaglavlje (nadnaslov, h1 48px, uvod) ispod headera od 110px. */
 export const ZaglavljeStraniceIst = ({ nadnaslov, naslov, akcenat, uvod, slika, children, className }) => (

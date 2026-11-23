@@ -17,7 +17,8 @@ import '@fontsource/onest/600.css';
 import { useSajt } from '../../kontekst/Sajt.jsx';
 import { Dugme, Foto, Naslov, cx, IkonaFacebook, IkonaInstagram, IkonaTikTok } from '../../components/primitivi.jsx';
 import { NavLinkovi, STAVKE, STAVKE_MENIJA, useMeni, useZakaziLink } from '../../components/Header.jsx';
-import { IzborJezika, KarticePlacanja } from '../../components/delovi.jsx';
+import { IzborJezika, KarticePlacanja, LogotipiBrendova } from '../../components/delovi.jsx';
+import { brendoviSalona } from '../../lib/brendovi.js';
 import { zaboraviPristanak } from '../../lib/pristanak.js';
 import { grupisanoRadnoVreme } from '../../lib/vreme.js';
 import { cena } from '../../lib/format.js';
@@ -297,6 +298,18 @@ const TrakaUtisak = () => {
         </Traka>
     );
 };
+/* ── Traka brendova: naslov, pa statičan red logotipa (linkovi ka brendovima) ── */
+const TrakaBrendova = () => {
+    const { salon, t } = useSajt();
+    if (!brendoviSalona(salon).length) return null;
+    return (
+        <Traka>
+            <Naslov nivo={2} tekst={t.pocetna.brendoviNaslov} animiraj={false} className="zaliv-traka-h2" />
+            <LogotipiBrendova className="zaliv-brendovi" />
+        </Traka>
+    );
+};
+
 const PlocaPosleUtiska = () => {
     const { salon } = useSajt();
     const f = useFotografije()[4];
@@ -304,7 +317,7 @@ const PlocaPosleUtiska = () => {
     return <Ploca src={f.src} alt={f.alt} />;
 };
 
-export const pocetna = [PlocaBr(0), TrakaONama, PlocaBr(1), TrakaUsluge, PlocaBr(2), TrakaTim, PlocaBr(3), TrakaUtisak, PlocaPosleUtiska];
+export const pocetna = [PlocaBr(0), TrakaONama, PlocaBr(1), TrakaUsluge, PlocaBr(2), TrakaTim, PlocaBr(3), TrakaUtisak, PlocaPosleUtiska, TrakaBrendova];
 
 /* ── Footer: tri kolone (6/2/4 od 12), Bodoni naslovi, podvučeni linkovi ── */
 export const Footer = () => {
