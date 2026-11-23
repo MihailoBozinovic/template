@@ -6,8 +6,11 @@
  * Vrednosti promenljivih postavlja tema (src/config/teme.js → cssTeme), u
  * <style id="tema"> u <head>. Ovde su samo rezervne vrednosti, da sajt nikad
  * ne ostane bez boja.
+ *
+ * `:where(:root)` ima nultu specifičnost, pa tema (`:root{…}`) uvek pobeđuje —
+ * i kad Vite u gotovom sajtu ubaci ovaj CSS POSLE <style id="tema">.
  */
-:root {
+:where(:root) {
     --c-paper: 255 252 245; --c-ink: 30 30 30; --c-mist: 240 240 240; --c-povrsina: 255 255 255;
     --c-brand: 30 30 30; --c-na-brand: 255 252 245; --c-linija: 30 30 30; --c-tamna: 30 30 30; --c-akcenat: 226 198 169;
     --font-naslov: Georgia, serif; --font-tekst: system-ui, sans-serif; --font-oznaka: system-ui, sans-serif; --font-logo: Georgia, serif;
