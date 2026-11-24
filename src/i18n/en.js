@@ -86,7 +86,7 @@ export default {
     },
     tema: {
         naslov: 'Site theme', podnaslov: 'One click changes the look', sacuvaj: 'Set as site theme', sacuvano: 'Saved to salon.js ✓',
-        samoPregled: 'Preview — to make it permanent, set in salon.js:', po: 'inspired by', otvori: 'Themes', aktivna: 'active',
+        panel: 'Salon admin panel (demo)', samoPregled: 'Preview — to make it permanent, set in salon.js:', po: 'inspired by', otvori: 'Themes', aktivna: 'active',
     },
     nijePronadjeno: { naslov: 'Page not found', tekst: 'The address may have changed. Go back home or book an appointment.', pocetna: 'Back home' },
     seo: {

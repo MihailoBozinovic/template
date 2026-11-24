@@ -150,6 +150,31 @@ isporučuju sa sajta (`@fontsource`, bez Google Fonts poziva); fontovi bez
 
 ---
 
+## Panel salona (demo)
+
+Na `/panel` je administrativni panel po uzoru na AllSeasons panel — **samo
+front, sa izmišljenim podacima**, za prezentaciju klijentu. Na demo sajtu se
+otvara dugmetom „Panel” pored birača tema, ili direktno: `/panel/prijava`.
+
+- **Prijava bez lozinke:** bira se uloga — Administrator (vlasnik), Menadžer,
+  Recepcija ili Zaposleni (stilista). Svaka uloga ima svoj meni, kao u pravom
+  panelu, a uloga se menja i iz menija naloga (gore desno).
+- **Stranice:** Početna (šta čeka, promet, ko radi, poslovanje), Kalendar (dan po
+  radnicima, nedelja, lista; prevlačenje termina), Zahtevi za termin, Lista
+  čekanja, Novi termin, Dnevni promet, Analitika, Popunjenost, Ocene, Klijenti +
+  karton klijenta, Kartoteka, Otkazivanja, Raspored smena, Odsustva, Osoblje,
+  Zarade, Usluge i cene, Proizvodi i magacin, Vaučeri, Promo kodovi, SMS
+  kampanje, Izgled sajta (teme), Galerija, Podaci salona, Radno vreme,
+  Podešavanja, Dnevnik izmena, Moj profil. Svetla i tamna tema, radi i na telefonu.
+- **Podaci:** `src/panel/podaci/generator.js` pravi ih iz `salon.js` (usluge,
+  cene, tim, radno vreme) plus izmišljene klijente i termine oko današnjeg dana.
+  Izmene iz panela ostaju u tom browseru (localStorage) do „Vrati podatke”.
+- **Kod:** `src/panel/` — učitava se zasebno, samo na `/panel`, pa sajt ne nosi
+  njegov kod. Panel nikad ne ide u pretraživače (noindex, `Disallow: /panel/`).
+  Za pravi rad se `src/panel/podaci/Skladiste.jsx` veže za API; stranice se ne menjaju.
+
+---
+
 ## Pravni tekstovi
 
 Politika privatnosti, uslovi korišćenja i stranica o kolačićima se generišu iz
@@ -172,6 +197,7 @@ src/
   lib/                   ← radno vreme i termini, zakazivanje, SEO/JSON-LD, tema, kolačići, .ics
   components/ sekcije/   ← header, footer, birač tema, hero (5 rasporeda), sekcije početne
   stranice/              ← stranice sajta
+  panel/                 ← demo panel salona (/panel): ljuska, UI, grafikoni, podaci, stranice
   entry-client.jsx       ← hidratacija (ili novo iscrtavanje kad je u biraču druga tema)
   entry-server.jsx       ← render za prerender
 scripts/

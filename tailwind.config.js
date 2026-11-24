@@ -4,6 +4,9 @@
  * tema menja promenljive, klase ostaju iste.
  */
 const boja = (ime) => `rgb(var(--c-${ime}) / <alpha-value>)`;
+/* Panel (src/panel) ima svoje boje, nezavisne od teme sajta — src/panel/panel.css. */
+const pb = (ime) => `rgb(var(--p-${ime}) / <alpha-value>)`;
+const PANEL = Object.fromEntries(['bg', 'karta', 'ink', 'tiho', 'meko', 'ivica', 'polje', 'akc', 'naakc', 'zlato', 'graf', 'staza', 'ok', 'okbg', 'upoz', 'upozbg', 'greska', 'greskabg', 'info', 'infobg', 'sidebar', 'sidebarink'].map((k) => [k, pb(k)]));
 
 export default {
     content: ['./index.html', './src/**/*.{js,jsx}'],
@@ -18,6 +21,7 @@ export default {
                 naBrand: boja('na-brand'),
                 linija: boja('linija'),
                 tamna: boja('tamna'),
+                p: PANEL,
             },
             fontFamily: {
                 naslov: ['var(--font-naslov)', 'Georgia', 'serif'],

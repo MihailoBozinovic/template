@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Check, Palette, X } from 'lucide-react';
+import { Check, LayoutDashboard, Palette, X } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { useSajt } from '../kontekst/Sajt.jsx';
 import { kljucIzPutanje } from '../i18n/jezici.js';
 import { TEME } from '../config/teme.js';
 import { idTemeSajta, sacuvajUKonfiguraciju } from '../lib/tema.js';
 import { cx } from './primitivi.jsx';
+import { BAZA } from '../lib/baza.js';
 
 /*
  * BIRAČ TEMA — jedan klik menja ceo izgled sajta (boje, fontove, raspored,
@@ -109,14 +110,25 @@ export default function BiracTema() {
                     </div>
                 </div>
             )}
-            <button
-                type="button"
-                onClick={() => setOtvoren((o) => !o)}
-                aria-expanded={otvoren}
-                className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/95 px-4 py-2.5 text-sm font-medium shadow-lg backdrop-blur-xl transition-transform hover:-translate-y-0.5"
-            >
-                <Palette size={16} /><span className={naZakazivanju ? 'hidden lg:inline' : ''}>{t.tema.otvori} · <span className="text-black/55">{TEME[tema.id]?.naziv}</span></span>
-            </button>
+            <div className="flex items-center gap-2">
+                <button
+                    type="button"
+                    onClick={() => setOtvoren((o) => !o)}
+                    aria-expanded={otvoren}
+                    className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/95 px-4 py-2.5 text-sm font-medium shadow-lg backdrop-blur-xl transition-transform hover:-translate-y-0.5"
+                >
+                    <Palette size={16} /><span className={naZakazivanju ? 'hidden lg:inline' : ''}>{t.tema.otvori} · <span className="text-black/55">{TEME[tema.id]?.naziv}</span></span>
+                </button>
+                {/* Demo panel salona (src/panel) — samo na demo sajtu, kao i birač. */}
+                <a
+                    href={`${BAZA}/panel/prijava`}
+                    title={t.tema.panel}
+                    aria-label={t.tema.panel}
+                    className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-[#1d1d1f] px-3.5 py-2.5 text-sm font-medium text-white shadow-lg transition-transform hover:-translate-y-0.5"
+                >
+                    <LayoutDashboard size={16} /><span className="hidden sm:inline">Panel</span>
+                </a>
+            </div>
         </div>
     );
 }

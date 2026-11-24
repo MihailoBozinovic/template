@@ -10,12 +10,21 @@
     <link rel="manifest" href="/site.webmanifest">
     <!--head-->
     <!--tema-->
+    <style>html.panel,html.panel body{background:#F2EFE9}html.panel.tamno,html.panel.tamno body{background:#0E0E11}</style>
     <script>
         /* Pre prvog iscrtavanja: oznaka da JS radi (animacije pojavljivanja) i,
            u demo režimu, tema iz biraca (?tema= ili zapamćena) — bez treptaja. */
         (function () {
             var d = document.documentElement;
             d.classList.add('js');
+            if (/\/panel(\/|$)/.test(location.pathname)) {
+                d.classList.add('panel');
+                try {
+                    var tm = JSON.parse(localStorage.getItem('panel-tamno'));
+                    if (tm === true || (tm === null && matchMedia('(prefers-color-scheme: dark)').matches)) d.classList.add('tamno');
+                } catch (e) {}
+                return;
+            }
             var T = window.__TEME__;
             if (!T) return;
             try {

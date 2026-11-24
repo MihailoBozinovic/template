@@ -86,7 +86,7 @@ export default {
     },
     tema: {
         naslov: 'Tema sajta', podnaslov: 'Klik menja izgled odmah', sacuvaj: 'Postavi kao temu sajta', sacuvano: 'Sačuvano u salon.js ✓',
-        samoPregled: 'Pregled — za stalnu promenu upišite u salon.js:', po: 'po uzoru na', otvori: 'Teme', aktivna: 'aktivna',
+        panel: 'Demo panel salona', samoPregled: 'Pregled — za stalnu promenu upišite u salon.js:', po: 'po uzoru na', otvori: 'Teme', aktivna: 'aktivna',
     },
     nijePronadjeno: { naslov: 'Stranica nije pronađena', tekst: 'Adresa je možda promenjena. Vratite se na početnu ili zakažite termin.', pocetna: 'Na početnu' },
     seo: {

@@ -1,0 +1,117 @@
+/*
+ * PANEL — boje i osnovna pravila administrativnog panela (/panel).
+ *
+ * Panel ne nasleđuje temu sajta: radi se u njemu po ceo dan, pa ima jednu
+ * mirnu paletu (mastilo, papir i jedan akcenat — zlato), kao AllSeasons panel.
+ * Vrednosti su „r g b” da bi Tailwind klase (bg-p-karta/60) radile i sa
+ * providnošću. Važi samo dok je <html class="panel"> (postavlja ga Ljuska).
+ *
+ *   svetlo  zlato #D2AB68 na beloj je 2.2:1 — nečitljivo kao tekst, pa je
+ *           akcenat za tekst i dugmad isto zlato dva koraka tamnije (5.3:1),
+ *           a dugmad nose belo slovo.
+ *   tamno   #D2AB68 na grafitu je 8:1, a mastilo na zlatu 9:1: akcenat je
+ *           samo zlato, dugmad nose tamno slovo.
+ */
+html.panel {
+    --p-bg: 242 239 233;
+    --p-karta: 255 255 255;
+    --p-ink: 24 23 28;
+    --p-tiho: 92 87 80;
+    --p-meko: 239 235 227;
+    --p-ivica: 224 218 206;
+    --p-polje: 178 170 156;
+    --p-akc: 135 103 45;
+    --p-naakc: 255 255 255;
+    --p-zlato: 210 171 104;
+    --p-graf: 174 133 61;
+    --p-staza: 242 233 218;
+    --p-ok: 30 118 74;
+    --p-okbg: 227 242 233;
+    --p-upoz: 138 90 0;
+    --p-upozbg: 251 240 217;
+    --p-greska: 180 50 46;
+    --p-greskabg: 251 229 227;
+    --p-info: 37 87 167;
+    --p-infobg: 228 236 248;
+    --p-sidebar: 22 21 26;
+    --p-sidebarink: 236 232 224;
+    color-scheme: light;
+    background: rgb(var(--p-bg));
+}
+
+html.panel.tamno {
+    --p-bg: 14 14 17;
+    --p-karta: 23 23 28;
+    --p-ink: 240 237 230;
+    --p-tiho: 171 165 155;
+    --p-meko: 32 32 38;
+    --p-ivica: 44 44 51;
+    --p-polje: 84 84 94;
+    --p-akc: 210 171 104;
+    --p-naakc: 14 14 17;
+    --p-zlato: 210 171 104;
+    --p-graf: 210 171 104;
+    --p-staza: 42 38 32;
+    --p-ok: 110 205 150;
+    --p-okbg: 22 40 30;
+    --p-upoz: 232 179 75;
+    --p-upozbg: 43 35 19;
+    --p-greska: 240 138 132;
+    --p-greskabg: 46 23 22;
+    --p-info: 141 177 240;
+    --p-infobg: 22 32 58;
+    --p-sidebar: 10 10 13;
+    --p-sidebarink: 236 232 224;
+    color-scheme: dark;
+}
+
+html.panel body {
+    background: rgb(var(--p-bg));
+    color: rgb(var(--p-ink));
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-feature-settings: 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+}
+
+.panel-koren { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; letter-spacing: 0; text-transform: none; }
+.panel-koren :where(h1, h2, h3, h4) { font-family: inherit; letter-spacing: -0.01em; text-transform: none; font-style: normal; }
+.panel-koren .tabularno, .panel-koren td.broj, .panel-koren .broj { font-variant-numeric: tabular-nums; }
+
+/* Polja: 16px na telefonu da iOS ne zumira pri unosu. */
+:where(.p-polje) {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid rgb(var(--p-polje) / .7);
+    background: rgb(var(--p-karta));
+    color: rgb(var(--p-ink));
+    padding: .55rem .75rem;
+    font-size: .875rem;
+    line-height: 1.25rem;
+    transition: border-color .15s, box-shadow .15s;
+}
+:where(.p-polje)::placeholder { color: rgb(var(--p-tiho) / .8); }
+:where(.p-polje):focus { outline: none; border-color: rgb(var(--p-akc)); box-shadow: 0 0 0 3px rgb(var(--p-akc) / .18); }
+@media (max-width: 767.98px) { :where(.p-polje) { font-size: 16px; } }
+select:where(.p-polje) { appearance: none; padding-right: 2rem; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .7rem center; }
+
+.panel-koren :focus-visible { outline: 2px solid rgb(var(--p-akc)); outline-offset: 2px; }
+
+/* Klizači: tanki, u boji ivice. */
+.panel-koren .p-skrol { scrollbar-width: thin; scrollbar-color: rgb(var(--p-polje) / .6) transparent; }
+.p-sidebar .p-skrol { scrollbar-color: rgb(255 255 255 / .18) transparent; }
+
+/* Ulaz modalnog prozora i fioke. */
+@keyframes p-pojava { from { opacity: 0; transform: translateY(8px) scale(.985); } to { opacity: 1; transform: none; } }
+@keyframes p-fioka { from { transform: translateX(100%); } to { transform: none; } }
+@keyframes p-fioka-levo { from { transform: translateX(-100%); } to { transform: none; } }
+@keyframes p-veo { from { opacity: 0; } to { opacity: 1; } }
+@keyframes p-toast { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.p-anim-modal { animation: p-pojava .2s cubic-bezier(.2, .8, .2, 1) both; }
+.p-anim-fioka { animation: p-fioka .26s cubic-bezier(.2, .8, .2, 1) both; }
+.p-anim-fioka-levo { animation: p-fioka-levo .24s cubic-bezier(.2, .8, .2, 1) both; }
+.p-anim-veo { animation: p-veo .2s ease-out both; }
+.p-anim-toast { animation: p-toast .22s cubic-bezier(.2, .8, .2, 1) both; }
+@media (prefers-reduced-motion: reduce) { .p-anim-modal, .p-anim-fioka, .p-anim-fioka-levo, .p-anim-veo, .p-anim-toast { animation: none; } }
+
+/* Grafikoni: tooltip prati miša, ne hvata klikove. */
+.p-tooltip { pointer-events: none; position: absolute; z-index: 5; white-space: nowrap; border-radius: 8px; padding: .4rem .6rem; font-size: .75rem; line-height: 1.1rem; background: rgb(var(--p-ink)); color: rgb(var(--p-karta)); box-shadow: 0 6px 20px rgb(0 0 0 / .18); }

@@ -67,6 +67,19 @@ for (const j of jezici) {
 }
 upisi('404.html', strana('/__nije-pronadjeno'));
 
+/* ── Panel (/panel/*): prazna ljuska, panel se crta u browseru; noindex, nije u sitemap-u ── */
+const { SVE_RUTE: RUTE_PANELA } = server;
+const ljuskaPanela = sablon
+    .replace('lang="sr" data-ssr-html', 'lang="sr" class="panel"')
+    .replace('<meta name="theme-color" content="#FFFCF5">', '<meta name="theme-color" content="#16151A">')
+    .replace('<!--head-->', `<title>Panel · ${esc(salon.naziv)}</title>
+    <meta name="robots" content="noindex, nofollow">`)
+    .replace('<!--tema-->', '')
+    .replace('data-ssr-app', 'data-panel')
+    .replace('<!--app-->', '');
+upisi('/panel', ljuskaPanela);
+for (const r of RUTE_PANELA) upisi(`/panel/${r}`, ljuskaPanela);
+
 /* ── sitemap.xml i robots.txt ── */
 const danas = new Date().toISOString().slice(0, 10);
 const PRIORITET = { pocetna: '1.0', zakazivanje: '0.9', cenovnik: '0.9', kontakt: '0.8', tim: '0.7', galerija: '0.7', oNama: '0.6', pitanja: '0.6' };
@@ -79,7 +92,7 @@ fs.writeFileSync(
     path.join(dist, 'robots.txt'),
     salon.demo
         ? '# DEMO — sajt je zaključan za pretraživače dok je u salon.js `demo: true`.\nUser-agent: *\nDisallow: /\n'
-        : `User-agent: *\nAllow: /\n\nSitemap: ${apsolutno('/sitemap.xml')}\n`,
+        : `User-agent: *\nAllow: /\nDisallow: ${BAZA}/panel/\n\nSitemap: ${apsolutno('/sitemap.xml')}\n`,
 );
 
 /* ── Ikone, manifest, slika za deljenje (samo ako ih nema u public/) ── */

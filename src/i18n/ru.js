@@ -86,7 +86,7 @@ export default {
     },
     tema: {
         naslov: 'Тема сайта', podnaslov: 'Один клик меняет вид', sacuvaj: 'Сделать темой сайта', sacuvano: 'Сохранено в salon.js ✓',
-        samoPregled: 'Предпросмотр — чтобы закрепить, укажите в salon.js:', po: 'по мотивам', otvori: 'Темы', aktivna: 'активна',
+        panel: 'Демо-панель салона', samoPregled: 'Предпросмотр — чтобы закрепить, укажите в salon.js:', po: 'по мотивам', otvori: 'Темы', aktivna: 'активна',
     },
     nijePronadjeno: { naslov: 'Страница не найдена', tekst: 'Возможно, адрес изменился. Вернитесь на главную или запишитесь.', pocetna: 'На главную' },
     seo: {
