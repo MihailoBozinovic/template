@@ -95,9 +95,9 @@ export default function Zarade() {
         { kljuc: 'promet', naslov: 'Promet', desno: true, render: (x) => rsd(x.promet) },
         { kljuc: 'provizija', naslov: 'Provizija', desno: true, render: (x) => (x.vlasnik ? '—' : <ProvizijaUnos radnik={x.r} />) },
         { kljuc: 'provizijaIznos', naslov: 'Iznos provizije', desno: true, render: (x) => (x.vlasnik ? '—' : rsd(x.provizijaIznos)) },
-        { kljuc: 'ukupno', naslov: 'Za isplatu', desno: true, render: (x) => (x.vlasnik ? <span className="text-p-tiho">bez obračuna</span> : <b className="font-semibold">{rsd(x.ukupno)}</b>) },
+        { kljuc: 'ukupno', naslov: 'Za isplatu', desno: true, mobilno: 'istaknuto', render: (x) => (x.vlasnik ? <span className="text-p-tiho">bez obračuna</span> : <b className="font-semibold">{rsd(x.ukupno)}</b>) },
         { kljuc: 'termina', naslov: 'Termina', desno: true },
-        { kljuc: 'dana', naslov: 'Radnih dana', desno: true },
+        { kljuc: 'dana', naslov: 'Radnih dana', desno: true, mobilno: 'skriveno' },
         { kljuc: 'isplata', naslov: 'Isplata', sort: false, render: (x) => {
             if (x.vlasnik) return null;
             if (x.isplata) return (

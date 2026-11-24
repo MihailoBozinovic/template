@@ -78,7 +78,9 @@ html.panel body {
 .panel-koren .tabularno, .panel-koren td.broj, .panel-koren .broj { font-variant-numeric: tabular-nums; }
 
 /* Polja: 16px na telefonu da iOS ne zumira pri unosu. */
-:where(.p-polje) {
+/* Specifičnost elementa (input:where(.p-polje)): jača od Tailwind preflight-a
+   (`input { padding: 0 }`, učitan ranije), a slabija od utility klasa (pl-9, w-24). */
+:is(input, select, textarea):where(.p-polje) {
     width: 100%;
     border-radius: 10px;
     border: 1px solid rgb(var(--p-polje) / .7);
@@ -89,9 +91,9 @@ html.panel body {
     line-height: 1.25rem;
     transition: border-color .15s, box-shadow .15s;
 }
-:where(.p-polje)::placeholder { color: rgb(var(--p-tiho) / .8); }
-:where(.p-polje):focus { outline: none; border-color: rgb(var(--p-akc)); box-shadow: 0 0 0 3px rgb(var(--p-akc) / .18); }
-@media (max-width: 767.98px) { :where(.p-polje) { font-size: 16px; } }
+:is(input, select, textarea):where(.p-polje)::placeholder { color: rgb(var(--p-tiho) / .8); }
+:is(input, select, textarea):where(.p-polje):focus { outline: none; border-color: rgb(var(--p-akc)); box-shadow: 0 0 0 3px rgb(var(--p-akc) / .18); }
+@media (max-width: 767.98px) { :is(input, select, textarea):where(.p-polje) { font-size: 16px; } }
 select:where(.p-polje) { appearance: none; padding-right: 2rem; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .7rem center; }
 
 .panel-koren :focus-visible { outline: 2px solid rgb(var(--p-akc)); outline-offset: 2px; }

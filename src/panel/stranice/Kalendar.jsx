@@ -134,18 +134,19 @@ function DanPrikaz({ datum, radnici, prikaziOtkazane }) {
     if (!radnici.length) return <Prazno naslov="Nijedan radnik nije izabran" opis="Uključite bar jednog radnika iznad kalendara." />;
 
     return (
-        <div ref={skrol} className="max-h-[calc(100svh-260px)] min-h-[420px] overflow-auto rounded-2xl border border-p-ivica bg-p-karta p-skrol">
-            <div className="relative grid" style={{ gridTemplateColumns: `56px repeat(${radnici.length}, minmax(150px, 1fr))`, minWidth: 56 + radnici.length * 150 }}>
+        <div ref={skrol} className="max-h-[calc(100svh-220px)] min-h-[420px] snap-x snap-mandatory overflow-auto rounded-2xl border border-p-ivica bg-p-karta p-skrol [scroll-padding-left:48px] md:max-h-[calc(100svh-260px)] md:snap-none">
+            {/* Telefon: dve kolone staju tačno u ekran (48px osa), ostale se prevlače u stranu. */}
+            <div className="relative grid [--kol:max(132px,calc((100vw-82px)/2))] md:[--kol:150px]" style={{ gridTemplateColumns: `48px repeat(${radnici.length}, minmax(var(--kol), 1fr))`, minWidth: `calc(48px + ${radnici.length} * var(--kol))` }}>
                 {/* Zaglavlja kolona */}
                 <div className="sticky left-0 top-0 z-[6] border-b border-p-ivica bg-p-karta" />
                 {radnici.map((r) => {
                     const s = podaci.smene[`${r.id}|${datum}`];
                     const n = termini.filter((t) => t.radnikId === r.id && AKTIVNI.has(t.status));
                     return (
-                        <div key={r.id} className={cx('sticky top-0 z-[5] flex items-center gap-2.5 border-b border-l border-p-ivica bg-p-karta px-3 py-2.5', samoSvoje && r.id === mojId && 'bg-p-staza')}>
-                            <Avatar ime={r.ime} slika={r.slika} boja={r.boja} velicina={30} />
+                        <div key={r.id} className={cx('sticky top-0 z-[5] flex snap-start items-center gap-2 border-b border-l border-p-ivica bg-p-karta px-2.5 py-2 md:gap-2.5 md:px-3 md:py-2.5', samoSvoje && r.id === mojId && 'bg-p-staza')}>
+                            <Avatar ime={r.ime} slika={r.slika} boja={r.boja} velicina={28} />
                             <div className="min-w-0">
-                                <div className="truncate text-[13px] font-semibold">{r.ime}</div>
+                                <div className="truncate text-[13px] font-semibold"><span className="md:hidden">{r.ime.split(' ')[0]}</span><span className="hidden md:inline">{r.ime}</span></div>
                                 <div className="text-[11.5px] text-p-tiho tabularno">{s ? `${uSate(s.od)}–${uSate(s.do)} · ${termina(n.length)}` : 'ne radi'}</div>
                             </div>
                         </div>
@@ -154,7 +155,7 @@ function DanPrikaz({ datum, radnici, prikaziOtkazane }) {
 
                 {/* Osa vremena */}
                 <div className="sticky left-0 z-[4] border-r border-p-ivica bg-p-karta" style={{ height: visina }}>
-                    {sati.map((h) => <div key={h} className="absolute right-2 -translate-y-1/2 text-[11px] text-p-tiho tabularno" style={{ top: (h - okvir.od) * PX_MIN }}>{h > okvir.od ? uSate(h) : ''}</div>)}
+                    {sati.map((h) => <div key={h} className="absolute right-1.5 -translate-y-1/2 text-[11px] text-p-tiho tabularno" style={{ top: (h - okvir.od) * PX_MIN }}>{h > okvir.od ? uSate(h) : ''}</div>)}
                     {jeDanas && sada >= okvir.od && sada <= okvir.do && <div className="absolute right-0 z-[5] -translate-y-1/2 rounded-l bg-p-greska px-1 text-[10.5px] font-semibold text-white tabularno" style={{ top: (sada - okvir.od) * PX_MIN }}>{uSate(sada)}</div>}
                 </div>
 
@@ -190,14 +191,14 @@ function NedeljaPrikaz({ datum, radnici, onDan, prikaziOtkazane }) {
     const ids = new Set(radnici.map((r) => r.id));
     return (
         <div className="overflow-x-auto rounded-2xl border border-p-ivica bg-p-karta p-skrol">
-            <div className="grid min-w-[980px] grid-cols-7 divide-x divide-p-ivica">
+            <div className="grid grid-cols-1 divide-y divide-p-ivica md:min-w-[980px] md:grid-cols-7 md:divide-x md:divide-y-0">
                 {dani.map((d) => {
                     const lista = podaci.termini.filter((t) => t.datum === d && ids.has(t.radnikId) && (prikaziOtkazane || t.status !== 'otkazan')).sort((a, b) => a.od - b.od);
                     const aktivni = lista.filter((t) => AKTIVNI.has(t.status));
                     const zatvoreno = !podaci.podaciSalona.radnoVreme?.[danUNedelji(d)];
                     return (
                         <div key={d} className={cx('min-w-0', d === danasF() && 'bg-p-staza/40')}>
-                            <button type="button" onClick={() => onDan(d)} className="sticky top-0 block w-full border-b border-p-ivica px-3 py-2.5 text-left hover:bg-p-meko/60">
+                            <button type="button" onClick={() => onDan(d)} className="block w-full border-b border-p-ivica px-3 py-2.5 text-left hover:bg-p-meko/60 md:sticky md:top-0">
                                 <div className="text-[11.5px] font-semibold uppercase tracking-[.06em] text-p-tiho">{DANI_KRATKO[danUNedelji(d)]}</div>
                                 <div className="flex items-baseline justify-between"><span className={cx('text-lg font-semibold tabularno', d === danasF() && 'text-p-akc')}>{Number(d.slice(8))}</span><span className="text-[11.5px] text-p-tiho">{zatvoreno ? 'zatvoreno' : termina(aktivni.length)}</span></div>
                                 {novac && !zatvoreno && <div className="text-[11.5px] text-p-tiho tabularno">{rsd(zbir(aktivni))}</div>}
@@ -268,8 +269,8 @@ export default function Kalendar() {
 
     return (
         <div className="flex flex-col gap-4">
-            <ZaglavljeStrane naslov={samoSvoje ? 'Moji termini' : 'Kalendar'} opis="Klik na prazno polje zakazuje, klik na termin otvara detalje. Termin se prevlači na drugo vreme ili drugog radnika."
-                akcije={<Dugme varijanta="glavno" ikona={CalendarPlus} onClick={() => otvoriNovi({ datum, radnikId: samoSvoje ? mojId : undefined })}>Novi termin</Dugme>} />
+            <ZaglavljeStrane naslov={samoSvoje ? 'Moji termini' : 'Kalendar'} opis={<><span className="md:hidden">Dodirnite prazno polje da zakažete, termin da ga otvorite.</span><span className="hidden md:inline">Klik na prazno polje zakazuje, klik na termin otvara detalje. Termin se prevlači na drugo vreme ili drugog radnika.</span></>}
+                akcije={<Dugme varijanta="glavno" ikona={CalendarPlus} onClick={() => otvoriNovi({ datum, radnikId: samoSvoje ? mojId : undefined })} className="max-md:hidden">Novi termin</Dugme>} />
 
             <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                 <div className="flex flex-wrap items-center gap-2">
@@ -278,29 +279,29 @@ export default function Kalendar() {
                         <Dugme varijanta="tiho" velicina="sm" onClick={() => setDatum(danasF())} className="h-9">Danas</Dugme>
                         <Dugme varijanta="tiho" velicina="ikona" ikona={ChevronRight} aria-label="Sledeće" onClick={() => setDatum(dodajDane(datum, korak))} />
                     </div>
-                    <h2 className="min-w-0 text-[17px] font-semibold first-letter:uppercase">{naslov}</h2>
-                    <Unos type="date" value={datum} onChange={(e) => e.target.value && setDatum(e.target.value)} className="!w-auto !py-1.5" aria-label="Izaberi datum" />
+                    <h2 className="min-w-0 text-[16px] font-semibold first-letter:uppercase sm:text-[17px]">{naslov}</h2>
+                    <Unos type="date" value={datum} onChange={(e) => e.target.value && setDatum(e.target.value)} className="!w-auto !py-1.5 max-sm:hidden" aria-label="Izaberi datum" />
                 </div>
-                <div className="flex flex-wrap items-center gap-2">
-                    <Tabovi stavke={[{ id: 'dan', naziv: 'Dan' }, { id: 'nedelja', naziv: 'Nedelja' }, { id: 'lista', naziv: 'Lista' }]} aktivan={prikaz} onChange={setPrikaz} />
-                    <Dugme varijanta="tiho" velicina="sm" ikona={otkazani ? EyeOff : Eye} onClick={() => setOtkazani((o) => !o)} aria-pressed={otkazani}>{otkazani ? 'Sakrij otkazane' : 'Prikaži otkazane'}</Dugme>
+                <div className="flex items-center gap-2">
+                    <Tabovi stavke={[{ id: 'dan', naziv: 'Dan' }, { id: 'nedelja', naziv: 'Nedelja' }, { id: 'lista', naziv: 'Lista' }]} aktivan={prikaz} onChange={setPrikaz} className="max-sm:flex-1" />
+                    <Dugme varijanta="tiho" velicina="sm" ikona={otkazani ? EyeOff : Eye} onClick={() => setOtkazani((o) => !o)} aria-pressed={otkazani} title={otkazani ? 'Sakrij otkazane' : 'Prikaži otkazane'}><span className="max-sm:sr-only">{otkazani ? 'Sakrij otkazane' : 'Prikaži otkazane'}</span></Dugme>
                 </div>
             </div>
 
             {/* Radnici: filter i legenda */}
-            <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Radnici">
+            <div className="-mx-4 flex items-center gap-1.5 overflow-x-auto px-4 p-skrol sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0" role="group" aria-label="Radnici">
                 {podaci.radnici.filter((r) => r.aktivan).map((r) => {
                     const ukljucen = !iskljuceni.has(r.id);
                     return (
                         <button key={r.id} type="button" aria-pressed={ukljucen} onClick={() => setIskljuceni((s) => { const n = new Set(s); n.has(r.id) ? n.delete(r.id) : n.add(r.id); return n; })}
-                            className={cx('inline-flex items-center gap-2 rounded-full border py-1 pl-1 pr-3 text-[13px] transition-colors', ukljucen ? 'border-p-ivica bg-p-karta' : 'border-dashed border-p-ivica text-p-tiho opacity-60')}>
+                            className={cx('inline-flex shrink-0 items-center gap-2 rounded-full border py-1 pl-1 pr-3 text-[13px] transition-colors', ukljucen ? 'border-p-ivica bg-p-karta' : 'border-dashed border-p-ivica text-p-tiho opacity-60')}>
                             <span className="h-6 w-6 rounded-full" style={{ background: r.boja, opacity: ukljucen ? 1 : 0.35 }} aria-hidden="true" />
                             {r.ime.split(' ')[0]}{samoSvoje && r.id === mojId ? ' (vi)' : ''}
                         </button>
                     );
                 })}
                 {prikaz === 'dan' && (
-                    <span className="ml-auto text-[13px] text-p-tiho">
+                    <span className="ml-auto shrink-0 whitespace-nowrap pl-2 text-[13px] text-p-tiho">
                         {termina(danTermini.length)}{zahtevaDanas ? ` · ${zahtevaDanas} čeka odobrenje` : ''}
                     </span>
                 )}

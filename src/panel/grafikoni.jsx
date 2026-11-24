@@ -34,6 +34,13 @@ const korakOse = (max, n = 4) => {
     return [1, 2, 2.5, 5, 10].map((k) => k * e).find((k) => k >= sirov) ?? e * 10;
 };
 
+/** Leva margina po najdužoj oznaci ose (11px font ≈ 6.4px po znaku). */
+const levaMargina = (vrh, korak, format) => {
+    let n = 0;
+    for (let v = 0; v <= vrh + 1e-9; v += korak) n = Math.max(n, String(format(v)).length);
+    return Math.max(28, Math.ceil(n * 6.4) + 14);
+};
+
 const Tooltip = ({ x, y, sirina, children }) => {
     if (x == null) return null;
     const levo = x > sirina - 150;
@@ -47,11 +54,11 @@ const Tooltip = ({ x, y, sirina, children }) => {
 export function TrendGrafikon({ tacke, poredjenje, visina = 220, format = String, formatOse = format, oznakaSerije = 'Ovaj period', oznakaPoredjenja = 'Prethodni period' }) {
     const [ref, sirina] = useSirina();
     const [hover, setHover] = useState(null);
-    const L = 48; const R = 12; const T = 12; const B = 26;
-    const w = sirina - L - R; const h = visina - T - B;
     const max = Math.max(1, ...tacke.map((t) => t.vrednost), ...(poredjenje ?? []).map((t) => t.vrednost));
     const korak = korakOse(max);
     const vrh = Math.ceil(max / korak) * korak;
+    const L = levaMargina(vrh, korak, formatOse); const R = 12; const T = 12; const B = 26;
+    const w = sirina - L - R; const h = visina - T - B;
     const x = (i) => L + (tacke.length < 2 ? w / 2 : (i / (tacke.length - 1)) * w);
     const y = (v) => T + h - (v / vrh) * h;
     const linija = (niz) => niz.map((t, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(t.vrednost).toFixed(1)}`).join('');
@@ -113,11 +120,11 @@ export function TrendGrafikon({ tacke, poredjenje, visina = 220, format = String
 export function Stubici({ stavke, visina = 200, format = String, formatOse = format, oznakaSerije = '' }) {
     const [ref, sirina] = useSirina();
     const [hover, setHover] = useState(null);
-    const L = 44; const R = 6; const T = 10; const B = 24;
-    const w = sirina - L - R; const h = visina - T - B;
     const max = Math.max(1, ...stavke.map((s) => s.vrednost));
     const korak = korakOse(max);
     const vrh = Math.ceil(max / korak) * korak;
+    const L = levaMargina(vrh, korak, formatOse); const R = 6; const T = 10; const B = 24;
+    const w = sirina - L - R; const h = visina - T - B;
     const sl = w / stavke.length;
     const bw = Math.max(4, Math.min(40, sl - 2));
     const y = (v) => T + h - (v / vrh) * h;

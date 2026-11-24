@@ -261,6 +261,10 @@ export default function Raspored() {
         obavesti(sukob ? `${r.ime.split(' ')[0]}: ${naziv} cele nedelje — ${termina(sukob)} van smene.` : `${r.ime.split(' ')[0]}: ${naziv} cele nedelje (${cilj.length} ${mnozina(cilj.length, 'dan', 'dana', 'dana')}).`, sukob ? 'upoz' : 'ok');
     };
 
+    // Telefon: jedan dan nedelje (dan iz trake iznad liste radnika).
+    const [izabran, setIzabran] = useState(danasD);
+    const danTel = dani.includes(izabran) ? izabran : (dani.includes(danasD) ? danasD : dani[0]);
+
     const ovaNedelja = pocetak === pocetakNedelje(danasD);
     const kolone = { gridTemplateColumns: 'var(--prva) repeat(7, minmax(124px, 1fr))' };
 
@@ -277,7 +281,7 @@ export default function Raspored() {
             </MrezaPlocica>
 
             <Kartica telo="p-0">
-                <div className="flex flex-wrap items-center gap-2 border-b border-p-ivica/70 px-3 py-3 sm:px-5">
+                <div className="flex flex-wrap items-center gap-2 border-b border-p-ivica/70 px-2 py-2.5 sm:px-5 sm:py-3">
                     <div className="flex items-center gap-1">
                         <Dugme velicina="ikonaSm" varijanta="tiho" ikona={ChevronLeft} onClick={() => setPocetak((p) => dodajDane(p, -7))} aria-label="Prethodna nedelja" />
                         <Dugme velicina="ikonaSm" varijanta="tiho" ikona={ChevronRight} onClick={() => setPocetak((p) => dodajDane(p, 7))} aria-label="Sledeća nedelja" />
@@ -292,7 +296,44 @@ export default function Raspored() {
                     </div>
                 </div>
 
-                <div className="overflow-x-auto p-skrol">
+                {/* Telefon: traka dana + radnici za izabrani dan */}
+                <div className="md:hidden">
+                    <div className="grid grid-cols-7 gap-1 border-b border-p-ivica/70 p-2" role="tablist" aria-label="Dan u nedelji">
+                        {poDanu.map(({ d, broj: b }) => (
+                            <button key={d} type="button" role="tab" aria-selected={d === danTel} onClick={() => setIzabran(d)}
+                                className={cx('flex flex-col items-center rounded-xl py-1.5 transition-colors', d === danTel ? 'bg-p-akc text-p-naakc' : d === danasD ? 'bg-p-staza text-p-akc' : 'text-p-ink')}>
+                                <span className={cx('text-[10.5px] font-semibold uppercase', d === danTel ? 'opacity-85' : 'text-p-tiho')}>{DANI_KRATKO[danUNedelji(d)]}</span>
+                                <span className="text-[15px] font-semibold tabularno">{Number(d.slice(8))}</span>
+                                <span className={cx('text-[10.5px] tabularno', d === danTel ? 'opacity-85' : 'text-p-tiho')}>{rv[d] ? `${b} rad.` : '—'}</span>
+                            </button>
+                        ))}
+                    </div>
+                    <div className="px-4 pb-1 pt-3 text-[13px] text-p-tiho">
+                        <b className="font-semibold text-p-ink">{datumSaDanom(danTel)}</b> · {rv[danTel] ? `salon ${uSate(rv[danTel][0])}–${uSate(rv[danTel][1])}` : neradni[danTel] ?? 'salon ne radi'}
+                    </div>
+                    <ul className="divide-y divide-p-ivica/60">
+                        {radnici.map((r) => {
+                            const moj = samoSvoje && r.id === radnikId;
+                            return (
+                                <li key={r.id} className={cx('flex items-center gap-3 px-4 py-2.5', moj && 'bg-p-staza/50')}>
+                                    <div className="flex w-[38%] min-w-0 items-center gap-2.5">
+                                        <Avatar ime={r.ime} slika={r.slika} boja={r.boja} velicina={32} />
+                                        <div className="min-w-0">
+                                            <div className="truncate text-[13.5px] font-medium">{r.ime.split(' ')[0]}{moj && <span className="text-p-akc"> · vi</span>}</div>
+                                            <div className="text-[11.5px] text-p-tiho tabularno">{sati(satiNedelje(r))} ned.</div>
+                                        </div>
+                                    </div>
+                                    <div className="min-w-0 flex-1">
+                                        <Celija r={r} d={danTel} podaci={podaci} rv={rv[danTel]} danasD={danasD} mojRed={moj} moze={menjaRaspored && !!rv[danTel]} onKlik={() => setUredi({ radnikId: r.id, datum: danTel })} />
+                                    </div>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                    {menjaRaspored && <p className="px-4 pb-3 pt-1 text-[12px] text-p-tiho">Dodirnite smenu da je promenite.</p>}
+                </div>
+
+                <div className="hidden overflow-x-auto p-skrol md:block">
                     <div className="min-w-[1016px] text-sm [--prva:148px] sm:min-w-[1084px] sm:[--prva:216px]" role="table" aria-label="Raspored smena">
                         {/* Zaglavlje: dani */}
                         <div className="grid border-b border-p-ivica" style={kolone} role="row">

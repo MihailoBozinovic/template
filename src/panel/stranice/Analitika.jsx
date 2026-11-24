@@ -156,14 +156,14 @@ export default function Analitika() {
     const uslugaKolone = [
         { kljuc: 'naziv', naslov: 'Usluga', render: (r) => <span className="font-medium">{r.naziv}</span> },
         { kljuc: 'broj', naslov: 'Broj', desno: true },
-        { kljuc: 'iznos', naslov: 'Promet', desno: true, render: (r) => rsd(r.iznos) },
+        { kljuc: 'iznos', naslov: 'Promet', desno: true, mobilno: 'istaknuto', render: (r) => rsd(r.iznos) },
         { kljuc: 'udeo', naslov: 'Udeo', desno: true, render: (r) => procenat(r.udeo, 1) },
         { kljuc: 'prosecna', naslov: 'Prosečna cena', desno: true, render: (r) => rsd(r.prosecna) },
     ];
     const radnikKolone = [
         { kljuc: 'ime', naslov: 'Radnik', render: (r) => <span className="flex items-center gap-2.5"><Avatar ime={r.ime} slika={r.slika} boja={r.boja} velicina={30} /><span className="font-medium">{r.ime}</span></span> },
         { kljuc: 'broj', naslov: 'Termina', desno: true },
-        { kljuc: 'iznos', naslov: 'Promet', desno: true, render: (r) => rsd(r.iznos) },
+        { kljuc: 'iznos', naslov: 'Promet', desno: true, mobilno: 'istaknuto', render: (r) => rsd(r.iznos) },
         { kljuc: 'prosek', naslov: 'Prosečan račun', desno: true, render: (r) => (r.broj ? rsd(r.prosek) : '—') },
         { kljuc: 'popunjenost', naslov: 'Popunjenost', desno: true, render: (r) => (r.popunjenost == null ? '—' : <span title={`Prosek ${r.smena} ${r.smena === 1 ? 'dan' : 'dana'} u smeni`}>{procenat(r.popunjenost)}</span>) },
         { kljuc: 'ocena', naslov: 'Ocena', desno: true, render: (r) => (r.ocena == null ? '—' : <span title={`${r.brojOcena} ocena`}><span className="text-p-zlato" aria-hidden="true">★ </span>{ocenaTekst(r.ocena)}</span>) },

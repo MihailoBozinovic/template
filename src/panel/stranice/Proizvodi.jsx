@@ -228,12 +228,12 @@ export default function Proizvodi() {
                 <span className="block text-[12.5px] text-p-tiho">{p.brend}</span>
             </button>
         ) },
-        { kljuc: 'sifra', naslov: 'Šifra', render: (p) => <span className="text-[12.5px] text-p-tiho tabularno">{p.sifra}</span> },
+        { kljuc: 'sifra', naslov: 'Šifra', mobilno: 'skriveno', render: (p) => <span className="text-[12.5px] text-p-tiho tabularno">{p.sifra}</span> },
         { kljuc: 'cena', naslov: 'Cena', desno: true, render: (p) => <span className="whitespace-nowrap font-medium">{rsd(p.cena)}</span> },
         { kljuc: 'nabavna', naslov: 'Nabavna', desno: true, render: (p) => <span className="whitespace-nowrap text-p-tiho">{rsd(p.nabavna)}</span> },
         { kljuc: 'marza', naslov: 'Marža', desno: true, sortVrednost: marza, render: (p) => procenat(marza(p)) },
-        { kljuc: 'stanje', naslov: 'Stanje', desno: true, render: (p) => (p.stanje < p.minimum ? <Znacka ton="greska">{p.stanje}</Znacka> : <span className="font-medium">{p.stanje}</span>) },
-        { kljuc: 'minimum', naslov: 'Min.', desno: true, render: (p) => <span className="text-p-tiho">{p.minimum}</span> },
+        { kljuc: 'stanje', naslov: 'Stanje', desno: true, mobilno: 'istaknuto', render: (p) => (p.stanje < p.minimum ? <Znacka ton="greska">{p.stanje}</Znacka> : <span className="font-medium">{p.stanje}</span>) },
+        { kljuc: 'minimum', naslov: 'Min.', desno: true, mobilno: 'skriveno', render: (p) => <span className="text-p-tiho">{p.minimum}</span> },
         { kljuc: 'prodato30', naslov: 'Prodato 30d', desno: true },
         { kljuc: 'naSajtu', naslov: 'Sajt', sortVrednost: (p) => (p.naSajtu ? 1 : 0), render: (p) => <MaliPrekidac ukljuceno={p.naSajtu} oznaka={`Na sajtu: ${p.naziv}`} onChange={(v) => naSajtu(p, v)} /> },
         { kljuc: 'akcije', naslov: '', sort: false, desno: true, render: (p) => (

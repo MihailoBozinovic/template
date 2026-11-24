@@ -74,12 +74,12 @@ const TONOVI_IKONE = { akc: 'bg-p-staza text-p-akc', ok: 'bg-p-okbg text-p-ok', 
 export const StatPlocica = ({ ikona: Ikona, oznaka, vrednost, napomena, trend, ton = 'akc', to, className, info }) => {
     const telo = (
         <>
-            <div className="flex items-center justify-between gap-2">
-                <span className="text-[13px] font-medium text-p-tiho">{oznaka}</span>
-                {Ikona && <span className={cx('grid h-8 w-8 place-items-center rounded-lg', TONOVI_IKONE[ton])}><Ikona className="h-4 w-4" strokeWidth={2} aria-hidden="true" /></span>}
+            <div className="flex items-start justify-between gap-2">
+                <span className="text-[12.5px] font-medium leading-snug text-p-tiho sm:text-[13px]">{oznaka}</span>
+                {Ikona && <span className={cx('hidden h-8 w-8 shrink-0 place-items-center rounded-lg sm:grid', TONOVI_IKONE[ton])}><Ikona className="h-4 w-4" strokeWidth={2} aria-hidden="true" /></span>}
             </div>
             <div className="mt-2 text-[20px] font-semibold leading-tight tracking-tight text-p-ink tabularno sm:text-[26px] sm:leading-none">{vrednost}</div>
-            <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12.5px] text-p-tiho">
+            <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12px] leading-snug text-p-tiho sm:mt-2 sm:text-[12.5px]">
                 {trend != null && Number.isFinite(trend) && (
                     <span className={cx('inline-flex items-center gap-0.5 font-medium', trend >= 0 ? 'text-p-ok' : 'text-p-greska')}>
                         {trend >= 0 ? <ArrowUp className="h-3.5 w-3.5" aria-hidden="true" /> : <ArrowDown className="h-3.5 w-3.5" aria-hidden="true" />}
@@ -91,7 +91,7 @@ export const StatPlocica = ({ ikona: Ikona, oznaka, vrednost, napomena, trend, t
             </div>
         </>
     );
-    const k = cx('block min-w-0 rounded-2xl border border-p-ivica bg-p-karta p-4 shadow-[0_1px_2px_rgb(0_0_0/.03)]', to && 'transition-colors hover:border-p-akc/50', className);
+    const k = cx('block min-w-0 rounded-2xl border border-p-ivica bg-p-karta p-3.5 sm:p-4 shadow-[0_1px_2px_rgb(0_0_0/.03)]', to && 'transition-colors hover:border-p-akc/50', className);
     return to ? <Link to={to} className={k}>{telo}</Link> : <div className={k}>{telo}</div>;
 };
 
@@ -136,7 +136,7 @@ export const TekstPolje = ({ className, ...o }) => <textarea className={cx('p-po
 export const Pretraga = ({ vrednost, onChange, placeholder = 'Pretraga…', className, autoFocus }) => (
     <div className={cx('relative', className)}>
         <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-p-tiho" aria-hidden="true" />
-        <input type="search" value={vrednost} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} aria-label={placeholder} autoFocus={autoFocus} className="p-polje pl-9" />
+        <input type="search" value={vrednost} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} aria-label={placeholder} autoFocus={autoFocus} className="p-polje !pl-9" />
     </div>
 );
 
@@ -155,7 +155,7 @@ export const Prekidac = ({ ukljuceno, onChange, oznaka, opis, disabled }) => (
 
 /* ── Tabovi (segmentirani izbor) ── */
 export const Tabovi = ({ stavke, aktivan, onChange, className, mali }) => (
-    <div role="tablist" className={cx('inline-flex max-w-full overflow-x-auto rounded-xl border border-p-ivica bg-p-meko p-1 p-skrol', className)}>
+    <div role="tablist" className={cx('inline-flex max-w-full overflow-x-auto rounded-xl border border-p-ivica bg-p-meko p-1 p-skrol max-sm:flex max-sm:w-full max-sm:[&>button]:flex-1 max-sm:[&>button]:justify-center', className)}>
         {stavke.map((s) => (
             <button key={s.id} type="button" role="tab" aria-selected={aktivan === s.id} onClick={() => onChange(s.id)}
                 className={cx('inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg font-medium transition-colors', mali ? 'px-2.5 py-1 text-[12.5px]' : 'px-3 py-1.5 text-[13px]', aktivan === s.id ? 'bg-p-karta text-p-ink shadow-sm' : 'text-p-tiho hover:text-p-ink')}>
@@ -198,9 +198,46 @@ export function Tabela({ kolone, redovi, kljucReda = (r) => r.id, onRed, prazno,
     const klikSort = (k) => setSort((s) => (s?.kljuc === k ? { kljuc: k, smer: s.smer === 'rastuce' ? 'opadajuce' : 'rastuce' } : { kljuc: k, smer: 'opadajuce' }));
 
     if (!redovi.length) return prazno ?? <Prazno naslov="Nema podataka" />;
+
+    /*
+     * Telefon: svaki red je kartica — prva kolona je naslov, istaknuta kolona
+     * (poslednja numerička, ili `mobilno: 'istaknuto'`) stoji desno, ostale su
+     * parovi „naziv — vrednost”, a kolone bez naslova (dugmad) idu na dno.
+     * Kolona sa `mobilno: 'skriveno'` se ne prikazuje, `mobilno: 'puno'` ide u ceo red.
+     */
+    const vidljive = kolone.filter((k) => k.mobilno !== 'skriveno');
+    const naslovKol = vidljive.find((k) => k.mobilno === 'naslov') ?? vidljive[0];
+    const istaknutaKol = vidljive.find((k) => k.mobilno === 'istaknuto') ?? [...vidljive].reverse().find((k) => k.desno && k.naslov && k !== naslovKol);
+    const ostale = vidljive.filter((k) => k !== naslovKol && k !== istaknutaKol);
+    const parovi = ostale.filter((k) => k.naslov);
+    const akcije = ostale.filter((k) => !k.naslov);
+    const vrednost = (k, r) => (k.render ? k.render(r) : r[k.kljuc]);
+
     return (
         <div className={className}>
-            <div className="overflow-x-auto p-skrol">
+            {mobilnoSort(kolone, sort, setSort)}
+            <ul className="divide-y divide-p-ivica/70 md:hidden">
+                {prikazano.map((r) => (
+                    <li key={kljucReda(r)} onClick={onRed ? () => onRed(r) : undefined} className={cx('px-4 py-3', onRed && 'cursor-pointer active:bg-p-meko/60')}>
+                        <div className="flex items-start justify-between gap-3">
+                            <div className="min-w-0 flex-1 text-sm font-medium">{vrednost(naslovKol, r)}</div>
+                            {istaknutaKol && <div className="shrink-0 whitespace-nowrap text-right text-sm font-semibold tabularno">{vrednost(istaknutaKol, r)}</div>}
+                        </div>
+                        {parovi.length > 0 && (
+                            <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-2 text-[13px]">
+                                {parovi.map((k) => (
+                                    <div key={k.kljuc} className={cx('min-w-0', k.mobilno === 'puno' && 'col-span-2')}>
+                                        <dt className="text-[11px] font-medium uppercase tracking-[.05em] text-p-tiho">{k.naslov}</dt>
+                                        <dd className={cx('mt-0.5 min-w-0 break-words', k.desno && 'tabularno')}>{vrednost(k, r)}</dd>
+                                    </div>
+                                ))}
+                            </dl>
+                        )}
+                        {akcije.length > 0 && <div className="mt-2.5 flex flex-wrap items-center justify-end gap-2" onClick={(e) => e.stopPropagation()}>{akcije.map((k) => <React.Fragment key={k.kljuc}>{vrednost(k, r)}</React.Fragment>)}</div>}
+                    </li>
+                ))}
+            </ul>
+            <div className="hidden overflow-x-auto p-skrol md:block">
                 <table className="w-full min-w-[640px] border-collapse text-left text-sm">
                     <thead>
                         <tr className="border-b border-p-ivica">
@@ -234,6 +271,26 @@ export function Tabela({ kolone, redovi, kljucReda = (r) => r.id, onRed, prazno,
                     <Dugme varijanta="tiho" velicina="sm" onClick={() => setKoliko((k) => k + poStrani)}>Prikaži još ({sortirano.length - koliko})</Dugme>
                 </div>
             )}
+        </div>
+    );
+}
+
+/* Telefon: sortiranje tabele kroz padajući izbor (zaglavlja kolona se ne vide). */
+function mobilnoSort(kolone, sort, setSort) {
+    const moguce = kolone.filter((k) => k.sort !== false && k.naslov && k.mobilno !== 'skriveno');
+    if (moguce.length < 2) return null;
+    const vrednost = sort ? `${sort.kljuc}|${sort.smer}` : '';
+    return (
+        <div className="flex items-center justify-end gap-2 border-b border-p-ivica/70 px-4 py-2 md:hidden">
+            <span className="text-[12px] text-p-tiho">Redosled</span>
+            <select value={vrednost} onChange={(e) => { const [kljuc, smer] = e.target.value.split('|'); setSort(kljuc ? { kljuc, smer } : null); }}
+                aria-label="Redosled" className="max-w-[60%] rounded-lg border border-p-ivica bg-p-karta px-2 py-1 text-[13px] text-p-ink">
+                <option value="">Podrazumevano</option>
+                {moguce.flatMap((k) => [
+                    <option key={`${k.kljuc}o`} value={`${k.kljuc}|opadajuce`}>{k.naslov} ↓</option>,
+                    <option key={`${k.kljuc}r`} value={`${k.kljuc}|rastuce`}>{k.naslov} ↑</option>,
+                ])}
+            </select>
         </div>
     );
 }

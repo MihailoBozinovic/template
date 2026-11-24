@@ -134,7 +134,7 @@ export default function Sms() {
         },
         { kljuc: 'primalaca', naslov: 'Primalaca', desno: true, render: (k) => (k.primalaca ? broj(k.primalaca) : <span className="text-p-tiho">—</span>) },
         { kljuc: 'klikova', naslov: 'Klikova', desno: true, render: (k) => (k.status === 'poslata' ? broj(k.klikova) : <span className="text-p-tiho">—</span>) },
-        { kljuc: 'zakazano', naslov: 'Zakazano', desno: true, render: (k) => (k.status === 'poslata' ? broj(k.zakazano) : <span className="text-p-tiho">—</span>) },
+        { kljuc: 'zakazano', naslov: 'Zakazano', desno: true, mobilno: 'istaknuto', render: (k) => (k.status === 'poslata' ? broj(k.zakazano) : <span className="text-p-tiho">—</span>) },
         {
             kljuc: 'konverzija', naslov: 'Konverzija', desno: true, sortVrednost: (k) => (k.primalaca ? k.zakazano / k.primalaca : 0),
             render: (k) => (k.status === 'poslata' && k.primalaca ? <span className="font-medium">{procenat(k.zakazano / k.primalaca, 1)}</span> : <span className="text-p-tiho">—</span>),

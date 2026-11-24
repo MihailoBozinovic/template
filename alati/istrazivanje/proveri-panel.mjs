@@ -34,7 +34,8 @@ const SAMO = process.argv.find((a) => a.startsWith('--uloga='))?.slice(8);
 for (const [uloga, sesija] of Object.entries(SESIJE).filter(([u]) => !SAMO || u === SAMO)) {
     const rute = [...new Set(RASPORED_MENIJA[uloga].flatMap((g) => g.stavke.map((k) => STAVKE[k].ruta)))];
     if (uloga === 'administrator') rute.push('klijenti/k1005');
-    for (const [ekran, o] of Object.entries(EKRANI)) {
+    const SAMO_EKRAN = process.argv.find((a) => a.startsWith('--ekran='))?.slice(8);
+    for (const [ekran, o] of Object.entries(EKRANI).filter(([e]) => !SAMO_EKRAN || e === SAMO_EKRAN)) {
         for (const tamno of uloga === 'administrator' && !process.argv.includes('--bez-tamne') ? [false, true] : [false]) {
             const ctx = await browser.newContext(o);
             await ctx.addInitScript(([s, t]) => { localStorage.setItem('panel-demo-sesija', JSON.stringify(s)); localStorage.setItem('panel-tamno', JSON.stringify(t)); }, [sesija, tamno]);

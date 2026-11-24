@@ -116,7 +116,7 @@ export default function Osoblje() {
                 </span>
             </span>
         ) },
-        { kljuc: 'email', naslov: 'E-pošta', className: 'hidden lg:table-cell', render: (o) => <span className="text-p-tiho">{o.email}</span> },
+        { kljuc: 'email', naslov: 'E-pošta', mobilno: 'skriveno', className: 'hidden lg:table-cell', render: (o) => <span className="text-p-tiho">{o.email}</span> },
         { kljuc: 'uloga', naslov: 'Uloga', sortVrednost: (o) => Object.keys(ULOGE).indexOf(o.uloga), render: (o) => <ZnackaUloge uloga={o.uloga} /> },
         { kljuc: 'radnik', naslov: 'Povezan radnik', sortVrednost: (o) => indeks.radnik[o.radnikId]?.ime ?? '', render: (o) => { const r = indeks.radnik[o.radnikId]; return r ? <span className="flex items-center gap-2 whitespace-nowrap"><Avatar ime={r.ime} slika={r.slika} boja={r.boja} velicina={22} />{r.ime}</span> : <span className="text-p-tiho">—</span>; } },
         { kljuc: 'poslednjaPrijava', naslov: 'Poslednja prijava', className: 'whitespace-nowrap', sortVrednost: (o) => o.poslednjaPrijava ?? 0, render: (o) => (o.poslednjaPrijava ? <span title={new Date(o.poslednjaPrijava).toLocaleString('sr-Latn-RS')}>{preKoliko(o.poslednjaPrijava)}</span> : <Znacka ton="upoz"><Mail className="h-3 w-3" aria-hidden="true" />Pozivnica poslata</Znacka>) },
