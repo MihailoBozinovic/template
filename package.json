@@ -9,7 +9,8 @@
     "build": "node scripts/provera.mjs --blago && vite build && vite build --ssr src/entry-server.jsx --outDir .ssr && node scripts/prerender.mjs",
     "preview": "vite preview --port 4173",
     "provera": "node scripts/provera.mjs",
-    "slike": "node scripts/slike.mjs"
+    "slike": "node scripts/slike.mjs",
+    "objava:demo": "node scripts/objava-vps.mjs --host nomi-demo --putanja htdocs/demo.nomi.rs --domen https://demo.nomi.rs"
   },
   "dependencies": {
     "@fontsource/amatic-sc": "^5.3.0",

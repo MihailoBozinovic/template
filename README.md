@@ -117,6 +117,16 @@ server {
 }
 ```
 
+**VPS preko SSH-a (jednom komandom):** `scripts/objava-vps.mjs` pravi build za
+domen, šalje `dist/` preko SSH-a, raspakuje ga pored starog sajta i zameni foldere
+jednim `mv` (bez poluprebačenog sajta), zadrži `.well-known` (SSL), pa proveri
+početnu, cenovnik, panel i 404. Prethodna verzija ostaje kao `<folder>.prethodna`.
+
+```bash
+node scripts/objava-vps.mjs --host <ssh-alias> --putanja htdocs/<domen> --domen https://<domen>
+npm run objava:demo   # demo.nomi.rs
+```
+
 **Netlify:** Build command `npm run build`, Publish directory `dist`.
 **Vercel:** Framework „Other”, Output `dist`, u `vercel.json` `{ "cleanUrls": true, "trailingSlash": false }`.
 Oba sama služe `404.html`.
