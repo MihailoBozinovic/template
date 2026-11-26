@@ -21,6 +21,12 @@ RewriteRule ^ %1 [L,R=301]
 # /cenovnik → /cenovnik/index.html
 RewriteCond %{REQUEST_FILENAME}/index.html -f
 RewriteRule ^(.*[^/])$ $1/index.html [L]
+# Panel (/panel/…): adrese bez svog HTML-a (npr. karton klijenta /panel/klijenti/k1005)
+# dobijaju ljusku panela — panel sam iscrta stranicu, umesto 404 stranice sajta.
+RewriteCond %{REQUEST_URI} ^/panel(/|$)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}/index.html !-f
+RewriteRule ^ /panel/index.html [L]
 
 <IfModule mod_mime.c>
     AddType image/webp .webp

@@ -88,6 +88,7 @@ Sajt je statičan: svaka stranica je `…/index.html`, plus `404.html`,
 
 **Apache / cPanel** — `public/.htaccess` se kopira u `dist/` i već sadrži:
 HTTPS preusmerenje, adrese bez kose crte na kraju, `ErrorDocument 404 /404.html`,
+ljusku panela za adrese `/panel/…` koje nemaju svoj HTML,
 keširanje (`assets/` godinu dana — imaju heš u imenu) i bezbednosna zaglavlja.
 Samo prebaci sadržaj `dist/` u `public_html/`.
 
@@ -102,6 +103,10 @@ server {
 
     location / {
         try_files $uri $uri/index.html $uri/ =404;
+    }
+    # Panel: adrese bez svog HTML-a (karton klijenta /panel/klijenti/…) → ljuska panela
+    location /panel/ {
+        try_files $uri $uri/index.html /panel/index.html;
     }
     location /assets/ {
         add_header Cache-Control "public, max-age=31536000, immutable";
