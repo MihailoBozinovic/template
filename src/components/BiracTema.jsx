@@ -115,7 +115,7 @@ export default function BiracTema() {
                     type="button"
                     onClick={() => setOtvoren((o) => !o)}
                     aria-expanded={otvoren}
-                    className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/95 px-4 py-2.5 text-sm font-medium shadow-lg backdrop-blur-xl transition-transform hover:-translate-y-0.5"
+                    className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/95 px-3.5 py-2 text-[13px] font-medium shadow-lg backdrop-blur-xl transition-transform hover:-translate-y-0.5 sm:px-4 sm:py-2.5 sm:text-sm"
                 >
                     <Palette size={16} /><span className={naZakazivanju ? 'hidden lg:inline' : ''}>{t.tema.otvori} · <span className="text-black/55">{TEME[tema.id]?.naziv}</span></span>
                 </button>
@@ -124,9 +124,10 @@ export default function BiracTema() {
                     href={`${BAZA}/panel/prijava`}
                     title={t.tema.panel}
                     aria-label={t.tema.panel}
-                    className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-[#1d1d1f] px-3.5 py-2.5 text-sm font-medium text-white shadow-lg transition-transform hover:-translate-y-0.5"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-[#1d1d1f] px-3.5 py-2 text-[13px] font-medium text-white shadow-lg ring-1 ring-black/10 transition-transform hover:-translate-y-0.5 sm:py-2.5 sm:text-sm"
                 >
-                    <LayoutDashboard size={16} /><span className="hidden sm:inline">Panel</span>
+                    {/* Natpis i na telefonu — sama ikonica nije govorila šta je. */}
+                    <LayoutDashboard size={16} /><span>Panel</span>
                 </a>
             </div>
         </div>
